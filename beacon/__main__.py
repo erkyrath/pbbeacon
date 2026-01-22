@@ -18,8 +18,8 @@ def parse(filename):
 
 
 if __name__ == '__main__':
-    from beaconlib.lex import parselines
-    from beaconlib.compile import compileall
+    from .lex import parselines
+    from .compile import compileall
 
     parser = argparse.ArgumentParser()
 
