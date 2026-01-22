@@ -1,23 +1,7 @@
-from enum import StrEnum
 from collections import namedtuple
 
+from .defs import Implicit, WaveShape, AxisDep, axisdepname
 from .lex import Term, TokType
-
-class Implicit(StrEnum):
-    TIME  = 'TIME'
-    SPACE = 'SPACE'
-
-class WaveShape(StrEnum):
-    FLAT = 'FLAT'
-    SQUARE = 'SQUARE'
-    HALFSQUARE = 'HALFSQUARE'
-    TRIANGLE = 'TRIANGLE'
-    TRAPEZOID = 'TRAPEZOID'
-    SAWTOOTH = 'SAWTOOTH'
-    SQRTOOTH = 'SQRTOOTH'
-    SAWDECAY = 'SAWDECAY'
-    SQRDECAY = 'SQRDECAY'
-    SINE = 'SINE'
 
 def wave_sample(shape, var):
     # We can assume var is between 0 and 1
@@ -609,4 +593,4 @@ def compile(term, implicit, defmap):
     return nod
 
 # Late imports
-from .program import Program, Stanza, AxisDep, axisdepname
+from .program import Program, Stanza

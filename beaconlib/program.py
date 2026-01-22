@@ -1,23 +1,4 @@
-from enum import IntEnum
-
-class AxisDep(IntEnum):
-    NONE  = 0
-    TIME  = 1
-    SPACE = 2
-    SPACETIME = 3
-
-def axisdepname(dep):
-    match dep:
-        case AxisDep.NONE:
-            return 'NONE'
-        case AxisDep.TIME:
-            return 'TIME'
-        case AxisDep.SPACE:
-            return 'SPACE'
-        case AxisDep.SPACETIME:
-            return 'SPACETIME'
-        case _:
-            return '???%s' % (dep,)
+from .defs import Implicit, AxisDep
 
 class Stanza:
     def __init__(self, nod, timebase=None):
@@ -173,6 +154,6 @@ class Program:
 
 
 # Late imports
-from .compile import Node, NodeConstant, NodePulser, Implicit
+from .compile import Node, NodeConstant, NodePulser
 
 
