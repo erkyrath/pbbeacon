@@ -173,6 +173,6 @@ class Program:
 
 
 # Late imports
-from compile import Node, NodeConstant, NodePulser, Implicit
+from .compile import Node, NodeConstant, NodePulser, Implicit
 
 

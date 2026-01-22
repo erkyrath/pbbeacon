@@ -2,8 +2,8 @@
 
 import sys
 
-from lex import parselines
-from compile import compileall
+from beaconlib.lex import parselines
+from beaconlib.compile import compileall
 
 srclines = None
 

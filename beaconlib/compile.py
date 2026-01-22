@@ -1,7 +1,7 @@
 from enum import StrEnum
 from collections import namedtuple
 
-from lex import Term, TokType
+from .lex import Term, TokType
 
 class Implicit(StrEnum):
     TIME  = 'TIME'
@@ -609,4 +609,4 @@ def compile(term, implicit, defmap):
     return nod
 
 # Late imports
-from program import Program, Stanza, AxisDep, axisdepname
+from .program import Program, Stanza, AxisDep, axisdepname
