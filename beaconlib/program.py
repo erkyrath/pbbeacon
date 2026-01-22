@@ -103,9 +103,6 @@ class Program:
                         if (arg.depend & AxisDep.SPACE):
                             raise Exception('pulser arg cannot be SPACE')
                         continue
-                    ### (arg.depend | nod.depend) != nod.depend?
-                    ### do we really want to buffer lower-dep cases?
-                    ### if we do, Pulser needs an exception
                     if arg.depend != nod.depend and not isinstance(arg, NodeConstant):
                         arg.buffered = True
         
