@@ -26,6 +26,7 @@ if __name__ == '__main__':
     parser.add_argument('filename')
     parser.add_argument('--showterms', action='store_true')
     parser.add_argument('--shownodes', action='store_true')
+    parser.add_argument('--source', action='store_true')
     
     args = parser.parse_args()
 
@@ -36,8 +37,9 @@ if __name__ == '__main__':
         program.dump()
     
     print('// ' + args.filename)
-    if False:
+    if args.source:
         for ln in srclines:
             print('// ' + ln)
         print()
-    program.write()
+    if not args.showterms and not args.shownodes:
+        program.write()
