@@ -246,13 +246,23 @@ class NodePulser(Node):
         self.quote_pos = None
         self.quote_width = None
         self.quote_duration = None
-        ### We could auto-quote constants to save the array space
+
+        # We treat constant args as quoted because it makes simpler code.
+        
         if isinstance(self.args.pos, NodeQuote):
             self.quote_pos = self.args.pos.args.arg
+        elif isinstance(self.args.pos, NodeConstant):
+            self.quote_pos = self.args.pos
+
         if isinstance(self.args.width, NodeQuote):
             self.quote_width = self.args.width.args.arg
+        elif isinstance(self.args.width, NodeConstant):
+            self.quote_width = self.args.width
+            
         if isinstance(self.args.duration, NodeQuote):
             self.quote_duration = self.args.duration.args.arg
+        elif isinstance(self.args.duration, NodeConstant):
+            self.quote_duration = self.args.duration
     
     def printstaticvars(self):
         maxcount = self.args.maxcount
