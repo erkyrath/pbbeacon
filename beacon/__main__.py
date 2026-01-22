@@ -1,11 +1,7 @@
 import sys
 import argparse
 
-srclines = None
-
 def parse(filename):
-    global srclines
-    
     fl = open(filename)
     parsetrees, srclines = parselines(fl)
     fl.close()
@@ -14,7 +10,7 @@ def parse(filename):
         for term in parsetrees:
             term.dump()
         
-    return compileall(parsetrees)
+    return compileall(parsetrees, srclines=srclines)
 
 
 if __name__ == '__main__':
@@ -30,7 +26,6 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
 
-
     program = parse(args.filename)
     program.post()
     if args.shownodes:
@@ -38,7 +33,7 @@ if __name__ == '__main__':
     
     print('// ' + args.filename)
     if args.source:
-        for ln in srclines:
+        for ln in program.srclines:
             print('// ' + ln)
         print()
     if not args.showterms and not args.shownodes:

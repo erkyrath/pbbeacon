@@ -190,7 +190,7 @@ class Node:
             
 
 
-def compileall(trees):
+def compileall(trees, srclines=None):
     Node.prepclasses()
     
     roots = []
@@ -209,7 +209,7 @@ def compileall(trees):
             if startnod is not None:
                 raise Exception('more than one start')
             startnod = nod
-    return Program(startnod, defmap)
+    return Program(startnod, defmap, srclines=srclines)
 
 def compile(term, implicit, defmap):
     if term.tok.typ == TokType.NUM:

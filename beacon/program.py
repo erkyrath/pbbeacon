@@ -42,9 +42,10 @@ class Stanza:
             print('%s%s' % (indentstr, ln,))
 
 class Program:
-    def __init__(self, start, defs):
+    def __init__(self, start, defs, srclines=None):
         self.start = start
         self.defs = defs
+        self.srclines = srclines
 
         self.nodes = []
         self.nodeidset = set()
