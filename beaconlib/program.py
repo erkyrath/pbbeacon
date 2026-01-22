@@ -1,4 +1,5 @@
 from .defs import Implicit, AxisDep
+from .compile import Node
 
 class Stanza:
     def __init__(self, nod, timebase=None):
@@ -154,6 +155,6 @@ class Program:
 
 
 # Late imports
-from .compile import Node, NodeConstant, NodePulser
+from .nodes import NodeConstant, NodePulser
 
 
