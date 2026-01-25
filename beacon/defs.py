@@ -40,3 +40,18 @@ def axisdepname(dep):
         case _:
             return '???%s' % (dep,)
 
+class Color:
+    def __init__(self, val):
+        assert val.startswith('$') and len(val) in (4, 7)
+        val = val[ 1 : ]
+        if len(val) == 3:
+            val = val[0]+val[0]+val[1]+val[1]+val[2]+val[2]
+        self.red   = int(val[0:2], 16) / 255.0
+        self.green = int(val[2:4], 16) / 255.0
+        self.blue  = int(val[4:6], 16) / 255.0
+
+    def __repr__(self):
+        rval = int(self.red   * 255.0)
+        gval = int(self.green * 255.0)
+        bval = int(self.blue  * 255.0)
+        return '$%02X%02X%02X' % (rval, gval, bval,)
