@@ -28,20 +28,20 @@ class Stanza:
     def generatebuffer(self):
         self.bottomline = self.nod.generateexpr(ctx=self)
 
-    def printlines(self, indent=0):
+    def printlines(self, outfl, indent=0):
         indentstr = indent * '  '
         if not (self.depend & AxisDep.SPACE):
             for varname, expr in self.storedvals:
-                print('%svar %s = %s  // for %s' % (indentstr, varname, expr, self.nod.id,))
-            print('%s%s_scalar = (%s)' % (indentstr, self.nod.id, self.bottomline,))
+                outfl.write('%svar %s = %s  // for %s\n' % (indentstr, varname, expr, self.nod.id,))
+            outfl.write('%s%s_scalar = (%s)\n' % (indentstr, self.nod.id, self.bottomline,))
         else:
-            print('%sfor (var ix=0; ix<pixelCount; ix++) {' % (indentstr,))
+            outfl.write('%sfor (var ix=0; ix<pixelCount; ix++) {\n' % (indentstr,))
             for varname, expr in self.storedvals:
-                print('%s  var %s = %s  // for %s' % (indentstr, varname, expr, self.nod.id,))
-            print('%s  %s_pixels[ix] = (%s)' % (indentstr, self.nod.id, self.bottomline,))
-            print('%s}' % (indentstr,))
+                outfl.write('%s  var %s = %s  // for %s\n' % (indentstr, varname, expr, self.nod.id,))
+            outfl.write('%s  %s_pixels[ix] = (%s)\n' % (indentstr, self.nod.id, self.bottomline,))
+            outfl.write('%s}\n' % (indentstr,))
         for ln in self.afterlines:
-            print('%s%s' % (indentstr, ln,))
+            outfl.write('%s%s\n' % (indentstr, ln,))
 
 class Program:
     def __init__(self, start, defs, srclines=None):
@@ -133,7 +133,7 @@ class Program:
         outfl.write('// startup calculations:\n')
         for stanza in self.stanzas:
             if not (stanza.depend & AxisDep.TIME):
-                stanza.printlines(indent=0)
+                stanza.printlines(outfl=outfl, indent=0)
         outfl.write('\n')
         
         outfl.write('export function beforeRender(delta) {\n')
@@ -143,7 +143,7 @@ class Program:
         
         for stanza in self.stanzas:
             if stanza.depend & AxisDep.TIME:
-                stanza.printlines(indent=1)
+                stanza.printlines(outfl=outfl, indent=1)
         outfl.write('}\n')
         outfl.write('\n')
 
