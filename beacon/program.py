@@ -1,3 +1,5 @@
+import sys
+
 from .defs import Implicit, AxisDep
 from .compile import Node
 
@@ -112,15 +114,19 @@ class Program:
             self.defs[name].dump(name=name)
         self.start.dump()
 
-    def write(self):
+    def write(self, outfl=None):
+        if outfl is None:
+            outfl = sys.stdout
+            
         print('var clock = 0   // seconds')
         print()
         print('// stanza buffers:')
         for stanza in self.stanzas:
+            id = stanza.nod.id
             if not (stanza.depend & AxisDep.SPACE):
-                print('var %s_scalar' % (stanza.nod.id,))
+                print(f'var {id}_scalar')
             else:
-                print('var %s_pixels = array(pixelCount)' % (stanza.nod.id,))
+                print(f'var {id}_pixels = array(pixelCount)')
             stanza.nod.printstaticvars()
         print()
 
@@ -142,10 +148,11 @@ class Program:
         print()
 
         print('export function render(index) {')
+        id = self.start.id
         if not (self.start.depend & AxisDep.SPACE):
-            print('  var val = %s_scalar' % (self.start.id,))
+            print(f'  var val = {id}_scalar')
         else:
-            print('  var val = %s_pixels[index]' % (self.start.id,))
+            print(f'  var val = {id}_pixels[index]')
         print('  rgb(val*val, val*val, 0.1)')
         print('}')
         print()
