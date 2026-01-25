@@ -1,4 +1,4 @@
-from .defs import Implicit, Dim, WaveShape
+from .defs import Implicit, Dim, Color, WaveShape
 from .compile import Node, ArgFormat, wave_sample
 from .program import Stanza
 
@@ -22,6 +22,24 @@ class NodeConstant(Node):
         
     def generateexpr(self, ctx):
         return str(self.args.value)
+
+class NodeColor(Node):
+    classname = 'color'
+
+    argformat = [
+        ArgFormat('value', Color)
+    ]
+
+    def __init__(self, ctx, ascol=None):
+        Node.__init__(self, ctx)
+        if ascol is not None:
+            self.args = self.argclass(value=ascol)
+
+    def finddim(self):
+        return Dim.THREE
+    
+    def generateexpr(self, ctx):
+        return '###'
 
 class NodeQuote(Node):
     classname = 'quote'
@@ -380,6 +398,7 @@ class NodePulser(Node):
 
 nodeclasses = [
     NodeConstant,
+    NodeColor,
     NodeQuote,
     NodeTime,
     NodeSpace,

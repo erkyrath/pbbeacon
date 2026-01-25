@@ -185,7 +185,7 @@ class Node:
         dimstr = str(self.dim) if self.dim else '???'
         depstr = axisdepname(self.depend)
         bufstr = ' (BUF)' if self.buffered else ''
-        print(f'{indentstr}{namestr}<self.id> ({impstr}:{dimstr}) dep={depstr}{bufstr}')
+        print(f'{indentstr}{namestr}<{self.id}> ({impstr}:{dimstr}) dep={depstr}{bufstr}')
         for argf in self.argformat:
             argls = self.getargls(argf.name, argf.multiple)
             for arg in argls:
@@ -223,6 +223,10 @@ def compile(term, implicit, defmap):
         if term.args:
             raise Exception('number cannot have args')
         return NodeConstant(implicit, asnum=term.tok.val)
+    if term.tok.typ == TokType.COLOR:
+        if term.args:
+            raise Exception('color cannot have args')
+        return NodeColor(implicit, ascol=term.tok.val)
     if term.tok.typ != TokType.SYMBOL:
         raise Exception('non-symbol')
     key = term.tok.val.lower()
@@ -239,4 +243,4 @@ def compile(term, implicit, defmap):
 
 # Late imports
 from .program import Program, Stanza
-from .nodes import NodeConstant
+from .nodes import NodeConstant, NodeColor
