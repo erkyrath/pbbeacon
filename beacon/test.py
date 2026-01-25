@@ -76,6 +76,26 @@ export function render(index) {
 }
         ''')
 
+    def test_spacewave(self):
+        src = deindent('''
+        wave: sine
+        ''')
+
+        self.compare(src, '''
+var root_pixels = array(pixelCount)
+for (var ix=0; ix<pixelCount; ix++) {
+  var root_val_min = 0  // for root
+  var root_val_hdiff = ((1-root_val_min)*0.5)  // for root
+  root_pixels[ix] = ((root_val_min+root_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))))
+}
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
+export function render(index) {
+  var val = root_pixels[index]
+  rgb(val*val, val*val, 0.1)
+}
+        ''')
 
 
 if __name__ == '__main__':
