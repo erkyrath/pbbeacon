@@ -280,6 +280,30 @@ class NodeWave(Node):
             case _:
                 raise Exception('unimplemented WaveShape')
 
+class NodeRGB(Node):
+    classname = 'rgb'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('r', Node),
+        ArgFormat('g', Node),
+        ArgFormat('b', Node),
+    ]
+
+    def finddim(self):
+        assert self.args.r.dim is Dim.ONE
+        assert self.args.g.dim is Dim.ONE
+        assert self.args.b.dim is Dim.ONE
+        return Dim.THREE
+
+    def generateexpr(self, ctx, component=None):
+        if component == 'r':
+            return self.args.r.generatedata(ctx=ctx, component=None)
+        if component == 'g':
+            return self.args.g.generatedata(ctx=ctx, component=None)
+        if component == 'b':
+            return self.args.b.generatedata(ctx=ctx, component=None)
+
 class NodePulser(Node):
     classname = 'pulser'
     
@@ -434,6 +458,7 @@ nodeclasses = [
     NodeMean,
     NodeMul,
     NodeWave,
+    NodeRGB,
     NodePulser,
 ]
 
