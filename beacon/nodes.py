@@ -276,6 +276,9 @@ class NodePulser(Node):
         elif isinstance(self.args.duration, NodeConstant):
             self.quote_duration = self.args.duration
     
+    def finddim(self):
+        return Dim.ONE
+    
     def printstaticvars(self, outfl):
         id = self.id
         maxcount = self.args.maxcount

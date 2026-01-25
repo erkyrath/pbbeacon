@@ -109,6 +109,8 @@ class Program:
                         continue
                     if arg.depend != nod.depend and not isinstance(arg, NodeConstant):
                         arg.buffered = True
+
+        nod.dim = nod.finddim()
         
     def dump(self):
         for name in self.defs:

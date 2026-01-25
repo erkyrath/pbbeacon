@@ -146,7 +146,7 @@ class Node:
             return arg
 
     def finddim(self):
-        raise NotImplementedError('finddim')
+        raise NotImplementedError('finddim: ' + self.__class__.__name__)
 
     def constantval(self):
         return None
@@ -182,9 +182,10 @@ class Node:
         indentstr = '  '*indent
         namestr = name+'=' if name else ''
         impstr = str(self.implicit)[0]
+        dimstr = str(self.dim) if self.dim else '???'
         depstr = axisdepname(self.depend)
         bufstr = ' (BUF)' if self.buffered else ''
-        print(f'{indentstr}{namestr}<self.id> ({impstr}) dep={depstr}{bufstr}')
+        print(f'{indentstr}{namestr}<self.id> ({impstr}:{dimstr}) dep={depstr}{bufstr}')
         for argf in self.argformat:
             argls = self.getargls(argf.name, argf.multiple)
             for arg in argls:
