@@ -1,6 +1,6 @@
 import sys
 
-from .defs import Implicit, AxisDep
+from .defs import Implicit, AxisDep, Dim
 from .compile import Node
 
 class Stanza:
@@ -126,10 +126,22 @@ class Program:
         outfl.write('// stanza buffers:\n')
         for stanza in self.stanzas:
             id = stanza.nod.id
-            if not (stanza.depend & AxisDep.SPACE):
-                outfl.write(f'var {id}_scalar\n')
+            if stanza.nod.dim is Dim.ONE:
+                if not (stanza.depend & AxisDep.SPACE):
+                    outfl.write(f'var {id}_scalar\n')
+                else:
+                    outfl.write(f'var {id}_vector = array(pixelCount)\n')
+            elif stanza.nod.dim is Dim.THREE:
+                if not (stanza.depend & AxisDep.SPACE):
+                    outfl.write(f'var {id}_scalar_r\n')
+                    outfl.write(f'var {id}_scalar_g\n')
+                    outfl.write(f'var {id}_scalar_b\n')
+                else:
+                    outfl.write(f'var {id}_vector_r = array(pixelCount)\n')
+                    outfl.write(f'var {id}_vector_g = array(pixelCount)\n')
+                    outfl.write(f'var {id}_vector_b = array(pixelCount)\n')
             else:
-                outfl.write(f'var {id}_vector = array(pixelCount)\n')
+                raise Exception('bad dim')
             stanza.nod.printstaticvars(outfl)
         outfl.write('\n')
 
