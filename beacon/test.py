@@ -116,6 +116,38 @@ export function render(index) {
 }
         ''')
 
+    def test_spacetimewaves(self):
+        src = deindent('''
+        sum:
+          space: wave: triangle
+          time: wave: sqrdecay
+        ''')
+
+        self.compare(src, '''
+var time_6_scalar
+var space_1_pixels = array(pixelCount)
+var root_pixels = array(pixelCount)
+for (var ix=0; ix<pixelCount; ix++) {
+  var wave_2_val_min = 0  // for space_1
+  var wave_2_val_diff = (1-wave_2_val_min)  // for space_1
+  space_1_pixels[ix] = ((wave_2_val_min+wave_2_val_diff*(triangle((((ix/pixelCount)-0.5)/1+0.5)))))
+}
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  var wave_7_val_min = 0  // for time_6
+  var wave_7_val_diff = (1-wave_7_val_min)  // for time_6
+  time_6_scalar = ((wave_7_val_min+wave_7_val_diff*(pow(1-mod(clock/1, 1), 2))))
+  for (var ix=0; ix<pixelCount; ix++) {
+    root_pixels[ix] = ((space_1_pixels[ix] + time_6_scalar))
+  }
+}
+export function render(index) {
+  var val = root_pixels[index]
+  rgb(val*val, val*val, 0.1)
+}
+        ''')
+
+
 
 
 if __name__ == '__main__':
