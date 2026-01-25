@@ -32,10 +32,10 @@ if __name__ == '__main__':
     if args.shownodes:
         program.dump()
     
-    print('// ' + args.filename)
-    if args.source:
-        for ln in program.srclines:
-            print('// ' + ln)
-        print()
     if not args.showterms and not args.shownodes:
+        print('// ' + args.filename)
+        if args.source:
+            for ln in program.srclines:
+                print('// ' + ln)
+            print()
         program.write()
