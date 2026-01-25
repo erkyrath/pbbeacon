@@ -304,6 +304,24 @@ class NodeRGB(Node):
         if component == 'b':
             return self.args.b.generatedata(ctx=ctx, component=None)
 
+class NodeBrightness(Node):
+    classname = 'brightness'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('value', Node),
+    ]
+
+    def finddim(self):
+        assert self.args.value.dim is Dim.THREE
+        return Dim.ONE
+
+    def generateexpr(self, ctx, component=None):
+        argdatar = self.args.value.generatedata(ctx=ctx, component='r')
+        argdatag = self.args.value.generatedata(ctx=ctx, component='g')
+        argdatab = self.args.value.generatedata(ctx=ctx, component='b')
+        return f'(0.299 * {argdatar} + 0.587 * {argdatag} + 0.114 * {argdatab}'
+
 class NodePulser(Node):
     classname = 'pulser'
     
@@ -459,6 +477,7 @@ nodeclasses = [
     NodeMul,
     NodeWave,
     NodeRGB,
+    NodeBrightness,
     NodePulser,
 ]
 
