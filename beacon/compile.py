@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from .defs import Implicit, Dim, WaveShape, AxisDep, axisdepname
+from .defs import Implicit, Dim, Color, WaveShape, AxisDep, axisdepname
 from .lex import Term, TokType
 
 def wave_sample(shape, var):
@@ -107,6 +107,10 @@ class Node:
                 if arg.tok.typ is not TokType.NUM:
                     raise Exception('%s: %s must be numeric' % (self.classname, argf.name))
                 argval = int(arg.tok.val)
+            elif argf.typ is Color:
+                if arg.tok.typ is not TokType.COLOR:
+                    raise Exception('%s: %s must be color' % (self.classname, argf.name))
+                argval = Color(arg.tok.val)
             elif argf.typ is WaveShape:
                 if arg.tok.typ is not TokType.SYMBOL:
                     raise Exception('%s: unrecognized waveshape' % (argf.name,))

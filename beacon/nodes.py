@@ -33,7 +33,7 @@ class NodeColor(Node):
     def __init__(self, ctx, ascol=None):
         Node.__init__(self, ctx)
         if ascol is not None:
-            self.args = self.argclass(value=ascol)
+            self.args = self.argclass(value=Color(ascol))
 
     def finddim(self):
         return Dim.THREE
