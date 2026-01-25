@@ -169,12 +169,20 @@ class Node:
 
     def generatedata(self, ctx, component=None):
         id = self.id
-        ### dim
         if self.buffered:
-            if not (self.depend & AxisDep.SPACE):
-                return f'{id}_scalar'
+            if self.dim is Dim.ONE:
+                if not (self.depend & AxisDep.SPACE):
+                    return f'{id}_scalar'
+                else:
+                    return f'{id}_vector[ix]'
+            elif self.dim is Dim.THREE:
+                cstr = '_'+component if component else ''
+                if not (self.depend & AxisDep.SPACE):
+                    return f'{id}_scalar{cstr}'
+                else:
+                    return f'{id}_vector{cstr}[ix]'
             else:
-                return f'{id}_vector[ix]'
+                raise Exception('bad dim')
         return self.generateexpr(ctx, component=component)
 
     def generateexpr(self, ctx, component=None):
