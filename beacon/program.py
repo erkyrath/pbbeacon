@@ -164,11 +164,22 @@ class Program:
 
         outfl.write('export function render(index) {\n')
         id = self.start.id
-        if not (self.start.depend & AxisDep.SPACE):
-            outfl.write(f'  var val = {id}_scalar\n')
-        else:
-            outfl.write(f'  var val = {id}_vector[index]\n')
-        outfl.write('  rgb(val*val, val*val, val*val)\n')
+        if self.start.dim is Dim.ONE:
+            if not (self.start.depend & AxisDep.SPACE):
+                outfl.write(f'  var val = {id}_scalar\n')
+            else:
+                outfl.write(f'  var val = {id}_vector[index]\n')
+            outfl.write('  rgb(val*val, val*val, val*val)\n')
+        elif self.start.dim is Dim.THREE:
+            if not (self.start.depend & AxisDep.SPACE):
+                outfl.write(f'  var valr = {id}_scalar_r\n')
+                outfl.write(f'  var valg = {id}_scalar_g\n')
+                outfl.write(f'  var valb = {id}_scalar_b\n')
+            else:
+                outfl.write(f'  var valr = {id}_vector_r[index]\n')
+                outfl.write(f'  var valg = {id}_vector_g[index]\n')
+                outfl.write(f'  var valb = {id}_vector_b[index]\n')
+            outfl.write('  rgb(valr*valr, valg*valg, valb*valb)\n')
         outfl.write('}\n')
         outfl.write('\n')
         
