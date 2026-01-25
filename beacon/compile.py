@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from .defs import Implicit, WaveShape, AxisDep, axisdepname
+from .defs import Implicit, Dim, WaveShape, AxisDep, axisdepname
 from .lex import Term, TokType
 
 def wave_sample(shape, var):
@@ -68,6 +68,7 @@ class Node:
 
         self.implicit = ctx
         self.depend = AxisDep.NONE
+        self.dim = Dim.NONE
         self.buffered = False
 
     def __repr__(self):
@@ -144,6 +145,9 @@ class Node:
         else:
             return arg
 
+    def finddim(self):
+        raise NotImplementedError('finddim')
+
     def constantval(self):
         return None
         
@@ -179,14 +183,14 @@ class Node:
         impstr = str(self.implicit)[0]
         depstr = axisdepname(self.depend)
         bufstr = ' (BUF)' if self.buffered else ''
-        print('%s%s<%s> (%s) dep=%s%s' % (indentstr, namestr, self.id, impstr, depstr, bufstr))
+        print(f'{indentstr}{namestr}<self.id> ({impstr}) dep={depstr}{bufstr}')
         for argf in self.argformat:
             argls = self.getargls(argf.name, argf.multiple)
             for arg in argls:
                 if isinstance(arg, Node):
                     arg.dump(indent+1, name=argf.name)
                 else:
-                    print('%s  %s=%s' % (indentstr, argf.name, arg,))
+                    print(f'{indentstr}  {argf.name}={arg}')
             
 
 

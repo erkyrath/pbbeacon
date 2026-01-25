@@ -16,6 +16,11 @@ class WaveShape(StrEnum):
     SQRDECAY = 'SQRDECAY'
     SINE = 'SINE'
 
+class Dim(IntEnum):
+    NONE  = 0
+    ONE   = 1
+    THREE = 3
+    
 class AxisDep(IntEnum):
     NONE  = 0
     TIME  = 1

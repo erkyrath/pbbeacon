@@ -1,4 +1,4 @@
-from .defs import Implicit, WaveShape
+from .defs import Implicit, Dim, WaveShape
 from .compile import Node, ArgFormat, wave_sample
 from .program import Stanza
 
@@ -14,6 +14,9 @@ class NodeConstant(Node):
         if asnum is not None:
             self.args = self.argclass(value=asnum)
 
+    def finddim(self):
+        return Dim.ONE
+    
     def constantval(self):
         return self.args.value
         
@@ -64,6 +67,9 @@ class NodeLinear(Node):
         ArgFormat('velocity', Implicit.TIME),
     ]
 
+    def finddim(self):
+        return Dim.ONE
+    
     def generateexpr(self, ctx):
         param = self.generateimplicit(ctx)
         startdata = self.args.start.generatedata(ctx=ctx)
@@ -79,6 +85,9 @@ class NodeRandFlat(Node):
         ArgFormat('max', Implicit.TIME),
     ]
 
+    def finddim(self):
+        return Dim.ONE
+    
     def generateexpr(self, ctx):
         # Don't actually use generateimplicit
         mindata = self.args.min.generatedata(ctx=ctx)
@@ -96,6 +105,9 @@ class NodeRandNorm(Node):
         ArgFormat('stdev', Implicit.TIME, default=0.25),
     ]
 
+    def finddim(self):
+        return Dim.ONE
+    
     def generateexpr(self, ctx):
         # Don't actually use generateimplicit
         meandata = self.args.mean.generatedata(ctx=ctx)
