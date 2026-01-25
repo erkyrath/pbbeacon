@@ -40,8 +40,8 @@ def stripdown(text):
 
 class TestCompile(unittest.TestCase):
 
-    def compile(self, prog):
-        fl = StringIO(prog)
+    def compile(self, src):
+        fl = StringIO(src)
         parsetrees, srclines = parselines(fl)
         fl.close()
 
@@ -57,7 +57,7 @@ class TestCompile(unittest.TestCase):
         template = template.strip()
         self.assertEqual(res, template)
 
-    def test_simple(self):
+    def test_constant(self):
         src = deindent('''
         0.5
         ''')
