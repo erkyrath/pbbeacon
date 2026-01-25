@@ -1,5 +1,9 @@
 import unittest
 import re
+from io import StringIO
+
+from .lex import parselines
+from .compile import compileall
 
 pat_indent = re.compile('^[ ]*')
 
@@ -24,16 +28,35 @@ def deindent(text):
 class TestCompile(unittest.TestCase):
 
     def compile(self, prog):
-        
+        fl = StringIO(prog)
+        parsetrees, srclines = parselines(fl)
+        fl.close()
+
+        return compileall(parsetrees, srclines=srclines)
+
+    def compare(self, res, template):
+        pass
 
     def test_simple(self):
-        prog = deindent('''
+        src = deindent('''
         0.5
         ''')
         
-        res = self.compile(prog)
+        prog = self.compile(src)
+        outfl = StringIO()
+        prog.write(outfl)
+        res = outfl.getvalue()
 
+        self.compare(res, '''
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
 
+export function render(index) {
+  var val = constant_0_scalar
+  rgb(val*val, val*val, 0.1)
+}
+        ''')
 
 if __name__ == '__main__':
     unittest.main()
