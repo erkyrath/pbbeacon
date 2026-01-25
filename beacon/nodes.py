@@ -60,6 +60,9 @@ class NodeTime(Node):
         ArgFormat('arg', Implicit.TIME),
     ]
 
+    def finddim(self):
+        return self.args.arg.dim
+    
     def generateexpr(self, ctx):
         argdata = self.args.arg.generatedata(ctx=ctx)
         return argdata
@@ -72,6 +75,9 @@ class NodeSpace(Node):
         ArgFormat('arg', Implicit.SPACE),
     ]
 
+    def finddim(self):
+        return self.args.arg.dim
+    
     def generateexpr(self, ctx):
         argdata = self.args.arg.generatedata(ctx=ctx)
         return argdata
@@ -213,6 +219,9 @@ class NodeWave(Node):
         ### offset?
     ]
 
+    def finddim(self):
+        return Dim.ONE
+    
     def generateexpr(self, ctx):
         param = self.generateimplicit(ctx)
         mindata = self.args.min.generatedata(ctx=ctx)
