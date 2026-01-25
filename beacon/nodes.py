@@ -165,6 +165,9 @@ class NodeSum(Node):
 
     ### constantval if needed...
 
+    def finddim(self):
+        return max([ arg.dim for arg in self.args.arg ])
+        
     def generateexpr(self, ctx):
         argdata = []
         for arg in self.args.arg:
@@ -181,6 +184,9 @@ class NodeMean(Node):
         ArgFormat('arg', Node, multiple=True),
     ]
 
+    def finddim(self):
+        return max([ arg.dim for arg in self.args.arg ])
+        
     def generateexpr(self, ctx):
         argdata = []
         for arg in self.args.arg:
@@ -199,6 +205,9 @@ class NodeMul(Node):
 
     ### constantval if needed...
 
+    def finddim(self):
+        return max([ arg.dim for arg in self.args.arg ])
+        
     def generateexpr(self, ctx):
         argdata = []
         for arg in self.args.arg:
