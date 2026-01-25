@@ -97,6 +97,26 @@ export function render(index) {
 }
         ''')
 
+    def test_timewave(self):
+        src = deindent('''
+        time: wave: sine
+        ''')
+
+        self.compare(src, '''
+var root_scalar
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  var wave_1_val_min = 0  // for root
+  var wave_1_val_hdiff = ((1-wave_1_val_min)*0.5)  // for root
+  root_scalar = ((wave_1_val_min+wave_1_val_hdiff*(1-cos(PI2*clock/1))))
+}
+export function render(index) {
+  var val = root_scalar
+  rgb(val*val, val*val, 0.1)
+}
+        ''')
+
+
 
 if __name__ == '__main__':
     unittest.main()
