@@ -72,7 +72,7 @@ export function beforeRender(delta) {
 }
 export function render(index) {
   var val = root_scalar
-  rgb(val*val, val*val, 0.1)
+  rgb(val*val, val*val, val*val)
 }
         ''')
 
@@ -93,7 +93,7 @@ export function beforeRender(delta) {
 }
 export function render(index) {
   var val = root_pixels[index]
-  rgb(val*val, val*val, 0.1)
+  rgb(val*val, val*val, val*val)
 }
         ''')
 
@@ -112,7 +112,7 @@ export function beforeRender(delta) {
 }
 export function render(index) {
   var val = root_scalar
-  rgb(val*val, val*val, 0.1)
+  rgb(val*val, val*val, val*val)
 }
         ''')
 
@@ -143,7 +143,7 @@ export function beforeRender(delta) {
 }
 export function render(index) {
   var val = root_pixels[index]
-  rgb(val*val, val*val, 0.1)
+  rgb(val*val, val*val, val*val)
 }
         ''')
 
@@ -202,7 +202,7 @@ export function beforeRender(delta) {
 }
 export function render(index) {
   var val = root_pixels[index]
-  rgb(val*val, val*val, 0.1)
+  rgb(val*val, val*val, val*val)
 }
         ''')
 

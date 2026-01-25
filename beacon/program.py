@@ -154,7 +154,7 @@ class Program:
             outfl.write(f'  var val = {id}_scalar\n')
         else:
             outfl.write(f'  var val = {id}_pixels[index]\n')
-        outfl.write('  rgb(val*val, val*val, 0.1)\n')
+        outfl.write('  rgb(val*val, val*val, val*val)\n')
         outfl.write('}\n')
         outfl.write('\n')
         
