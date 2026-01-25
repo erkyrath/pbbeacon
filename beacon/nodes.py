@@ -17,9 +17,6 @@ class NodeConstant(Node):
     def finddim(self):
         return Dim.ONE
     
-    def constantval(self):
-        return self.args.value
-        
     def generateexpr(self, ctx, component=None):
         return str(self.args.value)
 
@@ -168,8 +165,6 @@ class NodeSum(Node):
         ArgFormat('arg', Node, multiple=True),
     ]
 
-    ### constantval if needed...
-
     def finddim(self):
         return max([ arg.dim for arg in self.args.arg ])
         
@@ -207,8 +202,6 @@ class NodeMul(Node):
     argformat = [
         ArgFormat('arg', Node, multiple=True),
     ]
-
-    ### constantval if needed...
 
     def finddim(self):
         return max([ arg.dim for arg in self.args.arg ])
