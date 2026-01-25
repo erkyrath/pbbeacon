@@ -47,7 +47,12 @@ class TestCompile(unittest.TestCase):
 
         return compileall(parsetrees, srclines=srclines)
 
-    def compare(self, res, template):
+    def compare(self, src, template):
+        prog = self.compile(src)
+        outfl = StringIO()
+        prog.write(outfl)
+        res = outfl.getvalue()
+        
         res = stripdown(res)
         template = template.strip()
         self.assertEqual(res, template)
@@ -56,13 +61,8 @@ class TestCompile(unittest.TestCase):
         src = deindent('''
         0.5
         ''')
-        
-        prog = self.compile(src)
-        outfl = StringIO()
-        prog.write(outfl)
-        res = outfl.getvalue()
 
-        self.compare(res, '''
+        self.compare(src, '''
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
