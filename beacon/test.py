@@ -25,6 +25,19 @@ def deindent(text):
         newlines.append(val[ indent : ])
     return '\n'.join(newlines) + '\n'
 
+def stripdown(text):
+    lines = text.rstrip().split('\n')
+    newlines = []
+    for val in lines:
+        if not val:
+            continue
+        if val.startswith('//'):
+            continue
+        if val == 'var clock = 0   // seconds':
+            continue
+        newlines.append(val)
+    return '\n'.join(newlines)
+
 class TestCompile(unittest.TestCase):
 
     def compile(self, prog):
@@ -35,7 +48,9 @@ class TestCompile(unittest.TestCase):
         return compileall(parsetrees, srclines=srclines)
 
     def compare(self, res, template):
-        pass
+        res = stripdown(res)
+        template = template.strip()
+        self.assertEqual(res, template)
 
     def test_simple(self):
         src = deindent('''
@@ -51,12 +66,13 @@ class TestCompile(unittest.TestCase):
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
-
 export function render(index) {
   var val = constant_0_scalar
   rgb(val*val, val*val, 0.1)
 }
         ''')
+
+
 
 if __name__ == '__main__':
     unittest.main()
