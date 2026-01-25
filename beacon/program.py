@@ -26,21 +26,42 @@ class Stanza:
             other.after('%s%s = %s' % (indentstr, varname, expr,))
 
     def generatebuffer(self):
-        self.bottomline = self.nod.generateexpr(ctx=self)
+        if self.nod.dim is Dim.ONE:
+            self.bottomline = self.nod.generateexpr(ctx=self)
+        elif self.nod.dim is Dim.THREE:
+            self.bottomline = (
+                self.nod.generateexpr(ctx=self, component='r'),
+                self.nod.generateexpr(ctx=self, component='g'),
+                self.nod.generateexpr(ctx=self, component='b'),
+            )
+        else:
+            raise Exception('bad dim')
 
     def printlines(self, outfl, indent=0):
         indentstr = indent * '  '
         id = self.nod.id
-        if not (self.depend & AxisDep.SPACE):
-            for varname, expr in self.storedvals:
-                outfl.write(f'{indentstr}var {varname} = {expr}  // for {id}\n')
-            outfl.write(f'{indentstr}{id}_scalar = ({self.bottomline})\n')
+        if self.nod.dim is Dim.ONE:
+            if not (self.depend & AxisDep.SPACE):
+                for varname, expr in self.storedvals:
+                    outfl.write(f'{indentstr}var {varname} = {expr}  // for {id}\n')
+                outfl.write(f'{indentstr}{id}_scalar = ({self.bottomline})\n')
+            else:
+                outfl.write(f'{indentstr}for (var ix=0; ix<pixelCount; ix++) {{\n')
+                for varname, expr in self.storedvals:
+                    outfl.write(f'{indentstr}  var {varname} = {expr}  // for {id}\n')
+                outfl.write(f'{indentstr}  {id}_vector[ix] = ({self.bottomline})\n')
+                outfl.write(f'{indentstr}}}\n')
+        elif self.nod.dim is Dim.THREE:
+            if not (self.depend & AxisDep.SPACE):
+                for varname, expr in self.storedvals:
+                    outfl.write(f'{indentstr}var {varname} = {expr}  // for {id}\n')
+                outfl.write(f'{indentstr}{id}_scalar_r = ({self.bottomline[0]})\n')
+                outfl.write(f'{indentstr}{id}_scalar_g = ({self.bottomline[1]})\n')
+                outfl.write(f'{indentstr}{id}_scalar_b = ({self.bottomline[2]})\n')
+            else:
+                raise Exception('bad dim/space') ###
         else:
-            outfl.write(f'{indentstr}for (var ix=0; ix<pixelCount; ix++) {{\n')
-            for varname, expr in self.storedvals:
-                outfl.write(f'{indentstr}  var {varname} = {expr}  // for {id}\n')
-            outfl.write(f'{indentstr}  {id}_vector[ix] = ({self.bottomline})\n')
-            outfl.write(f'{indentstr}}}\n')
+            raise Exception('bad dim')
         for ln in self.afterlines:
             outfl.write(f'{indentstr}{ln}\n')
 
@@ -180,6 +201,8 @@ class Program:
                 outfl.write(f'  var valg = {id}_vector_g[index]\n')
                 outfl.write(f'  var valb = {id}_vector_b[index]\n')
             outfl.write('  rgb(valr*valr, valg*valg, valb*valb)\n')
+        else:
+            raise Exception('bad dim')
         outfl.write('}\n')
         outfl.write('\n')
         

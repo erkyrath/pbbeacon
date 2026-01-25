@@ -179,7 +179,7 @@ class Node:
                 return f'{id}_vector[ix]'
         return self.generateexpr(ctx)
 
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         raise NotImplementedError('generateexpr: %s' % (self.classname,))
     
     def dump(self, indent=0, name=None):

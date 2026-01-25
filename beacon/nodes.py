@@ -38,8 +38,13 @@ class NodeColor(Node):
     def finddim(self):
         return Dim.THREE
     
-    def generateexpr(self, ctx):
-        return '###'
+    def generateexpr(self, ctx, component):
+        if component == 'r':
+            return self.args.value.red
+        if component == 'g':
+            return self.args.value.green
+        if component == 'b':
+            return self.args.value.blue
 
 class NodeQuote(Node):
     classname = 'quote'
