@@ -13,7 +13,7 @@ class Stanza:
         self.timebase = timebase
     
     def store_val(self, nod, key, expr):
-        varname = '%s_val_%s' % (nod.id, key,)
+        varname = f'{nod.id}_val_{key}'
         self.storedvals.append( (varname, expr) )
         return varname
 
