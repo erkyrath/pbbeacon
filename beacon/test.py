@@ -45,7 +45,9 @@ class TestCompile(unittest.TestCase):
         parsetrees, srclines = parselines(fl)
         fl.close()
 
-        return compileall(parsetrees, srclines=srclines)
+        program = compileall(parsetrees, srclines=srclines)
+        program.post()
+        return program
 
     def compare(self, src, template):
         prog = self.compile(src)
@@ -63,11 +65,13 @@ class TestCompile(unittest.TestCase):
         ''')
 
         self.compare(src, '''
+var root_scalar
+root_scalar = (0.5)
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
 export function render(index) {
-  var val = constant_0_scalar
+  var val = root_scalar
   rgb(val*val, val*val, 0.1)
 }
         ''')

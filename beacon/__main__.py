@@ -10,7 +10,9 @@ def parse(filename):
         for term in parsetrees:
             term.dump()
         
-    return compileall(parsetrees, srclines=srclines)
+    program = compileall(parsetrees, srclines=srclines)
+    program.post()
+    return program
 
 
 if __name__ == '__main__':
@@ -27,7 +29,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     program = parse(args.filename)
-    program.post()
     if args.shownodes:
         program.dump()
     
