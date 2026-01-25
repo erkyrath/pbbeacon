@@ -20,7 +20,7 @@ class NodeConstant(Node):
     def constantval(self):
         return self.args.value
         
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         return str(self.args.value)
 
 class NodeColor(Node):
@@ -54,7 +54,7 @@ class NodeQuote(Node):
         ArgFormat('arg', Node),
     ]
 
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         raise Exception('cannot use quote directly')
 
 class NodeTime(Node):
@@ -68,8 +68,8 @@ class NodeTime(Node):
     def finddim(self):
         return self.args.arg.dim
     
-    def generateexpr(self, ctx):
-        argdata = self.args.arg.generatedata(ctx=ctx)
+    def generateexpr(self, ctx, component=None):
+        argdata = self.args.arg.generatedata(ctx=ctx, component=component)
         return argdata
 
 class NodeSpace(Node):
@@ -83,8 +83,8 @@ class NodeSpace(Node):
     def finddim(self):
         return self.args.arg.dim
     
-    def generateexpr(self, ctx):
-        argdata = self.args.arg.generatedata(ctx=ctx)
+    def generateexpr(self, ctx, component=None):
+        argdata = self.args.arg.generatedata(ctx=ctx, component=component)
         return argdata
 
 class NodeLinear(Node):
@@ -99,7 +99,7 @@ class NodeLinear(Node):
     def finddim(self):
         return Dim.ONE
     
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         param = self.generateimplicit(ctx)
         startdata = self.args.start.generatedata(ctx=ctx)
         veldata = self.args.velocity.generatedata(ctx=ctx)
@@ -117,7 +117,7 @@ class NodeRandFlat(Node):
     def finddim(self):
         return Dim.ONE
     
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         # Don't actually use generateimplicit
         mindata = self.args.min.generatedata(ctx=ctx)
         maxdata = self.args.max.generatedata(ctx=ctx)
@@ -137,7 +137,7 @@ class NodeRandNorm(Node):
     def finddim(self):
         return Dim.ONE
     
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         # Don't actually use generateimplicit
         meandata = self.args.mean.generatedata(ctx=ctx)
         stdevdata = self.args.stdev.generatedata(ctx=ctx)
@@ -154,7 +154,7 @@ class NodeClamp(Node):
         ArgFormat('max', Implicit.TIME, default=1),
     ]
 
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         argdata = self.args.arg.generatedata(ctx=ctx)
         mindata = self.args.min.generatedata(ctx=ctx)
         maxdata = self.args.max.generatedata(ctx=ctx)
@@ -173,7 +173,7 @@ class NodeSum(Node):
     def finddim(self):
         return max([ arg.dim for arg in self.args.arg ])
         
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         argdata = []
         for arg in self.args.arg:
             argdata.append(arg.generatedata(ctx=ctx))
@@ -192,7 +192,7 @@ class NodeMean(Node):
     def finddim(self):
         return max([ arg.dim for arg in self.args.arg ])
         
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         argdata = []
         for arg in self.args.arg:
             argdata.append(arg.generatedata(ctx=ctx))
@@ -213,7 +213,7 @@ class NodeMul(Node):
     def finddim(self):
         return max([ arg.dim for arg in self.args.arg ])
         
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         argdata = []
         for arg in self.args.arg:
             argdata.append(arg.generatedata(ctx=ctx))
@@ -236,7 +236,7 @@ class NodeWave(Node):
     def finddim(self):
         return Dim.ONE
     
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         param = self.generateimplicit(ctx)
         mindata = self.args.min.generatedata(ctx=ctx)
         maxdata = self.args.max.generatedata(ctx=ctx)
@@ -334,8 +334,9 @@ class NodePulser(Node):
         if not self.quote_duration:
             outfl.write(f'var {id}_arg_duration = array({maxcount})\n')
     
-    def generateexpr(self, ctx):
+    def generateexpr(self, ctx, component=None):
         assert self.buffered
+        assert component is None
         maxcount = self.args.maxcount
         ctx.after('if (clock >= %s_nextstart && %s_livecount < %d) {' % (self.id, self.id, maxcount,))
         ctx.after('  for (var px=0; px<%d; px++) {' % (maxcount,))

@@ -170,14 +170,15 @@ class Node:
             return '(ix/pixelCount)'
         raise Exception('implicit not set')
 
-    def generatedata(self, ctx):
+    def generatedata(self, ctx, component=None):
         id = self.id
+        ### dim
         if self.buffered:
             if not (self.depend & AxisDep.SPACE):
                 return f'{id}_scalar'
             else:
                 return f'{id}_vector[ix]'
-        return self.generateexpr(ctx)
+        return self.generateexpr(ctx, component=component)
 
     def generateexpr(self, ctx, component=None):
         raise NotImplementedError('generateexpr: %s' % (self.classname,))
