@@ -30,18 +30,19 @@ class Stanza:
 
     def printlines(self, outfl, indent=0):
         indentstr = indent * '  '
+        id = self.nod.id
         if not (self.depend & AxisDep.SPACE):
             for varname, expr in self.storedvals:
-                outfl.write('%svar %s = %s  // for %s\n' % (indentstr, varname, expr, self.nod.id,))
-            outfl.write('%s%s_scalar = (%s)\n' % (indentstr, self.nod.id, self.bottomline,))
+                outfl.write(f'{indentstr}var {varname} = {expr}  // for {id}\n')
+            outfl.write(f'{indentstr}{id}_scalar = ({self.bottomline})\n')
         else:
-            outfl.write('%sfor (var ix=0; ix<pixelCount; ix++) {\n' % (indentstr,))
+            outfl.write(f'{indentstr}for (var ix=0; ix<pixelCount; ix++) {{\n')
             for varname, expr in self.storedvals:
-                outfl.write('%s  var %s = %s  // for %s\n' % (indentstr, varname, expr, self.nod.id,))
-            outfl.write('%s  %s_pixels[ix] = (%s)\n' % (indentstr, self.nod.id, self.bottomline,))
-            outfl.write('%s}\n' % (indentstr,))
+                outfl.write(f'{indentstr}  var {varname} = {expr}  // for {id}\n')
+            outfl.write(f'{indentstr}  {id}_pixels[ix] = ({self.bottomline})\n')
+            outfl.write(f'{indentstr}}}\n')
         for ln in self.afterlines:
-            outfl.write('%s%s\n' % (indentstr, ln,))
+            outfl.write(f'{indentstr}{ln}\n')
 
 class Program:
     def __init__(self, start, defs, srclines=None):
