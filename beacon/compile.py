@@ -167,11 +167,12 @@ class Node:
         raise Exception('implicit not set')
 
     def generatedata(self, ctx):
+        id = self.id
         if self.buffered:
             if not (self.depend & AxisDep.SPACE):
-                return '%s_scalar' % (self.id,)
+                return f'{id}_scalar'
             else:
-                return '%s_pixels[ix]' % (self.id,)
+                return f'{id}_pixels[ix]'
         return self.generateexpr(ctx)
 
     def generateexpr(self, ctx):
