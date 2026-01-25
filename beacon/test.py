@@ -76,6 +76,29 @@ export function render(index) {
 }
         ''')
 
+    def test_color(self):
+        src = deindent('''
+        $0FF
+        ''')
+
+        self.compare(src, '''
+var root_scalar_r
+var root_scalar_g
+var root_scalar_b
+root_scalar_r = (0.0)
+root_scalar_g = (1.0)
+root_scalar_b = (1.0)
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
+export function render(index) {
+  var valr = root_scalar_r
+  var valg = root_scalar_g
+  var valb = root_scalar_b
+  rgb(valr*valr, valg*valg, valb*valb)
+}
+        ''')
+
     def test_spacewave(self):
         src = deindent('''
         wave: sine
