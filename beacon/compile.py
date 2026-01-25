@@ -192,6 +192,7 @@ class Node:
 
 def compileall(trees, srclines=None):
     Node.prepclasses()
+    Node.idcount = 0
     
     roots = []
     defmap = {}
