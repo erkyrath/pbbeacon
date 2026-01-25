@@ -39,7 +39,7 @@ class Stanza:
             outfl.write(f'{indentstr}for (var ix=0; ix<pixelCount; ix++) {{\n')
             for varname, expr in self.storedvals:
                 outfl.write(f'{indentstr}  var {varname} = {expr}  // for {id}\n')
-            outfl.write(f'{indentstr}  {id}_pixels[ix] = ({self.bottomline})\n')
+            outfl.write(f'{indentstr}  {id}_vector[ix] = ({self.bottomline})\n')
             outfl.write(f'{indentstr}}}\n')
         for ln in self.afterlines:
             outfl.write(f'{indentstr}{ln}\n')
@@ -129,7 +129,7 @@ class Program:
             if not (stanza.depend & AxisDep.SPACE):
                 outfl.write(f'var {id}_scalar\n')
             else:
-                outfl.write(f'var {id}_pixels = array(pixelCount)\n')
+                outfl.write(f'var {id}_vector = array(pixelCount)\n')
             stanza.nod.printstaticvars(outfl)
         outfl.write('\n')
 
@@ -155,7 +155,7 @@ class Program:
         if not (self.start.depend & AxisDep.SPACE):
             outfl.write(f'  var val = {id}_scalar\n')
         else:
-            outfl.write(f'  var val = {id}_pixels[index]\n')
+            outfl.write(f'  var val = {id}_vector[index]\n')
         outfl.write('  rgb(val*val, val*val, val*val)\n')
         outfl.write('}\n')
         outfl.write('\n')

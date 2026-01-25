@@ -82,17 +82,17 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_pixels = array(pixelCount)
+var root_vector = array(pixelCount)
 for (var ix=0; ix<pixelCount; ix++) {
   var root_val_min = 0  // for root
   var root_val_hdiff = ((1-root_val_min)*0.5)  // for root
-  root_pixels[ix] = ((root_val_min+root_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))))
+  root_vector[ix] = ((root_val_min+root_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))))
 }
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
 export function render(index) {
-  var val = root_pixels[index]
+  var val = root_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -125,12 +125,12 @@ export function render(index) {
 
         self.compare(src, '''
 var time_6_scalar
-var space_1_pixels = array(pixelCount)
-var root_pixels = array(pixelCount)
+var space_1_vector = array(pixelCount)
+var root_vector = array(pixelCount)
 for (var ix=0; ix<pixelCount; ix++) {
   var wave_2_val_min = 0  // for space_1
   var wave_2_val_diff = (1-wave_2_val_min)  // for space_1
-  space_1_pixels[ix] = ((wave_2_val_min+wave_2_val_diff*(triangle((((ix/pixelCount)-0.5)/1+0.5)))))
+  space_1_vector[ix] = ((wave_2_val_min+wave_2_val_diff*(triangle((((ix/pixelCount)-0.5)/1+0.5)))))
 }
 export function beforeRender(delta) {
   clock += (delta / 1000)
@@ -138,11 +138,11 @@ export function beforeRender(delta) {
   var wave_7_val_diff = (1-wave_7_val_min)  // for time_6
   time_6_scalar = ((wave_7_val_min+wave_7_val_diff*(pow(1-mod(clock/1, 1), 2))))
   for (var ix=0; ix<pixelCount; ix++) {
-    root_pixels[ix] = ((space_1_pixels[ix] + time_6_scalar))
+    root_vector[ix] = ((space_1_vector[ix] + time_6_scalar))
   }
 }
 export function render(index) {
-  var val = root_pixels[index]
+  var val = root_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -158,7 +158,7 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_pixels = array(pixelCount)
+var root_vector = array(pixelCount)
 var root_live = array(4)
 var root_birth = array(4)
 var root_livecount = 0
@@ -166,7 +166,7 @@ var root_nextstart = 0
 export function beforeRender(delta) {
   clock += (delta / 1000)
   for (var ix=0; ix<pixelCount; ix++) {
-    root_pixels[ix] = (0)
+    root_vector[ix] = (0)
   }
   if (clock >= root_nextstart && root_livecount < 4) {
     for (var px=0; px<4; px++) {
@@ -196,12 +196,12 @@ export function beforeRender(delta) {
     for (var ix=minpos; ix<maxpos; ix++) {
       relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
       spaceval = triangle(relpos)
-      root_pixels[ix] += (timeval * spaceval)
+      root_vector[ix] += (timeval * spaceval)
     }
   }
 }
 export function render(index) {
-  var val = root_pixels[index]
+  var val = root_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')

@@ -176,7 +176,7 @@ class Node:
             if not (self.depend & AxisDep.SPACE):
                 return f'{id}_scalar'
             else:
-                return f'{id}_pixels[ix]'
+                return f'{id}_vector[ix]'
         return self.generateexpr(ctx)
 
     def generateexpr(self, ctx):
