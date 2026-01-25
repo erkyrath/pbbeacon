@@ -118,44 +118,44 @@ class Program:
         if outfl is None:
             outfl = sys.stdout
             
-        print('var clock = 0   // seconds')
-        print()
-        print('// stanza buffers:')
+        outfl.write('var clock = 0   // seconds\n')
+        outfl.write('\n')
+        outfl.write('// stanza buffers:\n')
         for stanza in self.stanzas:
             id = stanza.nod.id
             if not (stanza.depend & AxisDep.SPACE):
-                print(f'var {id}_scalar')
+                outfl.write(f'var {id}_scalar\n')
             else:
-                print(f'var {id}_pixels = array(pixelCount)')
+                outfl.write(f'var {id}_pixels = array(pixelCount)\n')
             stanza.nod.printstaticvars()
-        print()
+        outfl.write('\n')
 
-        print('// startup calculations:')
+        outfl.write('// startup calculations:\n')
         for stanza in self.stanzas:
             if not (stanza.depend & AxisDep.TIME):
                 stanza.printlines(indent=0)
-        print()
+        outfl.write('\n')
         
-        print('export function beforeRender(delta) {')
+        outfl.write('export function beforeRender(delta) {\n')
         # delta is ms since last call
         ### we'll want an accuracy hack here
-        print('  clock += (delta / 1000)')
+        outfl.write('  clock += (delta / 1000)\n')
         
         for stanza in self.stanzas:
             if stanza.depend & AxisDep.TIME:
                 stanza.printlines(indent=1)
-        print('}')
-        print()
+        outfl.write('}\n')
+        outfl.write('\n')
 
-        print('export function render(index) {')
+        outfl.write('export function render(index) {\n')
         id = self.start.id
         if not (self.start.depend & AxisDep.SPACE):
-            print(f'  var val = {id}_scalar')
+            outfl.write(f'  var val = {id}_scalar\n')
         else:
-            print(f'  var val = {id}_pixels[index]')
-        print('  rgb(val*val, val*val, 0.1)')
-        print('}')
-        print()
+            outfl.write(f'  var val = {id}_pixels[index]\n')
+        outfl.write('  rgb(val*val, val*val, 0.1)\n')
+        outfl.write('}\n')
+        outfl.write('\n')
         
 
 
