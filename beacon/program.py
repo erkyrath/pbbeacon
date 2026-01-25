@@ -59,7 +59,13 @@ class Stanza:
                 outfl.write(f'{indentstr}{id}_scalar_g = ({self.bottomline[1]})\n')
                 outfl.write(f'{indentstr}{id}_scalar_b = ({self.bottomline[2]})\n')
             else:
-                raise Exception('bad dim/space') ###
+                outfl.write(f'{indentstr}for (var ix=0; ix<pixelCount; ix++) {{\n')
+                for varname, expr in self.storedvals:
+                    outfl.write(f'{indentstr}  var {varname} = {expr}  // for {id}\n')
+                outfl.write(f'{indentstr}  {id}_vector_r[ix] = ({self.bottomline[0]})\n')
+                outfl.write(f'{indentstr}  {id}_vector_g[ix] = ({self.bottomline[1]})\n')
+                outfl.write(f'{indentstr}  {id}_vector_b[ix] = ({self.bottomline[2]})\n')
+                outfl.write(f'{indentstr}}}\n')
         else:
             raise Exception('bad dim')
         for ln in self.afterlines:
