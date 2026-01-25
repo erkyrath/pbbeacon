@@ -162,8 +162,8 @@ class Program:
         outfl.write('}\n')
         outfl.write('\n')
 
-        outfl.write('export function render(index) {\n')
         id = self.start.id
+        outfl.write('export function render(index) {\n')
         if self.start.dim is Dim.ONE:
             if not (self.start.depend & AxisDep.SPACE):
                 outfl.write(f'  var val = {id}_scalar\n')
