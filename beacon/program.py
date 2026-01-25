@@ -128,7 +128,7 @@ class Program:
                 outfl.write(f'var {id}_scalar\n')
             else:
                 outfl.write(f'var {id}_pixels = array(pixelCount)\n')
-            stanza.nod.printstaticvars()
+            stanza.nod.printstaticvars(outfl)
         outfl.write('\n')
 
         outfl.write('// startup calculations:\n')

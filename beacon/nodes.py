@@ -264,18 +264,18 @@ class NodePulser(Node):
         elif isinstance(self.args.duration, NodeConstant):
             self.quote_duration = self.args.duration
     
-    def printstaticvars(self):
+    def printstaticvars(self, outfl):
         maxcount = self.args.maxcount
-        print('var %s_live = array(%d)' % (self.id, maxcount,))
-        print('var %s_birth = array(%d)' % (self.id, maxcount,))
-        print('var %s_livecount = 0' % (self.id,))
-        print('var %s_nextstart = 0' % (self.id,))
+        outfl.write('var %s_live = array(%d)\n' % (self.id, maxcount,))
+        outfl.write('var %s_birth = array(%d)\n' % (self.id, maxcount,))
+        outfl.write('var %s_livecount = 0\n' % (self.id,))
+        outfl.write('var %s_nextstart = 0\n' % (self.id,))
         if not self.quote_pos:
-            print('var %s_arg_pos = array(%d)' % (self.id, maxcount,))
+            outfl.write('var %s_arg_pos = array(%d)\n' % (self.id, maxcount,))
         if not self.quote_width:
-            print('var %s_arg_width = array(%d)' % (self.id, maxcount,))
+            outfl.write('var %s_arg_width = array(%d)\n' % (self.id, maxcount,))
         if not self.quote_duration:
-            print('var %s_arg_duration = array(%d)' % (self.id, maxcount,))
+            outfl.write('var %s_arg_duration = array(%d)\n' % (self.id, maxcount,))
     
     def generateexpr(self, ctx):
         assert self.buffered

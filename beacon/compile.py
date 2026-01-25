@@ -147,7 +147,7 @@ class Node:
     def constantval(self):
         return None
         
-    def printstaticvars(self):
+    def printstaticvars(self, outfl):
         pass
     
     def generateimplicit(self, ctx):
