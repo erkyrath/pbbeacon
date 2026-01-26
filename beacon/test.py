@@ -365,6 +365,131 @@ export function render(index) {
 }
         ''')
 
+    def test_pulser_randpos(self):
+        src = deindent('''
+        pulser:
+          maxcount=4
+          spaceshape=triangle
+          width=0.3
+          timeshape=sawdecay
+          duration=0.2
+          pos=randflat: 0.2, 0.8
+        ''')
+
+        self.compare(src, '''
+var root_vector = array(pixelCount)
+var root_live = array(4)
+var root_birth = array(4)
+var root_livecount = 0
+var root_nextstart = 0
+var root_arg_pos = array(4)
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  for (var ix=0; ix<pixelCount; ix++) {
+    root_vector[ix] = (0)
+  }
+  if (clock >= root_nextstart && root_livecount < 4) {
+    for (var px=0; px<4; px++) {
+      if (!root_live[px]) { break }
+    }
+    if (px < 4) {
+      root_live[px] = 1
+      livecount += 1
+      randflat_3_val_min = 0.2
+      randflat_3_val_diff = (0.8-randflat_3_val_min)
+      root_arg_pos[px] = (random(randflat_3_val_diff)+randflat_3_val_min)
+      root_nextstart = clock + 1
+      root_birth[px] = clock
+    }
+  }
+  for (var px=0; px<4; px++) {
+    if (!root_live[px]) { break }
+    age = clock - root_birth[px]
+    relage = age / 0.2
+    if (relage > 1.0) {
+      root_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    timeval = (1-relage)
+    ppos = root_arg_pos[px]
+    pwidth = 0.3
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = triangle(relpos)
+      root_vector[ix] += (timeval * spaceval)
+    }
+  }
+}
+export function render(index) {
+  var val = root_vector[index]
+  rgb(val*val, val*val, val*val)
+}
+        ''')
+
+    def test_pulser_quoterandpos(self):
+        src = deindent('''
+        pulser:
+          maxcount=4
+          spaceshape=triangle
+          width=0.3
+          timeshape=sawdecay
+          duration=0.2
+          pos=quote:randflat: 0.2, 0.8
+        ''')
+
+        self.compare(src, '''
+var root_vector = array(pixelCount)
+var root_live = array(4)
+var root_birth = array(4)
+var root_livecount = 0
+var root_nextstart = 0
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  for (var ix=0; ix<pixelCount; ix++) {
+    root_vector[ix] = (0)
+  }
+  if (clock >= root_nextstart && root_livecount < 4) {
+    for (var px=0; px<4; px++) {
+      if (!root_live[px]) { break }
+    }
+    if (px < 4) {
+      root_live[px] = 1
+      livecount += 1
+      root_nextstart = clock + 1
+      root_birth[px] = clock
+    }
+  }
+  for (var px=0; px<4; px++) {
+    if (!root_live[px]) { break }
+    age = clock - root_birth[px]
+    relage = age / 0.2
+    if (relage > 1.0) {
+      root_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    timeval = (1-relage)
+    randflat_4_val_min = 0.2
+    randflat_4_val_diff = (0.8-randflat_4_val_min)
+    ppos = (random(randflat_4_val_diff)+randflat_4_val_min)
+    pwidth = 0.3
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = triangle(relpos)
+      root_vector[ix] += (timeval * spaceval)
+    }
+  }
+}
+export function render(index) {
+  var val = root_vector[index]
+  rgb(val*val, val*val, val*val)
+}
+        ''')
 
 
 
