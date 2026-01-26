@@ -170,6 +170,77 @@ export function render(index) {
 }
         ''')
 
+    def test_sumcolor(self):
+        src = deindent('''
+        sum:
+          $F30
+          rgb:
+            r=0.1
+            g=0.2
+            b=time: wave: sine
+          ''')
+
+        self.compare(src, '''
+var color_1_scalar_r
+var color_1_scalar_g
+var color_1_scalar_b
+var root_scalar_r
+var root_scalar_g
+var root_scalar_b
+color_1_scalar_r = (1.0)
+color_1_scalar_g = (0.2)
+color_1_scalar_b = (0.0)
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  var wave_6_val_min = 0  // for root
+  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for root
+  root_scalar_r = ((color_1_scalar_r + 0.1))
+  root_scalar_g = ((color_1_scalar_g + 0.2))
+  root_scalar_b = ((color_1_scalar_b + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
+}
+export function render(index) {
+  var valr = root_scalar_r
+  var valg = root_scalar_g
+  var valb = root_scalar_b
+  rgb(valr*valr, valg*valg, valb*valb)
+}
+        ''')
+
+    def test_sumcolor2(self):
+        src = deindent('''
+        sum:
+          rgb:
+            r=time: wave: triangle
+            g=0.5
+            b=0.5
+          rgb:
+            r=0.1
+            g=0.2
+            b=time: wave: sine
+          ''')
+
+        self.compare(src, '''
+var root_scalar_r
+var root_scalar_g
+var root_scalar_b
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  var wave_3_val_min = 0  // for root
+  var wave_3_val_diff = (1-wave_3_val_min)  // for root
+  var wave_13_val_min = 0  // for root
+  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for root
+  root_scalar_r = (((wave_3_val_min+wave_3_val_diff*(triangle(clock/1))) + 0.1))
+  root_scalar_g = ((0.5 + 0.2))
+  root_scalar_b = ((0.5 + (wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*clock/1)))))
+}
+export function render(index) {
+  var valr = root_scalar_r
+  var valg = root_scalar_g
+  var valb = root_scalar_b
+  rgb(valr*valr, valg*valg, valb*valb)
+}
+        ''')
+
     def test_pulser_decayinplace(self):
         src = deindent('''
         pulser:
