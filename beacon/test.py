@@ -181,22 +181,16 @@ export function render(index) {
           ''')
 
         self.compare(src, '''
-var color_1_scalar_r
-var color_1_scalar_g
-var color_1_scalar_b
 var root_scalar_r
 var root_scalar_g
 var root_scalar_b
-color_1_scalar_r = (1.0)
-color_1_scalar_g = (0.2)
-color_1_scalar_b = (0.0)
 export function beforeRender(delta) {
   clock += (delta / 1000)
   var wave_6_val_min = 0  // for root
   var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for root
-  root_scalar_r = ((color_1_scalar_r + 0.1))
-  root_scalar_g = ((color_1_scalar_g + 0.2))
-  root_scalar_b = ((color_1_scalar_b + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
+  root_scalar_r = ((1.0 + 0.1))
+  root_scalar_g = ((0.2 + 0.2))
+  root_scalar_b = ((0.0 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
 }
 export function render(index) {
   var valr = root_scalar_r
