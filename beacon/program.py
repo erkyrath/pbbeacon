@@ -141,7 +141,7 @@ class Program:
                         if (arg.depend & AxisDep.SPACE):
                             raise Exception('pulser arg cannot be SPACE')
                         continue
-                    if arg.depend != nod.depend and not isinstance(arg, NodeConstant):
+                    if arg.depend != nod.depend and not arg.isconstant():
                         arg.buffered = True
 
         nod.dim = nod.finddim()
