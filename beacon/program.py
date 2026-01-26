@@ -8,6 +8,7 @@ class Stanza:
         self.nod = nod
         self.depend = nod.depend
         self.storedvals = []
+        self.storedvalkeys = {}
         self.bottomline = None
         self.afterlines = []
         self.timebase = timebase
@@ -15,7 +16,13 @@ class Stanza:
     def store_val(self, nod, key, expr):
         varname = f'{nod.id}_val_{key}'
         self.storedvals.append( (varname, expr) )
+        self.storedvalkeys[varname] = expr
         return varname
+
+    def find_val(self, nod, key):
+        varname = f'{nod.id}_val_{key}'
+        if varname in self.storedvalkeys:
+            return varname
 
     def after(self, ln):
         self.afterlines.append(ln)

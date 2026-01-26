@@ -177,7 +177,10 @@ class NodeSum(Node):
         elif self.dim is Dim.THREE:
             for arg in self.args.arg:
                 if arg.dim is Dim.ONE:
-                    argdata.append(arg.generatedata(ctx=ctx))
+                    argval = ctx.find_val(self, 'common')
+                    if argval is None:
+                        argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                    argdata.append(argval)
                 elif arg.dim is Dim.THREE:
                     argdata.append(arg.generatedata(ctx=ctx, component=component))
                 else:
