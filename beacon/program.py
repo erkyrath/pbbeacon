@@ -98,7 +98,7 @@ class Program:
         self.start.buffered = True
         self.start.id = 'root'
         for key, nod in self.defs.items():
-            if not isinstance(nod, NodeConstant):
+            if not nod.isconstant():
                 nod.buffered = True
 
         for nod in self.nodes:
