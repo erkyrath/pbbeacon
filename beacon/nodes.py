@@ -37,11 +37,12 @@ class NodeColor(Node):
     
     def generateexpr(self, ctx, component):
         if component == 'r':
-            return self.args.value.red
+            return str(self.args.value.red)
         if component == 'g':
-            return self.args.value.green
+            return str(self.args.value.green)
         if component == 'b':
-            return self.args.value.blue
+            return str(self.args.value.blue)
+        raise Exception('color: no component')
 
 class NodeQuote(Node):
     classname = 'quote'
@@ -170,11 +171,25 @@ class NodeSum(Node):
         
     def generateexpr(self, ctx, component=None):
         argdata = []
-        for arg in self.args.arg:
-            argdata.append(arg.generatedata(ctx=ctx))
-        if len(argdata) == 1:
-            return argdata[0]
-        return '(%s)' % (' + '.join(argdata),)
+        if self.dim is Dim.ONE:
+            for arg in self.args.arg:
+                argdata.append(arg.generatedata(ctx=ctx))
+            if len(argdata) == 1:
+                return argdata[0]
+            return '(%s)' % (' + '.join(argdata),)
+        elif self.dim is Dim.THREE:
+            for arg in self.args.arg:
+                if arg.dim is Dim.ONE:
+                    argdata.append(arg.generatedata(ctx=ctx))
+                elif arg.dim is Dim.THREE:
+                    argdata.append(arg.generatedata(ctx=ctx, component=component))
+                else:
+                    raise Exception('bad dim')
+            if len(argdata) == 1:
+                return argdata[0]
+            return '(%s)' % (' + '.join(argdata),)
+        else:
+            raise Exception('bad dim')
     
 class NodeMean(Node):
     classname = 'mean'
