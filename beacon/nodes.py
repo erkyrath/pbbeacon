@@ -58,6 +58,9 @@ class NodeQuote(Node):
         ArgFormat('arg', Node),
     ]
 
+    def finddim(self):
+        return self.args.arg.dim
+    
     def generateexpr(self, ctx, component=None):
         raise Exception('cannot use quote directly')
 
