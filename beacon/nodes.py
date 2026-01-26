@@ -366,17 +366,17 @@ class NodePulser(Node):
         
         if isinstance(self.args.pos, NodeQuote):
             self.quote_pos = self.args.pos.args.arg
-        elif isinstance(self.args.pos, NodeConstant):
+        elif self.args.pos.isconstant():
             self.quote_pos = self.args.pos
 
         if isinstance(self.args.width, NodeQuote):
             self.quote_width = self.args.width.args.arg
-        elif isinstance(self.args.width, NodeConstant):
+        elif self.args.width.isconstant():
             self.quote_width = self.args.width
             
         if isinstance(self.args.duration, NodeQuote):
             self.quote_duration = self.args.duration.args.arg
-        elif isinstance(self.args.duration, NodeConstant):
+        elif self.args.duration.isconstant():
             self.quote_duration = self.args.duration
     
     def finddim(self):
