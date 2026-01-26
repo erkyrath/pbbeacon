@@ -271,6 +271,41 @@ export function render(index) {
 }
         ''')
 
+    def test_sumscalarcolor2(self):
+        src = deindent('''
+        sum:
+          space: wave: sine
+          rgb:
+            r=0.1
+            g=0.2
+            b=space: wave: sine
+          ''')
+
+        self.compare(src, '''
+var root_vector_r = array(pixelCount)
+var root_vector_g = array(pixelCount)
+var root_vector_b = array(pixelCount)
+for (var ix=0; ix<pixelCount; ix++) {
+  var wave_2_val_min = 0  // for root
+  var wave_2_val_hdiff = ((1-wave_2_val_min)*0.5)  // for root
+  var root_val_common = (wave_2_val_min+wave_2_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))  // for root
+  var wave_10_val_min = 0  // for root
+  var wave_10_val_hdiff = ((1-wave_10_val_min)*0.5)  // for root
+  root_vector_r[ix] = ((root_val_common + 0.1))
+  root_vector_g[ix] = ((root_val_common + 0.2))
+  root_vector_b[ix] = ((root_val_common + (wave_10_val_min+wave_10_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))))
+}
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
+export function render(index) {
+  var valr = root_vector_r[index]
+  var valg = root_vector_g[index]
+  var valb = root_vector_b[index]
+  rgb(valr*valr, valg*valg, valb*valb)
+}
+        ''')
+
     def test_pulser_decayinplace(self):
         src = deindent('''
         pulser:
