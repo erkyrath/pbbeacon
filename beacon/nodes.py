@@ -275,6 +275,43 @@ class NodeMul(Node):
             return argdata[0]
         return '(%s)' % (' * '.join(argdata),)
     
+class NodeMax(Node):
+    classname = 'max'
+    
+    usesimplicit = False
+    argformat = [
+        ArgFormat('arg', Node, multiple=True),
+    ]
+
+    def finddim(self):
+        return max([ arg.dim for arg in self.args.arg ])
+        
+    def generateexpr(self, ctx, component=None):
+        argdata = []
+        if self.dim is Dim.ONE:
+            for arg in self.args.arg:
+                argdata.append(arg.generatedata(ctx=ctx))
+        elif self.dim is Dim.THREE:
+            for arg in self.args.arg:
+                if arg.dim is Dim.ONE:
+                    if arg.isconstant():
+                        argval = arg.generatedata(ctx=ctx)
+                    else:
+                        argval = ctx.find_val(self, 'common')
+                        if argval is None:
+                            argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                    argdata.append(argval)
+                elif arg.dim is Dim.THREE:
+                    argdata.append(arg.generatedata(ctx=ctx, component=component))
+                else:
+                    raise Exception('bad dim')
+        else:
+            raise Exception('bad dim')
+        res = argdata[0]
+        for dat in argdata[ 1 : ]:
+            res = f'max({res}, {dat})'
+        return res
+    
 class NodeWave(Node):
     classname = 'wave'
 
@@ -529,6 +566,7 @@ nodeclasses = [
     NodeSum,
     NodeMean,
     NodeMul,
+    NodeMax,
     NodeWave,
     NodeRGB,
     NodeBrightness,
