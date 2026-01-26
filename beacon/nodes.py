@@ -161,6 +161,13 @@ class NodeClamp(Node):
         ArgFormat('max', Implicit.TIME, default=1),
     ]
 
+    def finddim(self):
+        ### could be THREE also
+        assert self.args.arg.dim is Dim.ONE
+        assert self.args.min.dim is Dim.ONE
+        assert self.args.max.dim is Dim.ONE
+        return Dim.ONE
+    
     def generateexpr(self, ctx, component=None):
         argdata = self.args.arg.generatedata(ctx=ctx)
         mindata = self.args.min.generatedata(ctx=ctx)
