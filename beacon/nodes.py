@@ -17,6 +17,9 @@ class NodeConstant(Node):
     def finddim(self):
         return Dim.ONE
     
+    def isconstant(self):
+        return True
+    
     def generateexpr(self, ctx, component=None):
         return str(self.args.value)
 
@@ -34,6 +37,9 @@ class NodeColor(Node):
 
     def finddim(self):
         return Dim.THREE
+    
+    def isconstant(self):
+        return True
     
     def generateexpr(self, ctx, component):
         if component == 'r':
@@ -177,9 +183,12 @@ class NodeSum(Node):
         elif self.dim is Dim.THREE:
             for arg in self.args.arg:
                 if arg.dim is Dim.ONE:
-                    argval = ctx.find_val(self, 'common')
-                    if argval is None:
-                        argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                    if arg.isconstant():
+                        argval = arg.generatedata(ctx=ctx)
+                    else:
+                        argval = ctx.find_val(self, 'common')
+                        if argval is None:
+                            argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
                     argdata.append(argval)
                 elif arg.dim is Dim.THREE:
                     argdata.append(arg.generatedata(ctx=ctx, component=component))

@@ -152,6 +152,9 @@ class Node:
     def finddim(self):
         raise NotImplementedError('finddim: ' + self.__class__.__name__)
 
+    def isconstant(self):
+        return False
+    
     def printstaticvars(self, outfl):
         pass
     
