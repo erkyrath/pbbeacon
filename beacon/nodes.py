@@ -216,8 +216,25 @@ class NodeMean(Node):
         
     def generateexpr(self, ctx, component=None):
         argdata = []
-        for arg in self.args.arg:
-            argdata.append(arg.generatedata(ctx=ctx))
+        if self.dim is Dim.ONE:
+            for arg in self.args.arg:
+                argdata.append(arg.generatedata(ctx=ctx))
+        elif self.dim is Dim.THREE:
+            for arg in self.args.arg:
+                if arg.dim is Dim.ONE:
+                    if arg.isconstant():
+                        argval = arg.generatedata(ctx=ctx)
+                    else:
+                        argval = ctx.find_val(self, 'common')
+                        if argval is None:
+                            argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                    argdata.append(argval)
+                elif arg.dim is Dim.THREE:
+                    argdata.append(arg.generatedata(ctx=ctx, component=component))
+                else:
+                    raise Exception('bad dim')
+        else:
+            raise Exception('bad dim')
         if len(argdata) == 1:
             return argdata[0]
         return '(%s) / %s' % (' + '.join(argdata), len(argdata),)
@@ -235,8 +252,25 @@ class NodeMul(Node):
         
     def generateexpr(self, ctx, component=None):
         argdata = []
-        for arg in self.args.arg:
-            argdata.append(arg.generatedata(ctx=ctx))
+        if self.dim is Dim.ONE:
+            for arg in self.args.arg:
+                argdata.append(arg.generatedata(ctx=ctx))
+        elif self.dim is Dim.THREE:
+            for arg in self.args.arg:
+                if arg.dim is Dim.ONE:
+                    if arg.isconstant():
+                        argval = arg.generatedata(ctx=ctx)
+                    else:
+                        argval = ctx.find_val(self, 'common')
+                        if argval is None:
+                            argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                    argdata.append(argval)
+                elif arg.dim is Dim.THREE:
+                    argdata.append(arg.generatedata(ctx=ctx, component=component))
+                else:
+                    raise Exception('bad dim')
+        else:
+            raise Exception('bad dim')
         if len(argdata) == 1:
             return argdata[0]
         return '(%s)' % (' * '.join(argdata),)
