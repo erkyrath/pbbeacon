@@ -493,6 +493,9 @@ class NodeStop(Node):
         ArgFormat('value', float),
         ArgFormat('color', Color),
     ]
+
+    def finddim(self):
+        raise Exception('stop can only be used in a gradient')
     
 class NodePulser(Node):
     classname = 'pulser'
