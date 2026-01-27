@@ -477,6 +477,9 @@ class NodeGradient(Node):
             if mainval is not None:
                 raise Exception('%s: duplicate arg' % (self.classname,))
             mainval = compile(arg, implicit=self.implicit, defmap=defmap)
+        if not stops:
+            raise Exception('%s: missing stops' % (self.classname,))
+        stops.sort()
         self.args = self.argclass(stops=stops, arg=mainval)
     
     def finddim(self):
@@ -506,7 +509,9 @@ class NodeGradient(Node):
         outfl.write(f'var {id}_grad_b = [{ls}]\n')
         
     def generateexpr(self, ctx, component=None):
-        return '###'
+        id = self.id
+        argdata = self.args.arg.generatedata(ctx=ctx)
+        return f'evalGradient({argdata}, {id}_grad_pos, {id}_grad_{component})'
     
 class NodeStop(Node):
     classname = 'stop'
