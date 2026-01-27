@@ -483,6 +483,28 @@ class NodeGradient(Node):
         assert self.args.arg.dim is Dim.ONE
         return Dim.THREE
 
+    def printstaticvars(self, outfl):
+        id = self.id
+        count = len(self.args.stops)
+        outfl.write(f'var {id}_gradstops = {count}\n')
+        posls = []
+        colrs = []
+        colgs = []
+        colbs = []
+        for pos, col in self.args.stops:
+            posls.append(pos)
+            colrs.append(col.red)
+            colgs.append(col.green)
+            colbs.append(col.blue)
+        ls = ', '.join([ str(val) for val in posls ])
+        outfl.write(f'var {id}_grad_pos = [{ls}]\n')
+        ls = ', '.join([ str(val) for val in colrs ])
+        outfl.write(f'var {id}_grad_r = [{ls}]\n')
+        ls = ', '.join([ str(val) for val in colgs ])
+        outfl.write(f'var {id}_grad_g = [{ls}]\n')
+        ls = ', '.join([ str(val) for val in colbs ])
+        outfl.write(f'var {id}_grad_b = [{ls}]\n')
+        
     def generateexpr(self, ctx, component=None):
         return '###'
     
