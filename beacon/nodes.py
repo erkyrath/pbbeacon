@@ -457,6 +457,24 @@ class NodeBrightness(Node):
         argdatab = self.args.value.generatedata(ctx=ctx, component='b')
         return f'(0.299 * {argdatar} + 0.587 * {argdatag} + 0.114 * {argdatab})'
 
+eval_gradient_func = '''
+function evalGradient(val, posls, colls, count)
+{
+  if (val <= posls[0]) {
+    return colls[0]
+  }
+  if (val >= posls[count-1]) {
+    return colls[count-1]
+  }
+  for (var ix=0; ix<count-1; ix++) {
+    if (val >= posls[ix]) {
+      return mix(colls[ix], colls[ix+1], (val-posls[ix])/(posls[ix+1]-posls[ix]))
+    }
+  }
+  return colls[count-1]
+}
+'''
+    
 class NodeGradient(Node):
     classname = 'gradient'
 
@@ -486,7 +504,9 @@ class NodeGradient(Node):
         assert self.args.arg.dim is Dim.ONE
         return Dim.THREE
 
-    def printstaticvars(self, outfl):
+    def printstaticvars(self, outfl, first=False):
+        if first:
+            outfl.write(eval_gradient_func)
         id = self.id
         posls = []
         colrs = []
@@ -563,7 +583,7 @@ class NodePulser(Node):
     def finddim(self):
         return Dim.ONE
     
-    def printstaticvars(self, outfl):
+    def printstaticvars(self, outfl, first=False):
         id = self.id
         maxcount = self.args.maxcount
         outfl.write(f'var {id}_live = array({maxcount})\n')

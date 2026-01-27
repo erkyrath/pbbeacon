@@ -157,6 +157,8 @@ class Program:
             
         outfl.write('var clock = 0   // seconds\n')
         outfl.write('\n')
+
+        classes = set()
         outfl.write('// stanza buffers:\n')
         for stanza in self.stanzas:
             id = stanza.nod.id
@@ -176,7 +178,9 @@ class Program:
                     outfl.write(f'var {id}_vector_b = array(pixelCount)\n')
             else:
                 raise Exception('bad dim')
-            stanza.nod.printstaticvars(outfl)
+            first = (stanza.nod.classname not in classes)
+            stanza.nod.printstaticvars(outfl, first=first)
+            classes.add(stanza.nod.classname)
         outfl.write('\n')
 
         outfl.write('// startup calculations:\n')
