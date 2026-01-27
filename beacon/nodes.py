@@ -467,7 +467,7 @@ function evalGradient(val, posls, colls, count)
     return colls[count-1]
   }
   for (var ix=0; ix<count-1; ix++) {
-    if (val >= posls[ix]) {
+    if (val < posls[ix+1]) {
       return mix(colls[ix], colls[ix+1], (val-posls[ix])/(posls[ix+1]-posls[ix]))
     }
   }
