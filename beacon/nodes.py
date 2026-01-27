@@ -1,5 +1,5 @@
 from .defs import Implicit, Dim, Color, WaveShape
-from .compile import Node, ArgFormat, wave_sample
+from .compile import Node, ArgFormat, wave_sample, compile
 from .program import Stanza
 
 class NodeConstant(Node):
@@ -457,6 +457,43 @@ class NodeBrightness(Node):
         argdatab = self.args.value.generatedata(ctx=ctx, component='b')
         return f'(0.299 * {argdatar} + 0.587 * {argdatag} + 0.114 * {argdatab})'
 
+class NodeGradient(Node):
+    classname = 'gradient'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('stops', Node, multiple=True),
+        ArgFormat('arg', Node),
+    ]
+
+    def parseargs(self, args, defmap):
+        stops = []
+        mainval = None
+        for arg in args:
+            if arg.tok.val == 'stop':
+                stop = compile(arg, implicit=self.implicit, defmap=defmap)
+                stops.append( (stop.args.value, stop.args.color) )
+                continue
+            if mainval is not None:
+                raise Exception('%s: duplicate arg' % (self.classname,))
+            mainval = compile(arg, implicit=self.implicit, defmap=defmap)
+        self.args = self.argclass(stops=stops, arg=mainval)
+    
+    def finddim(self):
+        assert self.args.arg.dim is Dim.ONE
+        return Dim.THREE
+
+    def generateexpr(self, ctx, component=None):
+        return '###'
+    
+class NodeStop(Node):
+    classname = 'stop'
+    
+    argformat = [
+        ArgFormat('value', float),
+        ArgFormat('color', Color),
+    ]
+    
 class NodePulser(Node):
     classname = 'pulser'
     
@@ -615,6 +652,8 @@ nodeclasses = [
     NodeWave,
     NodeRGB,
     NodeBrightness,
+    NodeGradient,
+    NodeStop,
     NodePulser,
 ]
 
