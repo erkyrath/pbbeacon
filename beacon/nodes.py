@@ -488,8 +488,6 @@ class NodeGradient(Node):
 
     def printstaticvars(self, outfl):
         id = self.id
-        count = len(self.args.stops)
-        outfl.write(f'var {id}_gradstops = {count}\n')
         posls = []
         colrs = []
         colgs = []
@@ -510,8 +508,9 @@ class NodeGradient(Node):
         
     def generateexpr(self, ctx, component=None):
         id = self.id
+        count = len(self.args.stops)
         argdata = self.args.arg.generatedata(ctx=ctx)
-        return f'evalGradient({argdata}, {id}_grad_pos, {id}_grad_{component})'
+        return f'evalGradient({argdata}, {id}_grad_pos, {id}_grad_{component}, {count})'
     
 class NodeStop(Node):
     classname = 'stop'
