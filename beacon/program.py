@@ -117,6 +117,7 @@ class Program:
             nod.depend = AxisDep.SPACETIME
             nod.buffered = True
         if isinstance(nod, NodeDecay):
+            nod.depend |= AxisDep.TIME
             nod.buffered = True
 
         subdeps = AxisDep.NONE
