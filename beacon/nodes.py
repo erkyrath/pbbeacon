@@ -542,7 +542,24 @@ class NodeStop(Node):
 
     def finddim(self):
         raise Exception('stop can only be used in a gradient')
+
+
+class NodeDecay(Node):
+    classname = 'decay'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('halflife', float),
+        ArgFormat('arg', Node),
+    ]
     
+    def finddim(self):
+        return self.args.arg.dim
+
+    def generateexpr(self, ctx, component=None):
+        assert self.buffered
+        return '###'
+
 class NodePulser(Node):
     classname = 'pulser'
     
@@ -703,6 +720,7 @@ nodeclasses = [
     NodeBrightness,
     NodeGradient,
     NodeStop,
+    NodeDecay,
     NodePulser,
 ]
 
