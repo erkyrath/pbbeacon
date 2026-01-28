@@ -497,11 +497,6 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var time_9_scalar
-var wave_5_vector = array(pixelCount)
-var root_vector_r = array(pixelCount)
-var root_vector_g = array(pixelCount)
-var root_vector_b = array(pixelCount)
 function evalGradient(val, posls, colls, count)
 {
   if (val <= posls[0]) {
@@ -517,6 +512,11 @@ function evalGradient(val, posls, colls, count)
   }
   return colls[count-1]
 }
+var time_9_scalar
+var wave_5_vector = array(pixelCount)
+var root_vector_r = array(pixelCount)
+var root_vector_g = array(pixelCount)
+var root_vector_b = array(pixelCount)
 var root_grad_pos = [0.0, 0.25, 1.0]
 var root_grad_r = [0.0, 0.0, 1.0]
 var root_grad_g = [0.0, 0.4, 0.8]

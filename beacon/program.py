@@ -86,6 +86,8 @@ class Program:
 
         self.nodes = []
         self.nodeidset = set()
+        self.classes = []
+        self.classset = set()
 
         self.stanzas = []
 
@@ -112,6 +114,10 @@ class Program:
             return
         self.nodes.insert(0, nod)
         self.nodeidset.add(nod.id)
+
+        if nod.classname not in self.classset:
+            self.classes.append(nod.classname)
+            self.classset.add(nod.classname)
 
         if isinstance(nod, NodePulser):
             nod.depend = AxisDep.SPACETIME
@@ -160,6 +166,17 @@ class Program:
             
         outfl.write('var clock = 0   // seconds\n')
         outfl.write('\n')
+
+        first = True
+        for key in self.classes:
+            cla = Node.allclassmap[key]
+            if cla.staticdef:
+                if first:
+                    outfl.write('// class defs:\n')
+                    first = False
+                outfl.write(cla.staticdef)
+        if not first:
+            outfl.write('\n')
 
         outfl.write('// stanza buffers:\n')
         for stanza in self.stanzas:

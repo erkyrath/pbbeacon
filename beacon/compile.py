@@ -49,6 +49,7 @@ class Node:
     argclass = None
 
     usesimplicit = False
+    staticdef = None
 
     allclassmap = {}
 

@@ -478,6 +478,8 @@ function evalGradient(val, posls, colls, count)
 class NodeGradient(Node):
     classname = 'gradient'
 
+    staticdef = eval_gradient_func
+
     usesimplicit = False
     argformat = [
         ArgFormat('stops', Node, multiple=True),
