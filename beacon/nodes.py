@@ -1,4 +1,4 @@
-from .defs import Implicit, Dim, Color, WaveShape
+from .defs import Implicit, Dim, Color, WaveShape, AxisDep
 from .compile import Node, ArgFormat, wave_sample, compile
 from .program import Stanza
 
@@ -560,7 +560,19 @@ class NodeDecay(Node):
         assert self.buffered
         halflife = self.args.halflife
         argdata = self.args.arg.generatedata(ctx=ctx, component=component)
-        return f'max({argdata}, LAST*pow(2, -delta/{1000*halflife}))'
+        id = self.id
+        last = '???'
+        if self.dim is Dim.ONE:
+            if not (self.depend & AxisDep.SPACE):
+                last = f'{id}_scalar'
+            else:
+                last = f'{id}_vector[ix]'
+        elif self.dim is Dim.THREE:
+            if not (self.depend & AxisDep.SPACE):
+                last = f'{id}_scalar_{component}'
+            else:
+                last = f'{id}_vector_{component}[ix]'
+        return f'max({last}*pow(2, -delta/{1000*halflife}), {argdata})'
 
 class NodePulser(Node):
     classname = 'pulser'
