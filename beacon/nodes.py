@@ -558,7 +558,9 @@ class NodeDecay(Node):
 
     def generateexpr(self, ctx, component=None):
         assert self.buffered
-        return '###'
+        halflife = self.args.halflife
+        argdata = self.args.arg.generatedata(ctx=ctx, component=component)
+        return f'max({argdata}, LAST*pow(2, -delta/{1000*halflife}))'
 
 class NodePulser(Node):
     classname = 'pulser'
