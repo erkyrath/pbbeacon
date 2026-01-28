@@ -504,9 +504,7 @@ class NodeGradient(Node):
         assert self.args.arg.dim is Dim.ONE
         return Dim.THREE
 
-    def printstaticvars(self, outfl, first=False):
-        if first:
-            outfl.write(eval_gradient_func)
+    def printstaticvars(self, outfl):
         id = self.id
         posls = []
         colrs = []
@@ -614,7 +612,7 @@ class NodePulser(Node):
     def finddim(self):
         return Dim.ONE
     
-    def printstaticvars(self, outfl, first=False):
+    def printstaticvars(self, outfl):
         id = self.id
         maxcount = self.args.maxcount
         outfl.write(f'var {id}_live = array({maxcount})\n')

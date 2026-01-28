@@ -155,7 +155,7 @@ class Node:
     def isconstant(self):
         return False
     
-    def printstaticvars(self, outfl, first=False):
+    def printstaticvars(self, outfl):
         pass
     
     def generateimplicit(self, ctx):
