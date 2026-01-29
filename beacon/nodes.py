@@ -112,6 +112,35 @@ class NodeLinear(Node):
         veldata = self.args.velocity.generatedata(ctx=ctx)
         return '(%s + %s * %s)' % (startdata, param, veldata,)
 
+class NodeChanging(Node):
+    classname = 'changing'
+
+    usesimplicit = True
+    argformat = [
+        ArgFormat('start', Implicit.TIME),
+        ArgFormat('velocity', Implicit.TIME),
+    ]
+
+    ### args cannot be SPACE
+
+    def finddim(self):
+        return Dim.ONE
+    
+    def printstaticvars(self, outfl, first=False):
+        id = self.id
+        outfl.write(f'var {id}_val_accum = 0\n')
+        
+    def generateexpr(self, ctx, component=None):
+        if self.implicit is Implicit.SPACE:
+            raise Exception('changing cannot be SPACE')
+        id = self.id
+        param = self.generateimplicit(ctx)
+        startdata = self.args.start.generatedata(ctx=ctx)
+        veldata = self.args.velocity.generatedata(ctx=ctx)
+        # hacky: "accum" lines up with our staticvar
+        ctx.store_val(self, 'accum', f'({id}_val_accum + (delta/1000)*{veldata})')
+        return f'({startdata} + {id}_val_accum)'
+
 class NodeRandFlat(Node):
     classname = 'randflat'
 
@@ -719,6 +748,7 @@ nodeclasses = [
     NodeTime,
     NodeSpace,
     NodeLinear,
+    NodeChanging,
     NodeRandFlat,
     NodeRandNorm,
     NodeClamp,
