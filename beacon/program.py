@@ -201,7 +201,7 @@ class Program:
         
         outfl.write('export function beforeRender(delta) {\n')
         # delta is ms since last call
-        ### we'll want an accuracy hack here
+        # we could accumulate the low-end bits, I suppose
         outfl.write('  clock += (delta / 1000)\n')
         
         for stanza in self.stanzas:
