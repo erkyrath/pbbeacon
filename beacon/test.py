@@ -311,11 +311,11 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_vector = array(pixelCount)
 var root_live = array(4)
 var root_birth = array(4)
 var root_livecount = 0
 var root_nextstart = 0
+var root_vector = array(pixelCount)
 export function beforeRender(delta) {
   clock += (delta / 1000)
   for (var ix=0; ix<pixelCount; ix++) {
@@ -371,12 +371,12 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_vector = array(pixelCount)
 var root_live = array(4)
 var root_birth = array(4)
 var root_livecount = 0
 var root_nextstart = 0
 var root_arg_pos = array(4)
+var root_vector = array(pixelCount)
 export function beforeRender(delta) {
   clock += (delta / 1000)
   for (var ix=0; ix<pixelCount; ix++) {
