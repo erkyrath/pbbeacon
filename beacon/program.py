@@ -167,16 +167,11 @@ class Program:
         outfl.write('var clock = 0   // seconds\n')
         outfl.write('\n')
 
-        first = True
-        for key in self.classes:
-            cla = Node.allclassmap[key]
-            if cla.staticdef:
-                if first:
-                    outfl.write('// class defs:\n')
-                    first = False
-                outfl.write(cla.staticdef)
-        if not first:
-            outfl.write('\n')
+        classes = set()
+        for nod in self.nodes:
+            first = (nod.classname in classes)
+            classes.add(nod.classname)
+            stanza.nod.printstaticvars(outfl, first=first)
 
         outfl.write('// stanza buffers:\n')
         for stanza in self.stanzas:
@@ -197,7 +192,6 @@ class Program:
                     outfl.write(f'var {id}_vector_b = array(pixelCount)\n')
             else:
                 raise Exception('bad dim')
-            stanza.nod.printstaticvars(outfl)
         outfl.write('\n')
 
         outfl.write('// startup calculations:\n')
