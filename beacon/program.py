@@ -171,7 +171,7 @@ class Program:
         for nod in self.nodes:
             first = (nod.classname in classes)
             classes.add(nod.classname)
-            stanza.nod.printstaticvars(outfl, first=first)
+            nod.printstaticvars(outfl, first=first)
 
         outfl.write('// stanza buffers:\n')
         for stanza in self.stanzas:
