@@ -169,7 +169,7 @@ class Program:
 
         classes = set()
         for nod in self.nodes:
-            first = (nod.classname in classes)
+            first = (nod.classname not in classes)
             classes.add(nod.classname)
             nod.printstaticvars(outfl, first=first)
 
