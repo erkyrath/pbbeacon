@@ -162,16 +162,14 @@ class NodeClamp(Node):
     ]
 
     def finddim(self):
-        ### could be THREE also
-        assert self.args.arg.dim is Dim.ONE
-        assert self.args.min.dim is Dim.ONE
-        assert self.args.max.dim is Dim.ONE
-        return Dim.ONE
+        assert self.args.arg.dim is self.args.min.dim
+        assert self.args.arg.dim is self.args.max.dim
+        return self.args.arg.dim
     
     def generateexpr(self, ctx, component=None):
-        argdata = self.args.arg.generatedata(ctx=ctx)
-        mindata = self.args.min.generatedata(ctx=ctx)
-        maxdata = self.args.max.generatedata(ctx=ctx)
+        argdata = self.args.arg.generatedata(ctx=ctx, component=component)
+        mindata = self.args.min.generatedata(ctx=ctx, component=component)
+        maxdata = self.args.max.generatedata(ctx=ctx, component=component)
         return 'clamp(%s, %s, %s)' % (argdata, mindata, maxdata,)
 
 class NodeSum(Node):
