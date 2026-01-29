@@ -512,15 +512,15 @@ function evalGradient(val, posls, colls, count)
   }
   return colls[count-1]
 }
+var root_grad_pos = [0.0, 0.25, 1.0]
+var root_grad_r = [0.0, 0.0, 1.0]
+var root_grad_g = [0.0, 0.4, 0.8]
+var root_grad_b = [0.0, 0.0, 1.0]
 var time_9_scalar
 var wave_5_vector = array(pixelCount)
 var root_vector_r = array(pixelCount)
 var root_vector_g = array(pixelCount)
 var root_vector_b = array(pixelCount)
-var root_grad_pos = [0.0, 0.25, 1.0]
-var root_grad_r = [0.0, 0.0, 1.0]
-var root_grad_g = [0.0, 0.4, 0.8]
-var root_grad_b = [0.0, 0.0, 1.0]
 for (var ix=0; ix<pixelCount; ix++) {
   var wave_5_val_min = 0  // for wave_5
   var wave_5_val_hdiff = ((1-wave_5_val_min)*0.5)  // for wave_5
