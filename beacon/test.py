@@ -65,13 +65,13 @@ class TestCompile(unittest.TestCase):
         ''')
 
         self.compare(src, '''
-var root_scalar
-root_scalar = (0.5)
+var constant_0_scalar
+constant_0_scalar = (0.5)
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
 export function render(index) {
-  var val = root_scalar
+  var val = constant_0_scalar
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -82,19 +82,19 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_scalar_r
-var root_scalar_g
-var root_scalar_b
-root_scalar_r = (0.0)
-root_scalar_g = (0.2)
-root_scalar_b = (1.0)
+var color_0_scalar_r
+var color_0_scalar_g
+var color_0_scalar_b
+color_0_scalar_r = (0.0)
+color_0_scalar_g = (0.2)
+color_0_scalar_b = (1.0)
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
 export function render(index) {
-  var valr = root_scalar_r
-  var valg = root_scalar_g
-  var valb = root_scalar_b
+  var valr = color_0_scalar_r
+  var valg = color_0_scalar_g
+  var valb = color_0_scalar_b
   rgb(valr*valr, valg*valg, valb*valb)
 }
         ''')
@@ -105,17 +105,17 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_vector = array(pixelCount)
+var wave_0_vector = array(pixelCount)
 for (var ix=0; ix<pixelCount; ix++) {
-  var root_val_min = 0  // for root
-  var root_val_hdiff = ((1-root_val_min)*0.5)  // for root
-  root_vector[ix] = ((root_val_min+root_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))))
+  var wave_0_val_min = 0  // for wave_0
+  var wave_0_val_hdiff = ((1-wave_0_val_min)*0.5)  // for wave_0
+  wave_0_vector[ix] = ((wave_0_val_min+wave_0_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))))
 }
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
 export function render(index) {
-  var val = root_vector[index]
+  var val = wave_0_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -126,15 +126,15 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_scalar
+var time_0_scalar
 export function beforeRender(delta) {
   clock += (delta / 1000)
-  var wave_1_val_min = 0  // for root
-  var wave_1_val_hdiff = ((1-wave_1_val_min)*0.5)  // for root
-  root_scalar = ((wave_1_val_min+wave_1_val_hdiff*(1-cos(PI2*clock/1))))
+  var wave_1_val_min = 0  // for time_0
+  var wave_1_val_hdiff = ((1-wave_1_val_min)*0.5)  // for time_0
+  time_0_scalar = ((wave_1_val_min+wave_1_val_hdiff*(1-cos(PI2*clock/1))))
 }
 export function render(index) {
-  var val = root_scalar
+  var val = time_0_scalar
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -149,7 +149,7 @@ export function render(index) {
         self.compare(src, '''
 var time_6_scalar
 var space_1_vector = array(pixelCount)
-var root_vector = array(pixelCount)
+var sum_0_vector = array(pixelCount)
 for (var ix=0; ix<pixelCount; ix++) {
   var wave_2_val_min = 0  // for space_1
   var wave_2_val_diff = (1-wave_2_val_min)  // for space_1
@@ -161,11 +161,11 @@ export function beforeRender(delta) {
   var wave_7_val_diff = (1-wave_7_val_min)  // for time_6
   time_6_scalar = ((wave_7_val_min+wave_7_val_diff*(pow(1-mod(clock/1, 1), 2))))
   for (var ix=0; ix<pixelCount; ix++) {
-    root_vector[ix] = ((space_1_vector[ix] + time_6_scalar))
+    sum_0_vector[ix] = ((space_1_vector[ix] + time_6_scalar))
   }
 }
 export function render(index) {
-  var val = root_vector[index]
+  var val = sum_0_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -181,21 +181,21 @@ export function render(index) {
           ''')
 
         self.compare(src, '''
-var root_scalar_r
-var root_scalar_g
-var root_scalar_b
+var sum_0_scalar_r
+var sum_0_scalar_g
+var sum_0_scalar_b
 export function beforeRender(delta) {
   clock += (delta / 1000)
-  var wave_6_val_min = 0  // for root
-  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for root
-  root_scalar_r = ((1.0 + 0.1))
-  root_scalar_g = ((0.2 + 0.2))
-  root_scalar_b = ((0.0 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
+  var wave_6_val_min = 0  // for sum_0
+  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for sum_0
+  sum_0_scalar_r = ((1.0 + 0.1))
+  sum_0_scalar_g = ((0.2 + 0.2))
+  sum_0_scalar_b = ((0.0 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
 }
 export function render(index) {
-  var valr = root_scalar_r
-  var valg = root_scalar_g
-  var valb = root_scalar_b
+  var valr = sum_0_scalar_r
+  var valg = sum_0_scalar_g
+  var valb = sum_0_scalar_b
   rgb(valr*valr, valg*valg, valb*valb)
 }
         ''')
@@ -214,23 +214,23 @@ export function render(index) {
           ''')
 
         self.compare(src, '''
-var root_scalar_r
-var root_scalar_g
-var root_scalar_b
+var sum_0_scalar_r
+var sum_0_scalar_g
+var sum_0_scalar_b
 export function beforeRender(delta) {
   clock += (delta / 1000)
-  var wave_3_val_min = 0  // for root
-  var wave_3_val_diff = (1-wave_3_val_min)  // for root
-  var wave_13_val_min = 0  // for root
-  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for root
-  root_scalar_r = (((wave_3_val_min+wave_3_val_diff*(triangle(clock/1))) + 0.1))
-  root_scalar_g = ((0.5 + 0.2))
-  root_scalar_b = ((0.5 + (wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*clock/1)))))
+  var wave_3_val_min = 0  // for sum_0
+  var wave_3_val_diff = (1-wave_3_val_min)  // for sum_0
+  var wave_13_val_min = 0  // for sum_0
+  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for sum_0
+  sum_0_scalar_r = (((wave_3_val_min+wave_3_val_diff*(triangle(clock/1))) + 0.1))
+  sum_0_scalar_g = ((0.5 + 0.2))
+  sum_0_scalar_b = ((0.5 + (wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*clock/1)))))
 }
 export function render(index) {
-  var valr = root_scalar_r
-  var valg = root_scalar_g
-  var valb = root_scalar_b
+  var valr = sum_0_scalar_r
+  var valg = sum_0_scalar_g
+  var valb = sum_0_scalar_b
   rgb(valr*valr, valg*valg, valb*valb)
 }
         ''')
@@ -246,21 +246,21 @@ export function render(index) {
           ''')
 
         self.compare(src, '''
-var root_scalar_r
-var root_scalar_g
-var root_scalar_b
+var sum_0_scalar_r
+var sum_0_scalar_g
+var sum_0_scalar_b
 export function beforeRender(delta) {
   clock += (delta / 1000)
-  var wave_6_val_min = 0  // for root
-  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for root
-  root_scalar_r = ((0.5 + 0.1))
-  root_scalar_g = ((0.5 + 0.2))
-  root_scalar_b = ((0.5 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
+  var wave_6_val_min = 0  // for sum_0
+  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for sum_0
+  sum_0_scalar_r = ((0.5 + 0.1))
+  sum_0_scalar_g = ((0.5 + 0.2))
+  sum_0_scalar_b = ((0.5 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
 }
 export function render(index) {
-  var valr = root_scalar_r
-  var valg = root_scalar_g
-  var valb = root_scalar_b
+  var valr = sum_0_scalar_r
+  var valg = sum_0_scalar_g
+  var valb = sum_0_scalar_b
   rgb(valr*valr, valg*valg, valb*valb)
 }
         ''')
@@ -276,26 +276,26 @@ export function render(index) {
           ''')
 
         self.compare(src, '''
-var root_vector_r = array(pixelCount)
-var root_vector_g = array(pixelCount)
-var root_vector_b = array(pixelCount)
+var sum_0_vector_r = array(pixelCount)
+var sum_0_vector_g = array(pixelCount)
+var sum_0_vector_b = array(pixelCount)
 for (var ix=0; ix<pixelCount; ix++) {
-  var wave_2_val_min = 0  // for root
-  var wave_2_val_hdiff = ((1-wave_2_val_min)*0.5)  // for root
-  var root_val_common = (wave_2_val_min+wave_2_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))  // for root
-  var wave_10_val_min = 0  // for root
-  var wave_10_val_hdiff = ((1-wave_10_val_min)*0.5)  // for root
-  root_vector_r[ix] = ((root_val_common + 0.1))
-  root_vector_g[ix] = ((root_val_common + 0.2))
-  root_vector_b[ix] = ((root_val_common + (wave_10_val_min+wave_10_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))))
+  var wave_2_val_min = 0  // for sum_0
+  var wave_2_val_hdiff = ((1-wave_2_val_min)*0.5)  // for sum_0
+  var sum_0_val_common = (wave_2_val_min+wave_2_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))  // for sum_0
+  var wave_10_val_min = 0  // for sum_0
+  var wave_10_val_hdiff = ((1-wave_10_val_min)*0.5)  // for sum_0
+  sum_0_vector_r[ix] = ((sum_0_val_common + 0.1))
+  sum_0_vector_g[ix] = ((sum_0_val_common + 0.2))
+  sum_0_vector_b[ix] = ((sum_0_val_common + (wave_10_val_min+wave_10_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))))
 }
 export function beforeRender(delta) {
   clock += (delta / 1000)
 }
 export function render(index) {
-  var valr = root_vector_r[index]
-  var valg = root_vector_g[index]
-  var valb = root_vector_b[index]
+  var valr = sum_0_vector_r[index]
+  var valg = sum_0_vector_g[index]
+  var valb = sum_0_vector_b[index]
   rgb(valr*valr, valg*valg, valb*valb)
 }
         ''')
@@ -311,33 +311,33 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_live = array(4)
-var root_birth = array(4)
-var root_livecount = 0
-var root_nextstart = 0
-var root_vector = array(pixelCount)
+var pulser_0_live = array(4)
+var pulser_0_birth = array(4)
+var pulser_0_livecount = 0
+var pulser_0_nextstart = 0
+var pulser_0_vector = array(pixelCount)
 export function beforeRender(delta) {
   clock += (delta / 1000)
   for (var ix=0; ix<pixelCount; ix++) {
-    root_vector[ix] = (0)
+    pulser_0_vector[ix] = (0)
   }
-  if (clock >= root_nextstart && root_livecount < 4) {
+  if (clock >= pulser_0_nextstart && pulser_0_livecount < 4) {
     for (var px=0; px<4; px++) {
-      if (!root_live[px]) { break }
+      if (!pulser_0_live[px]) { break }
     }
     if (px < 4) {
-      root_live[px] = 1
+      pulser_0_live[px] = 1
       livecount += 1
-      root_nextstart = clock + 1
-      root_birth[px] = clock
+      pulser_0_nextstart = clock + 1
+      pulser_0_birth[px] = clock
     }
   }
   for (var px=0; px<4; px++) {
-    if (!root_live[px]) { break }
-    age = clock - root_birth[px]
+    if (!pulser_0_live[px]) { break }
+    age = clock - pulser_0_birth[px]
     relage = age / 0.2
     if (relage > 1.0) {
-      root_live[px] = 0
+      pulser_0_live[px] = 0
       livecount -= 1
       continue
     }
@@ -349,12 +349,12 @@ export function beforeRender(delta) {
     for (var ix=minpos; ix<maxpos; ix++) {
       relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
       spaceval = triangle(relpos)
-      root_vector[ix] += (timeval * spaceval)
+      pulser_0_vector[ix] += (timeval * spaceval)
     }
   }
 }
 export function render(index) {
-  var val = root_vector[index]
+  var val = pulser_0_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -371,54 +371,54 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_live = array(4)
-var root_birth = array(4)
-var root_livecount = 0
-var root_nextstart = 0
-var root_arg_pos = array(4)
-var root_vector = array(pixelCount)
+var pulser_0_live = array(4)
+var pulser_0_birth = array(4)
+var pulser_0_livecount = 0
+var pulser_0_nextstart = 0
+var pulser_0_arg_pos = array(4)
+var pulser_0_vector = array(pixelCount)
 export function beforeRender(delta) {
   clock += (delta / 1000)
   for (var ix=0; ix<pixelCount; ix++) {
-    root_vector[ix] = (0)
+    pulser_0_vector[ix] = (0)
   }
-  if (clock >= root_nextstart && root_livecount < 4) {
+  if (clock >= pulser_0_nextstart && pulser_0_livecount < 4) {
     for (var px=0; px<4; px++) {
-      if (!root_live[px]) { break }
+      if (!pulser_0_live[px]) { break }
     }
     if (px < 4) {
-      root_live[px] = 1
+      pulser_0_live[px] = 1
       livecount += 1
       randflat_3_val_min = 0.2
       randflat_3_val_diff = (0.8-randflat_3_val_min)
-      root_arg_pos[px] = (random(randflat_3_val_diff)+randflat_3_val_min)
-      root_nextstart = clock + 1
-      root_birth[px] = clock
+      pulser_0_arg_pos[px] = (random(randflat_3_val_diff)+randflat_3_val_min)
+      pulser_0_nextstart = clock + 1
+      pulser_0_birth[px] = clock
     }
   }
   for (var px=0; px<4; px++) {
-    if (!root_live[px]) { break }
-    age = clock - root_birth[px]
+    if (!pulser_0_live[px]) { break }
+    age = clock - pulser_0_birth[px]
     relage = age / 0.2
     if (relage > 1.0) {
-      root_live[px] = 0
+      pulser_0_live[px] = 0
       livecount -= 1
       continue
     }
     timeval = (1-relage)
-    ppos = root_arg_pos[px]
+    ppos = pulser_0_arg_pos[px]
     pwidth = 0.3
     minpos = max(0, pixelCount*(ppos-pwidth/2))
     maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
     for (var ix=minpos; ix<maxpos; ix++) {
       relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
       spaceval = triangle(relpos)
-      root_vector[ix] += (timeval * spaceval)
+      pulser_0_vector[ix] += (timeval * spaceval)
     }
   }
 }
 export function render(index) {
-  var val = root_vector[index]
+  var val = pulser_0_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -435,33 +435,33 @@ export function render(index) {
         ''')
 
         self.compare(src, '''
-var root_live = array(4)
-var root_birth = array(4)
-var root_livecount = 0
-var root_nextstart = 0
-var root_vector = array(pixelCount)
+var pulser_0_live = array(4)
+var pulser_0_birth = array(4)
+var pulser_0_livecount = 0
+var pulser_0_nextstart = 0
+var pulser_0_vector = array(pixelCount)
 export function beforeRender(delta) {
   clock += (delta / 1000)
   for (var ix=0; ix<pixelCount; ix++) {
-    root_vector[ix] = (0)
+    pulser_0_vector[ix] = (0)
   }
-  if (clock >= root_nextstart && root_livecount < 4) {
+  if (clock >= pulser_0_nextstart && pulser_0_livecount < 4) {
     for (var px=0; px<4; px++) {
-      if (!root_live[px]) { break }
+      if (!pulser_0_live[px]) { break }
     }
     if (px < 4) {
-      root_live[px] = 1
+      pulser_0_live[px] = 1
       livecount += 1
-      root_nextstart = clock + 1
-      root_birth[px] = clock
+      pulser_0_nextstart = clock + 1
+      pulser_0_birth[px] = clock
     }
   }
   for (var px=0; px<4; px++) {
-    if (!root_live[px]) { break }
-    age = clock - root_birth[px]
+    if (!pulser_0_live[px]) { break }
+    age = clock - pulser_0_birth[px]
     relage = age / 0.2
     if (relage > 1.0) {
-      root_live[px] = 0
+      pulser_0_live[px] = 0
       livecount -= 1
       continue
     }
@@ -475,12 +475,12 @@ export function beforeRender(delta) {
     for (var ix=minpos; ix<maxpos; ix++) {
       relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
       spaceval = triangle(relpos)
-      root_vector[ix] += (timeval * spaceval)
+      pulser_0_vector[ix] += (timeval * spaceval)
     }
   }
 }
 export function render(index) {
-  var val = root_vector[index]
+  var val = pulser_0_vector[index]
   rgb(val*val, val*val, val*val)
 }
         ''')
@@ -512,15 +512,15 @@ function evalGradient(val, posls, colls, count)
   }
   return colls[count-1]
 }
-var root_grad_pos = [0.0, 0.25, 1.0]
-var root_grad_r = [0.0, 0.0, 1.0]
-var root_grad_g = [0.0, 0.4, 0.8]
-var root_grad_b = [0.0, 0.0, 1.0]
+var gradient_0_grad_pos = [0.0, 0.25, 1.0]
+var gradient_0_grad_r = [0.0, 0.0, 1.0]
+var gradient_0_grad_g = [0.0, 0.4, 0.8]
+var gradient_0_grad_b = [0.0, 0.0, 1.0]
 var time_9_scalar
 var wave_5_vector = array(pixelCount)
-var root_vector_r = array(pixelCount)
-var root_vector_g = array(pixelCount)
-var root_vector_b = array(pixelCount)
+var gradient_0_vector_r = array(pixelCount)
+var gradient_0_vector_g = array(pixelCount)
+var gradient_0_vector_b = array(pixelCount)
 for (var ix=0; ix<pixelCount; ix++) {
   var wave_5_val_min = 0  // for wave_5
   var wave_5_val_hdiff = ((1-wave_5_val_min)*0.5)  // for wave_5
@@ -532,15 +532,15 @@ export function beforeRender(delta) {
   var wave_10_val_hdiff = ((1-wave_10_val_min)*0.5)  // for time_9
   time_9_scalar = ((wave_10_val_min+wave_10_val_hdiff*(1-cos(PI2*clock/1))))
   for (var ix=0; ix<pixelCount; ix++) {
-    root_vector_r[ix] = (evalGradient((wave_5_vector[ix] * time_9_scalar), root_grad_pos, root_grad_r, 3))
-    root_vector_g[ix] = (evalGradient((wave_5_vector[ix] * time_9_scalar), root_grad_pos, root_grad_g, 3))
-    root_vector_b[ix] = (evalGradient((wave_5_vector[ix] * time_9_scalar), root_grad_pos, root_grad_b, 3))
+    gradient_0_vector_r[ix] = (evalGradient((wave_5_vector[ix] * time_9_scalar), gradient_0_grad_pos, gradient_0_grad_r, 3))
+    gradient_0_vector_g[ix] = (evalGradient((wave_5_vector[ix] * time_9_scalar), gradient_0_grad_pos, gradient_0_grad_g, 3))
+    gradient_0_vector_b[ix] = (evalGradient((wave_5_vector[ix] * time_9_scalar), gradient_0_grad_pos, gradient_0_grad_b, 3))
   }
 }
 export function render(index) {
-  var valr = root_vector_r[index]
-  var valg = root_vector_g[index]
-  var valb = root_vector_b[index]
+  var valr = gradient_0_vector_r[index]
+  var valg = gradient_0_vector_g[index]
+  var valb = gradient_0_vector_b[index]
   rgb(valr*valr, valg*valg, valb*valb)
 }
         ''')

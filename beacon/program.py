@@ -98,7 +98,6 @@ class Program:
         self.postiter(self.start)
         assert(self.start is self.nodes[-1])
         self.start.buffered = True
-        self.start.id = 'root'
         for key, nod in self.defs.items():
             if not nod.isconstant():
                 nod.buffered = True
