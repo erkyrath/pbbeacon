@@ -118,6 +118,12 @@ class NodeLinear(Node):
     def finddim(self):
         return Dim.ONE
     
+    def iszpositive(self):
+        return self.args.start.iszpositive() and self.args.velocity.iszpositive()
+    
+    def isznegative(self):
+        return self.args.start.isznegative() and self.args.velocity.isznegative()
+    
     def isnondecreasing(self):
         return self.args.velocity.iszpositive()
 
@@ -143,6 +149,12 @@ class NodeChanging(Node):
 
     def finddim(self):
         return Dim.ONE
+    
+    def iszpositive(self):
+        return self.args.start.iszpositive() and self.args.velocity.iszpositive()
+    
+    def isznegative(self):
+        return self.args.start.isznegative() and self.args.velocity.isznegative()
     
     def isnondecreasing(self):
         return self.args.velocity.iszpositive()
