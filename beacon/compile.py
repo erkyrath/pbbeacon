@@ -154,6 +154,12 @@ class Node:
 
     def isconstant(self):
         return False
+
+    def iszpositive(self):
+        return False
+    
+    def isznegative(self):
+        return False
     
     def isnondecreasing(self):
         return False

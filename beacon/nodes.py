@@ -20,6 +20,12 @@ class NodeConstant(Node):
     def isconstant(self):
         return True
     
+    def iszpositive(self):
+        return (self.args.value >= 0)
+    
+    def isznegative(self):
+        return (self.args.value <= 0)
+    
     def isnondecreasing(self):
         return True
     
