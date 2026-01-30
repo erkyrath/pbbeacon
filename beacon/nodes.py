@@ -20,6 +20,12 @@ class NodeConstant(Node):
     def isconstant(self):
         return True
     
+    def isnondecreasing(self):
+        return True
+    
+    def isnonincreasing(self):
+        return True
+    
     def generateexpr(self, ctx, component=None):
         return str(self.args.value)
 

@@ -155,6 +155,12 @@ class Node:
     def isconstant(self):
         return False
     
+    def isnondecreasing(self):
+        return False
+    
+    def isnonincreasing(self):
+        return False
+    
     def printstaticvars(self, outfl, first=False):
         pass
     
