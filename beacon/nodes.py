@@ -601,6 +601,9 @@ class NodeDecay(Node):
                 last = f'{id}_vector_{component}[ix]'
         return f'max({last}*pow(2, -delta/{1000*halflife}), {argdata})'
 
+### NodePulse?
+### with spaceshape, pos, width
+    
 class NodePulser(Node):
     classname = 'pulser'
     
