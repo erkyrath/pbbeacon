@@ -91,67 +91,13 @@ class TestCompile(unittest.TestCase):
         self.checkfile('constant.pbb')
 
     def test_color(self):
-        src = deindent('''
-        $03F
-        ''')
-
-        self.compare(src, '''
-var color_0_scalar_r
-var color_0_scalar_g
-var color_0_scalar_b
-color_0_scalar_r = (0.0)
-color_0_scalar_g = (0.2)
-color_0_scalar_b = (1.0)
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-}
-export function render(index) {
-  var valr = color_0_scalar_r
-  var valg = color_0_scalar_g
-  var valb = color_0_scalar_b
-  rgb(valr*valr, valg*valg, valb*valb)
-}
-        ''')
+        self.checkfile('color.pbb')
 
     def test_spacewave(self):
-        src = deindent('''
-        wave: sine
-        ''')
-
-        self.compare(src, '''
-var wave_0_vector = array(pixelCount)
-for (var ix=0; ix<pixelCount; ix++) {
-  var wave_0_val_min = 0  // for wave_0
-  var wave_0_val_hdiff = ((1-wave_0_val_min)*0.5)  // for wave_0
-  wave_0_vector[ix] = ((wave_0_val_min+wave_0_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))))
-}
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-}
-export function render(index) {
-  var val = wave_0_vector[index]
-  rgb(val*val, val*val, val*val)
-}
-        ''')
+        self.checkfile('spacewave.pbb')
 
     def test_timewave(self):
-        src = deindent('''
-        time: wave: sine
-        ''')
-
-        self.compare(src, '''
-var time_0_scalar
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-  var wave_1_val_min = 0  // for time_0
-  var wave_1_val_hdiff = ((1-wave_1_val_min)*0.5)  // for time_0
-  time_0_scalar = ((wave_1_val_min+wave_1_val_hdiff*(1-cos(PI2*clock/1))))
-}
-export function render(index) {
-  var val = time_0_scalar
-  rgb(val*val, val*val, val*val)
-}
-        ''')
+        self.checkfile('timewave.pbb')
 
     def test_spacetimewaves(self):
         src = deindent('''
