@@ -210,7 +210,19 @@ class Node:
         dimstr = str(self.dim) if self.dim else '???'
         depstr = axisdepname(self.depend)
         bufstr = ' (BUF)' if self.buffered else ''
-        print(f'{indentstr}{namestr}<{self.id}> ({impstr}:{dimstr}) dep={depstr}{bufstr}')
+        ls = []
+        if self.isconstant():
+            ls.append('const')
+        if self.iszpositive():
+            ls.append('>=0')
+        if self.isznegative():
+            ls.append('<=0')
+        if self.isnondecreasing():
+            ls.append('inc')
+        if self.isnonincreasing():
+            ls.append('dec')
+        flagstr = ' (' + ' '.join(ls) + ')' if ls else ''
+        print(f'{indentstr}{namestr}<{self.id}> ({impstr}:{dimstr}){flagstr} dep={depstr}{bufstr}')
         for argf in self.argformat:
             argls = self.getargls(argf.name, argf.multiple)
             for arg in argls:
