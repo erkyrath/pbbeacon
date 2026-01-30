@@ -1,4 +1,5 @@
 import unittest
+import os.path
 import re
 from io import StringIO
 
@@ -33,12 +34,39 @@ def stripdown(text):
             continue
         if val.startswith('//'):
             continue
-        if val == 'var clock = 0   // seconds':
-            continue
         newlines.append(val)
     return '\n'.join(newlines)
 
 class TestCompile(unittest.TestCase):
+
+    def checkfile(self, filename):
+        path = os.path.join(os.path.dirname(__file__), 'testfiles', filename)
+        
+        srcls = []
+        resls = []
+        
+        fl = open(path)
+        for ln in fl.readlines():
+            ln = ln.rstrip()
+            if ln.startswith('///'):
+                srcls.append(ln[ 3 : ])
+            elif ln.startswith('//') or not ln:
+                pass
+            else:
+                resls.append(ln)
+        fl.close()
+
+        res = '\n'.join(resls)
+        src = deindent('\n'.join(srcls))
+
+        program = self.compile(src)
+
+        outfl = StringIO()
+        program.write(outfl)
+        output = stripdown(outfl.getvalue())
+
+        self.assertEqual(output, res)
+        
 
     def compile(self, src):
         fl = StringIO(src)
@@ -60,21 +88,7 @@ class TestCompile(unittest.TestCase):
         self.assertEqual(res, template)
 
     def test_constant(self):
-        src = deindent('''
-        0.5
-        ''')
-
-        self.compare(src, '''
-var constant_0_scalar
-constant_0_scalar = (0.5)
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-}
-export function render(index) {
-  var val = constant_0_scalar
-  rgb(val*val, val*val, val*val)
-}
-        ''')
+        self.checkfile('constant.pbb')
 
     def test_color(self):
         src = deindent('''
