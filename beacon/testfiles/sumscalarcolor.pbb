@@ -1,0 +1,25 @@
+/// sum:
+///   0.5
+///   rgb:
+///     r=0.1
+///     g=0.2
+///     b=time: wave: sine
+
+var clock = 0   // seconds
+var sum_0_scalar_r
+var sum_0_scalar_g
+var sum_0_scalar_b
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  var wave_6_val_min = 0  // for sum_0
+  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for sum_0
+  sum_0_scalar_r = ((0.5 + 0.1))
+  sum_0_scalar_g = ((0.5 + 0.2))
+  sum_0_scalar_b = ((0.5 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
+}
+export function render(index) {
+  var valr = sum_0_scalar_r
+  var valg = sum_0_scalar_g
+  var valb = sum_0_scalar_b
+  rgb(valr*valr, valg*valg, valb*valb)
+}

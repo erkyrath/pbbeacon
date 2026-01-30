@@ -1,0 +1,26 @@
+/// sum:
+///   space: wave: triangle
+///   time: wave: sqrdecay
+
+var clock = 0   // seconds
+var time_6_scalar
+var space_1_vector = array(pixelCount)
+var sum_0_vector = array(pixelCount)
+for (var ix=0; ix<pixelCount; ix++) {
+  var wave_2_val_min = 0  // for space_1
+  var wave_2_val_diff = (1-wave_2_val_min)  // for space_1
+  space_1_vector[ix] = ((wave_2_val_min+wave_2_val_diff*(triangle((((ix/pixelCount)-0.5)/1+0.5)))))
+}
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  var wave_7_val_min = 0  // for time_6
+  var wave_7_val_diff = (1-wave_7_val_min)  // for time_6
+  time_6_scalar = ((wave_7_val_min+wave_7_val_diff*(pow(1-mod(clock/1, 1), 2))))
+  for (var ix=0; ix<pixelCount; ix++) {
+    sum_0_vector[ix] = ((space_1_vector[ix] + time_6_scalar))
+  }
+}
+export function render(index) {
+  var val = sum_0_vector[index]
+  rgb(val*val, val*val, val*val)
+}

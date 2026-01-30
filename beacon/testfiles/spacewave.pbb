@@ -1,0 +1,16 @@
+/// wave: sine
+
+var clock = 0   // seconds
+var wave_0_vector = array(pixelCount)
+for (var ix=0; ix<pixelCount; ix++) {
+  var wave_0_val_min = 0  // for wave_0
+  var wave_0_val_hdiff = ((1-wave_0_val_min)*0.5)  // for wave_0
+  wave_0_vector[ix] = ((wave_0_val_min+wave_0_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))))
+}
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
+export function render(index) {
+  var val = wave_0_vector[index]
+  rgb(val*val, val*val, val*val)
+}

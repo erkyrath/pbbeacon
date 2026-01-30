@@ -1,0 +1,12 @@
+/// 0.5
+
+var clock = 0   // seconds
+var constant_0_scalar
+constant_0_scalar = (0.5)
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
+export function render(index) {
+  var val = constant_0_scalar
+  rgb(val*val, val*val, val*val)
+}

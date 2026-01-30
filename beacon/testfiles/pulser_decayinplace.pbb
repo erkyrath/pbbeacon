@@ -1,0 +1,54 @@
+/// pulser:
+///   maxcount=4
+///   spaceshape=triangle
+///   width=0.3
+///   timeshape=sawdecay
+///   duration=0.2
+
+var clock = 0   // seconds
+var pulser_0_live = array(4)
+var pulser_0_birth = array(4)
+var pulser_0_livecount = 0
+var pulser_0_nextstart = 0
+var pulser_0_vector = array(pixelCount)
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  for (var ix=0; ix<pixelCount; ix++) {
+    pulser_0_vector[ix] = (0)
+  }
+  if (clock >= pulser_0_nextstart && pulser_0_livecount < 4) {
+    for (var px=0; px<4; px++) {
+      if (!pulser_0_live[px]) { break }
+    }
+    if (px < 4) {
+      pulser_0_live[px] = 1
+      livecount += 1
+      pulser_0_nextstart = clock + 1
+      pulser_0_birth[px] = clock
+    }
+  }
+  for (var px=0; px<4; px++) {
+    if (!pulser_0_live[px]) { break }
+    age = clock - pulser_0_birth[px]
+    relage = age / 0.2
+    if (relage > 1.0) {
+      pulser_0_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    timeval = (1-relage)
+    ppos = 0.5
+    pwidth = 0.3
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = triangle(relpos)
+      pulser_0_vector[ix] += (timeval * spaceval)
+    }
+  }
+}
+export function render(index) {
+  var val = pulser_0_vector[index]
+  rgb(val*val, val*val, val*val)
+}

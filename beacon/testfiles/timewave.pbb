@@ -1,0 +1,14 @@
+/// time: wave: sine
+
+var clock = 0   // seconds
+var time_0_scalar
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  var wave_1_val_min = 0  // for time_0
+  var wave_1_val_hdiff = ((1-wave_1_val_min)*0.5)  // for time_0
+  time_0_scalar = ((wave_1_val_min+wave_1_val_hdiff*(1-cos(PI2*clock/1))))
+}
+export function render(index) {
+  var val = time_0_scalar
+  rgb(val*val, val*val, val*val)
+}
