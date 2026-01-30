@@ -118,6 +118,12 @@ class NodeLinear(Node):
     def finddim(self):
         return Dim.ONE
     
+    def isnondecreasing(self):
+        return self.args.velocity.iszpositive()
+
+    def isnonincreasing(self):
+        return self.args.velocity.isznegative()
+
     def generateexpr(self, ctx, component=None):
         param = self.generateimplicit(ctx)
         startdata = self.args.start.generatedata(ctx=ctx)
@@ -138,6 +144,12 @@ class NodeChanging(Node):
     def finddim(self):
         return Dim.ONE
     
+    def isnondecreasing(self):
+        return self.args.velocity.iszpositive()
+
+    def isnonincreasing(self):
+        return self.args.velocity.isznegative()
+
     def printstaticvars(self, outfl, first=False):
         id = self.id
         outfl.write(f'var {id}_val_accum = 0\n')
@@ -164,6 +176,12 @@ class NodeRandFlat(Node):
 
     def finddim(self):
         return Dim.ONE
+
+    def iszpositive(self):
+        return self.args.min.iszpositive() and self.args.max.iszpositive()
+    
+    def isznegative(self):
+        return self.args.min.isznegative() and self.args.max.isznegative()
     
     def generateexpr(self, ctx, component=None):
         # Don't actually use generateimplicit
