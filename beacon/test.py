@@ -103,6 +103,9 @@ class TestCompile(unittest.TestCase):
     def test_sumscalarcolor2(self):
         self.checkfile('sumscalarcolor2.pbb')
         
+    def test_pulser_decayinplace(self):
+        self.checkfile('pulser_decayinplace.pbb')
+        
     def test_pulser_randpos(self):
         self.checkfile('pulser_randpos.pbb')
         
