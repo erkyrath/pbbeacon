@@ -439,6 +439,12 @@ class NodeWave(Node):
 
     def finddim(self):
         return Dim.ONE
+
+    def iszpositive(self):
+        return self.args.min.iszpositive() and self.args.max.iszpositive()
+    
+    def isznegative(self):
+        return self.args.min.isznegative() and self.args.max.isznegative()
     
     def generateexpr(self, ctx, component=None):
         param = self.generateimplicit(ctx)
