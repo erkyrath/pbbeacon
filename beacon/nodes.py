@@ -277,7 +277,8 @@ class NodeSum(Node):
             raise Exception('bad dim')
         if len(argdata) == 1:
             return argdata[0]
-        return '(%s)' % (' + '.join(argdata),)
+        argls = ' + '.join(argdata)
+        return f'({argls})'
     
 class NodeMean(Node):
     classname = 'mean'
@@ -313,7 +314,8 @@ class NodeMean(Node):
             raise Exception('bad dim')
         if len(argdata) == 1:
             return argdata[0]
-        return '(%s) / %s' % (' + '.join(argdata), len(argdata),)
+        argls = ' + '.join(argdata)
+        return f'({argls}) / {len(argdata)}'
     
 class NodeMul(Node):
     classname = 'mul'
@@ -349,7 +351,8 @@ class NodeMul(Node):
             raise Exception('bad dim')
         if len(argdata) == 1:
             return argdata[0]
-        return '(%s)' % (' * '.join(argdata),)
+        argls = ' * '.join(argdata)
+        return f'({argls})'
     
 class NodeMax(Node):
     classname = 'max'
