@@ -118,6 +118,9 @@ class TestCompile(unittest.TestCase):
     def test_gradient(self):
         self.checkfile('gradient.pbb')
         
+    def test_sumgradient(self):
+        self.checkfile('sumgradient.pbb')
+        
 
 if __name__ == '__main__':
     unittest.main()
