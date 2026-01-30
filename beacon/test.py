@@ -100,166 +100,20 @@ class TestCompile(unittest.TestCase):
         self.checkfile('timewave.pbb')
 
     def test_spacetimewaves(self):
-        src = deindent('''
-        sum:
-          space: wave: triangle
-          time: wave: sqrdecay
-        ''')
-
-        self.compare(src, '''
-var time_6_scalar
-var space_1_vector = array(pixelCount)
-var sum_0_vector = array(pixelCount)
-for (var ix=0; ix<pixelCount; ix++) {
-  var wave_2_val_min = 0  // for space_1
-  var wave_2_val_diff = (1-wave_2_val_min)  // for space_1
-  space_1_vector[ix] = ((wave_2_val_min+wave_2_val_diff*(triangle((((ix/pixelCount)-0.5)/1+0.5)))))
-}
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-  var wave_7_val_min = 0  // for time_6
-  var wave_7_val_diff = (1-wave_7_val_min)  // for time_6
-  time_6_scalar = ((wave_7_val_min+wave_7_val_diff*(pow(1-mod(clock/1, 1), 2))))
-  for (var ix=0; ix<pixelCount; ix++) {
-    sum_0_vector[ix] = ((space_1_vector[ix] + time_6_scalar))
-  }
-}
-export function render(index) {
-  var val = sum_0_vector[index]
-  rgb(val*val, val*val, val*val)
-}
-        ''')
+        self.checkfile('spacetimewaves.pbb')
 
     def test_sumcolor(self):
-        src = deindent('''
-        sum:
-          $F30
-          rgb:
-            r=0.1
-            g=0.2
-            b=time: wave: sine
-          ''')
-
-        self.compare(src, '''
-var sum_0_scalar_r
-var sum_0_scalar_g
-var sum_0_scalar_b
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-  var wave_6_val_min = 0  // for sum_0
-  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for sum_0
-  sum_0_scalar_r = ((1.0 + 0.1))
-  sum_0_scalar_g = ((0.2 + 0.2))
-  sum_0_scalar_b = ((0.0 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
-}
-export function render(index) {
-  var valr = sum_0_scalar_r
-  var valg = sum_0_scalar_g
-  var valb = sum_0_scalar_b
-  rgb(valr*valr, valg*valg, valb*valb)
-}
-        ''')
+        self.checkfile('sumcolor.pbb')
 
     def test_sumcolor2(self):
-        src = deindent('''
-        sum:
-          rgb:
-            r=time: wave: triangle
-            g=0.5
-            b=0.5
-          rgb:
-            r=0.1
-            g=0.2
-            b=time: wave: sine
-          ''')
-
-        self.compare(src, '''
-var sum_0_scalar_r
-var sum_0_scalar_g
-var sum_0_scalar_b
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-  var wave_3_val_min = 0  // for sum_0
-  var wave_3_val_diff = (1-wave_3_val_min)  // for sum_0
-  var wave_13_val_min = 0  // for sum_0
-  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for sum_0
-  sum_0_scalar_r = (((wave_3_val_min+wave_3_val_diff*(triangle(clock/1))) + 0.1))
-  sum_0_scalar_g = ((0.5 + 0.2))
-  sum_0_scalar_b = ((0.5 + (wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*clock/1)))))
-}
-export function render(index) {
-  var valr = sum_0_scalar_r
-  var valg = sum_0_scalar_g
-  var valb = sum_0_scalar_b
-  rgb(valr*valr, valg*valg, valb*valb)
-}
-        ''')
+        self.checkfile('sumcolor2.pbb')
 
     def test_sumscalarcolor(self):
-        src = deindent('''
-        sum:
-          0.5
-          rgb:
-            r=0.1
-            g=0.2
-            b=time: wave: sine
-          ''')
-
-        self.compare(src, '''
-var sum_0_scalar_r
-var sum_0_scalar_g
-var sum_0_scalar_b
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-  var wave_6_val_min = 0  // for sum_0
-  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for sum_0
-  sum_0_scalar_r = ((0.5 + 0.1))
-  sum_0_scalar_g = ((0.5 + 0.2))
-  sum_0_scalar_b = ((0.5 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
-}
-export function render(index) {
-  var valr = sum_0_scalar_r
-  var valg = sum_0_scalar_g
-  var valb = sum_0_scalar_b
-  rgb(valr*valr, valg*valg, valb*valb)
-}
-        ''')
-
+        self.checkfile('sumscalarcolor.pbb')
+        
     def test_sumscalarcolor2(self):
-        src = deindent('''
-        sum:
-          space: wave: sine
-          rgb:
-            r=0.1
-            g=0.2
-            b=space: wave: sine
-          ''')
-
-        self.compare(src, '''
-var sum_0_vector_r = array(pixelCount)
-var sum_0_vector_g = array(pixelCount)
-var sum_0_vector_b = array(pixelCount)
-for (var ix=0; ix<pixelCount; ix++) {
-  var wave_2_val_min = 0  // for sum_0
-  var wave_2_val_hdiff = ((1-wave_2_val_min)*0.5)  // for sum_0
-  var sum_0_val_common = (wave_2_val_min+wave_2_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))  // for sum_0
-  var wave_10_val_min = 0  // for sum_0
-  var wave_10_val_hdiff = ((1-wave_10_val_min)*0.5)  // for sum_0
-  sum_0_vector_r[ix] = ((sum_0_val_common + 0.1))
-  sum_0_vector_g[ix] = ((sum_0_val_common + 0.2))
-  sum_0_vector_b[ix] = ((sum_0_val_common + (wave_10_val_min+wave_10_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5))))))
-}
-export function beforeRender(delta) {
-  clock += (delta / 1000)
-}
-export function render(index) {
-  var valr = sum_0_vector_r[index]
-  var valg = sum_0_vector_g[index]
-  var valb = sum_0_vector_b[index]
-  rgb(valr*valr, valg*valg, valb*valb)
-}
-        ''')
-
+        self.checkfile('sumscalarcolor2.pbb')
+        
     def test_pulser_decayinplace(self):
         src = deindent('''
         pulser:
