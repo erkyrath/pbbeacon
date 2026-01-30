@@ -109,6 +109,9 @@ class TestCompile(unittest.TestCase):
     def test_pulser_quoterandpos(self):
         self.checkfile('pulser_quoterandpos.pbb')
         
+    def test_pulser_quotelinear(self):
+        self.checkfile('pulser_quotelinear.pbb')
+        
     def test_gradient(self):
         self.checkfile('gradient.pbb')
         
