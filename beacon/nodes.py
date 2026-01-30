@@ -134,7 +134,7 @@ class NodeLinear(Node):
         param = self.generateimplicit(ctx)
         startdata = self.args.start.generatedata(ctx=ctx)
         veldata = self.args.velocity.generatedata(ctx=ctx)
-        return '(%s + %s * %s)' % (startdata, param, veldata,)
+        return f'({startdata} + {param} * {veldata})'
 
 class NodeChanging(Node):
     classname = 'changing'
@@ -200,8 +200,8 @@ class NodeRandFlat(Node):
         mindata = self.args.min.generatedata(ctx=ctx)
         maxdata = self.args.max.generatedata(ctx=ctx)
         minval = ctx.store_val(self, 'min', mindata)
-        diffval = ctx.store_val(self, 'diff', '(%s-%s)' % (maxdata, minval,))
-        return '(random(%s)+%s)' % (diffval, minval,)
+        diffval = ctx.store_val(self, 'diff', f'({maxdata}-{minval})')
+        return f'(random({diffval})+{minval})'
     
 class NodeRandNorm(Node):
     classname = 'randnorm'
@@ -220,7 +220,7 @@ class NodeRandNorm(Node):
         meandata = self.args.mean.generatedata(ctx=ctx)
         stdevdata = self.args.stdev.generatedata(ctx=ctx)
         ### constant-fold the stdev/0.522 part if possible?
-        return '(((random(1)+random(1)+random(1)-1.5)*%s/0.522)+%s)' % (stdevdata, meandata,)
+        return f'(((random(1)+random(1)+random(1)-1.5)*{stdevdata}/0.522)+{meandata})'
     
 class NodeClamp(Node):
     classname = 'clamp'
