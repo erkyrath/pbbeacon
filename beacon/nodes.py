@@ -709,6 +709,7 @@ class NodePulser(Node):
     def generateexpr(self, ctx, component=None):
         assert self.buffered
         assert component is None
+        id = self.id
         maxcount = self.args.maxcount
         ctx.after('if (clock >= %s_nextstart && %s_livecount < %d) {' % (self.id, self.id, maxcount,))
         ctx.after('  for (var px=0; px<%d; px++) {' % (maxcount,))
@@ -755,7 +756,6 @@ class NodePulser(Node):
                 ctx.after('  relage = age / %s' % (durationdata,))
             ctx.after('  if (relage > 1.0) {\n      %s_live[px] = 0\n      livecount -= 1\n      continue\n    }' % (self.id,))
             ctx.after('  timeval = %s' % (wave_sample(self.args.timeshape, 'relage'),))
-        ### minpos, maxpos, and check if pulse has flown off the edge
         
         if not self.quote_pos:
             ctx.after('  ppos = %s_arg_pos[px]' % (self.id,))
@@ -772,7 +772,17 @@ class NodePulser(Node):
             widthdata = self.quote_width.generatedata(ctx=qctx)
             qctx.transfer(ctx, indent=1)
             ctx.after('  pwidth = %s' % (widthdata,))
-            
+
+        if self.quote_pos and not self.quote_pos.isconstant():
+            if self.quote_pos.isnondecreasing():
+                ctx.after('  if (ppos-pwidth/2 > 1.0) {')
+                ctx.after(f'    {id}_live[px] = 0\n      livecount -= 1\n      continue')
+                ctx.after('  }')
+            if self.quote_pos.isnonincreasing():
+                ctx.after('  if (ppos+pwidth/2 < 0.0) {')
+                ctx.after(f'    {id}_live[px] = 0\n      livecount -= 1\n      continue')
+                ctx.after('  }')
+        
         if self.args.spaceshape is WaveShape.FLAT:
             ctx.after('  minpos = 0')
             ctx.after('  maxpos = pixelCount')
