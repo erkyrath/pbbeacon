@@ -35,7 +35,8 @@ if __name__ == '__main__':
     if not args.showterms and not args.shownodes:
         print('// ' + args.filename)
         if args.source:
+            print()
             for ln in program.srclines:
-                print('// ' + ln)
+                print('/// ' + ln)
             print()
         program.write()
