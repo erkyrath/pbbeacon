@@ -1,0 +1,33 @@
+max
+  mul: $F0C
+    pulser
+      maxcount=10
+      interval=randnorm: 1.5, 0.2
+      spaceshape=sqrtooth
+      timeshape=flat
+      pos=quote: linear: -0.2, 0.6
+      width=0.2
+  mul: $F0C
+    pulser
+      maxcount=10
+      interval=randnorm: 1.5, 0.2
+      spaceshape=sqrdecay
+      timeshape=flat
+      pos=quote: linear: 1.2, -0.6
+      width=0.2
+  mul: $F04
+    pulser
+      maxcount=10
+      interval=randnorm: 1.0, 0.15
+      spaceshape=sqrtooth
+      timeshape=flat
+      pos=quote: linear: -0.2, 0.3
+      width=0.1
+  mul: $F04
+    pulser
+      maxcount=10
+      interval=randnorm: 1.0, 0.15
+      spaceshape=sqrdecay
+      timeshape=flat
+      pos=quote: linear: 1.2, -0.3
+      width=0.1

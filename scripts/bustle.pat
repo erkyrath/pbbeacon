@@ -1,0 +1,217 @@
+// scripts/bustle.pbb
+
+/// max
+///   mul: $F0C
+///     pulser
+///       maxcount=10
+///       interval=randnorm: 1.5, 0.2
+///       spaceshape=sqrtooth
+///       timeshape=flat
+///       pos=quote: linear: -0.2, 0.6
+///       width=0.2
+///   mul: $F0C
+///     pulser
+///       maxcount=10
+///       interval=randnorm: 1.5, 0.2
+///       spaceshape=sqrdecay
+///       timeshape=flat
+///       pos=quote: linear: 1.2, -0.6
+///       width=0.2
+///   mul: $F04
+///     pulser
+///       maxcount=10
+///       interval=randnorm: 1.0, 0.15
+///       spaceshape=sqrtooth
+///       timeshape=flat
+///       pos=quote: linear: -0.2, 0.3
+///       width=0.1
+///   mul: $F04
+///     pulser
+///       maxcount=10
+///       interval=randnorm: 1.0, 0.15
+///       spaceshape=sqrdecay
+///       timeshape=flat
+///       pos=quote: linear: 1.2, -0.3
+///       width=0.1
+
+var clock = 0   // seconds
+
+var pulser_39_live = array(10)
+var pulser_39_birth = array(10)
+var pulser_39_livecount = 0
+var pulser_39_nextstart = 0
+var pulser_27_live = array(10)
+var pulser_27_birth = array(10)
+var pulser_27_livecount = 0
+var pulser_27_nextstart = 0
+var pulser_15_live = array(10)
+var pulser_15_birth = array(10)
+var pulser_15_livecount = 0
+var pulser_15_nextstart = 0
+var pulser_3_live = array(10)
+var pulser_3_birth = array(10)
+var pulser_3_livecount = 0
+var pulser_3_nextstart = 0
+// stanza buffers:
+var pulser_39_vector = array(pixelCount)
+var pulser_27_vector = array(pixelCount)
+var pulser_15_vector = array(pixelCount)
+var pulser_3_vector = array(pixelCount)
+var max_0_vector_r = array(pixelCount)
+var max_0_vector_g = array(pixelCount)
+var max_0_vector_b = array(pixelCount)
+
+// startup calculations:
+
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  for (var ix=0; ix<pixelCount; ix++) {
+    pulser_39_vector[ix] = (0)
+  }
+  if (clock >= pulser_39_nextstart && pulser_39_livecount < 10) {
+    for (var px=0; px<10; px++) {
+      if (!pulser_39_live[px]) { break }
+    }
+    if (px < 10) {
+      pulser_39_live[px] = 1
+      livecount += 1
+      pulser_39_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.15/0.522)+1.0)
+      pulser_39_birth[px] = clock
+    }
+  }
+  for (var px=0; px<10; px++) {
+    if (!pulser_39_live[px]) { break }
+    age = clock - pulser_39_birth[px]
+    timeval = 1
+    ppos = (1.2 + age * -0.3)
+    pwidth = 0.1
+    if (ppos+pwidth/2 < 0.0) {
+      pulser_39_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = (1-relpos)*(1-relpos)
+      pulser_39_vector[ix] += (timeval * spaceval)
+    }
+  }
+  for (var ix=0; ix<pixelCount; ix++) {
+    pulser_27_vector[ix] = (0)
+  }
+  if (clock >= pulser_27_nextstart && pulser_27_livecount < 10) {
+    for (var px=0; px<10; px++) {
+      if (!pulser_27_live[px]) { break }
+    }
+    if (px < 10) {
+      pulser_27_live[px] = 1
+      livecount += 1
+      pulser_27_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.15/0.522)+1.0)
+      pulser_27_birth[px] = clock
+    }
+  }
+  for (var px=0; px<10; px++) {
+    if (!pulser_27_live[px]) { break }
+    age = clock - pulser_27_birth[px]
+    timeval = 1
+    ppos = (-0.2 + age * 0.3)
+    pwidth = 0.1
+    if (ppos-pwidth/2 > 1.0) {
+      pulser_27_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = relpos*relpos
+      pulser_27_vector[ix] += (timeval * spaceval)
+    }
+  }
+  for (var ix=0; ix<pixelCount; ix++) {
+    pulser_15_vector[ix] = (0)
+  }
+  if (clock >= pulser_15_nextstart && pulser_15_livecount < 10) {
+    for (var px=0; px<10; px++) {
+      if (!pulser_15_live[px]) { break }
+    }
+    if (px < 10) {
+      pulser_15_live[px] = 1
+      livecount += 1
+      pulser_15_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.2/0.522)+1.5)
+      pulser_15_birth[px] = clock
+    }
+  }
+  for (var px=0; px<10; px++) {
+    if (!pulser_15_live[px]) { break }
+    age = clock - pulser_15_birth[px]
+    timeval = 1
+    ppos = (1.2 + age * -0.6)
+    pwidth = 0.2
+    if (ppos+pwidth/2 < 0.0) {
+      pulser_15_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = (1-relpos)*(1-relpos)
+      pulser_15_vector[ix] += (timeval * spaceval)
+    }
+  }
+  for (var ix=0; ix<pixelCount; ix++) {
+    pulser_3_vector[ix] = (0)
+  }
+  if (clock >= pulser_3_nextstart && pulser_3_livecount < 10) {
+    for (var px=0; px<10; px++) {
+      if (!pulser_3_live[px]) { break }
+    }
+    if (px < 10) {
+      pulser_3_live[px] = 1
+      livecount += 1
+      pulser_3_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.2/0.522)+1.5)
+      pulser_3_birth[px] = clock
+    }
+  }
+  for (var px=0; px<10; px++) {
+    if (!pulser_3_live[px]) { break }
+    age = clock - pulser_3_birth[px]
+    timeval = 1
+    ppos = (-0.2 + age * 0.6)
+    pwidth = 0.2
+    if (ppos-pwidth/2 > 1.0) {
+      pulser_3_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = relpos*relpos
+      pulser_3_vector[ix] += (timeval * spaceval)
+    }
+  }
+  for (var ix=0; ix<pixelCount; ix++) {
+    var mul_1_val_common = pulser_3_vector[ix]  // for max_0
+    var mul_13_val_common = pulser_15_vector[ix]  // for max_0
+    var mul_25_val_common = pulser_27_vector[ix]  // for max_0
+    var mul_37_val_common = pulser_39_vector[ix]  // for max_0
+    max_0_vector_r[ix] = (max(max(max((1.0 * mul_1_val_common), (1.0 * mul_13_val_common)), (1.0 * mul_25_val_common)), (1.0 * mul_37_val_common)))
+    max_0_vector_g[ix] = (max(max(max((0.0 * mul_1_val_common), (0.0 * mul_13_val_common)), (0.0 * mul_25_val_common)), (0.0 * mul_37_val_common)))
+    max_0_vector_b[ix] = (max(max(max((0.8 * mul_1_val_common), (0.8 * mul_13_val_common)), (0.26666666666666666 * mul_25_val_common)), (0.26666666666666666 * mul_37_val_common)))
+  }
+}
+
+export function render(index) {
+  var valr = max_0_vector_r[index]
+  var valg = max_0_vector_g[index]
+  var valb = max_0_vector_b[index]
+  rgb(valr*valr, valg*valg, valb*valb)
+}
+
