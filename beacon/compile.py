@@ -207,14 +207,19 @@ class Node:
     
     def generatelistas3(self, args, ctx, component=None):
         ls = []
+        count = 0
         for arg in args:
             if arg.dim is Dim.ONE:
+                count += 1
+                comkey = 'common'
+                if count > 1:
+                    comkey += str(count)
                 if arg.isconstant():
                     argval = arg.generatedata(ctx=ctx)
                 else:
-                    argval = ctx.find_val(self, 'common')
+                    argval = ctx.find_val(self, comkey)
                     if argval is None:
-                        argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                        argval = ctx.store_val(self, comkey, arg.generatedata(ctx=ctx))
                 ls.append(argval)
             elif arg.dim is Dim.THREE:
                 ls.append(arg.generatedata(ctx=ctx, component=component))
