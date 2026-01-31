@@ -264,6 +264,22 @@ class NodeLerp(Node):
             arg1data = self.args.arg1.generatedata(ctx=ctx)
             arg2data = self.args.arg2.generatedata(ctx=ctx)
             return f'mix({arg1data}, {arg2data}, {weightdata})'
+        elif self.dim is Dim.THREE:
+            argdata = []
+            for arg in [self.args.arg1, self.args.arg2]:
+                if arg.dim is Dim.ONE:
+                    if arg.isconstant():
+                        argval = arg.generatedata(ctx=ctx)
+                    else:
+                        argval = ctx.find_val(self, 'common')
+                        if argval is None:
+                            argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                    argdata.append(argval)
+                elif arg.dim is Dim.THREE:
+                    argdata.append(arg.generatedata(ctx=ctx, component=component))
+                else:
+                    raise Exception('bad dim')
+            return f'mix({argdata[0]}, {argdata[1]}, {weightdata})'
         else:
             raise Exception('bad dim')
 
@@ -289,6 +305,8 @@ class NodeSum(Node):
                     if arg.isconstant():
                         argval = arg.generatedata(ctx=ctx)
                     else:
+                        ### "common" reuse with three args?
+                        ### should factor this out anyhow
                         argval = ctx.find_val(self, 'common')
                         if argval is None:
                             argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
