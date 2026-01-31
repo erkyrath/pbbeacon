@@ -1,0 +1,32 @@
+drop1=pulser:
+  maxcount = 6
+  interval = randnorm: 1.5, 0.2
+  pos = randflat: 0, 1
+  timeshape = sqrdecay
+  spaceshape = sine
+  width = quote: linear: 0.1, 0.3
+  duration = randflat: 4, 6
+
+
+drop2=pulser:
+  maxcount = 6
+  interval = randnorm: 1.5, 0.2
+  pos = randflat: 0, 1
+  timeshape = sqrdecay
+  spaceshape = sine
+  width = quote: linear: 0.1, 0.3
+  duration = randflat: 4, 6
+
+max
+  mul
+    drop1
+    lerp
+      $F04
+      $FFF
+      drop1
+  mul
+    drop2
+    lerp
+      $F40
+      $FFF
+      drop2

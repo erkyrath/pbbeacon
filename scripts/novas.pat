@@ -1,0 +1,156 @@
+// scripts/novas.pbb
+
+/// drop1=pulser:
+///   maxcount = 6
+///   interval = randnorm: 1.5, 0.2
+///   pos = randflat: 0, 1
+///   timeshape = sqrdecay
+///   spaceshape = sine
+///   width = quote: linear: 0.1, 0.3
+///   duration = randflat: 4, 6
+/// 
+/// 
+/// drop2=pulser:
+///   maxcount = 6
+///   interval = randnorm: 1.5, 0.2
+///   pos = randflat: 0, 1
+///   timeshape = sqrdecay
+///   spaceshape = sine
+///   width = quote: linear: 0.1, 0.3
+///   duration = randflat: 4, 6
+/// 
+/// max
+///   mul
+///     drop1
+///     lerp
+///       $F04
+///       $FFF
+///       drop1
+///   mul
+///     drop2
+///     lerp
+///       $F40
+///       $FFF
+///       drop2
+
+var clock = 0   // seconds
+
+var pulser_14_live = array(6)
+var pulser_14_birth = array(6)
+var pulser_14_livecount = 0
+var pulser_14_nextstart = 0
+var pulser_14_arg_pos = array(6)
+var pulser_14_arg_duration = array(6)
+var pulser_0_live = array(6)
+var pulser_0_birth = array(6)
+var pulser_0_livecount = 0
+var pulser_0_nextstart = 0
+var pulser_0_arg_pos = array(6)
+var pulser_0_arg_duration = array(6)
+// stanza buffers:
+var pulser_14_vector = array(pixelCount)
+var pulser_0_vector = array(pixelCount)
+var max_28_vector_r = array(pixelCount)
+var max_28_vector_g = array(pixelCount)
+var max_28_vector_b = array(pixelCount)
+
+// startup calculations:
+
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+  for (var ix=0; ix<pixelCount; ix++) {
+    pulser_14_vector[ix] = (0)
+  }
+  if (clock >= pulser_14_nextstart && pulser_14_livecount < 6) {
+    for (var px=0; px<6; px++) {
+      if (!pulser_14_live[px]) { break }
+    }
+    if (px < 6) {
+      pulser_14_live[px] = 1
+      livecount += 1
+      randflat_18_val_min = 0.0
+      randflat_18_val_diff = (1.0-randflat_18_val_min)
+      pulser_14_arg_pos[px] = (random(randflat_18_val_diff)+randflat_18_val_min)
+      randflat_25_val_min = 4.0
+      randflat_25_val_diff = (6.0-randflat_25_val_min)
+      pulser_14_arg_duration[px] = (random(randflat_25_val_diff)+randflat_25_val_min)
+      pulser_14_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.2/0.522)+1.5)
+      pulser_14_birth[px] = clock
+    }
+  }
+  for (var px=0; px<6; px++) {
+    if (!pulser_14_live[px]) { break }
+    age = clock - pulser_14_birth[px]
+    relage = age / pulser_14_arg_duration[px]
+    if (relage > 1.0) {
+      pulser_14_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    timeval = (1-relage)*(1-relage)
+    ppos = pulser_14_arg_pos[px]
+    pwidth = (0.1 + age * 0.3)
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = sin(relpos*PI)
+      pulser_14_vector[ix] += (timeval * spaceval)
+    }
+  }
+  for (var ix=0; ix<pixelCount; ix++) {
+    pulser_0_vector[ix] = (0)
+  }
+  if (clock >= pulser_0_nextstart && pulser_0_livecount < 6) {
+    for (var px=0; px<6; px++) {
+      if (!pulser_0_live[px]) { break }
+    }
+    if (px < 6) {
+      pulser_0_live[px] = 1
+      livecount += 1
+      randflat_4_val_min = 0.0
+      randflat_4_val_diff = (1.0-randflat_4_val_min)
+      pulser_0_arg_pos[px] = (random(randflat_4_val_diff)+randflat_4_val_min)
+      randflat_11_val_min = 4.0
+      randflat_11_val_diff = (6.0-randflat_11_val_min)
+      pulser_0_arg_duration[px] = (random(randflat_11_val_diff)+randflat_11_val_min)
+      pulser_0_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.2/0.522)+1.5)
+      pulser_0_birth[px] = clock
+    }
+  }
+  for (var px=0; px<6; px++) {
+    if (!pulser_0_live[px]) { break }
+    age = clock - pulser_0_birth[px]
+    relage = age / pulser_0_arg_duration[px]
+    if (relage > 1.0) {
+      pulser_0_live[px] = 0
+      livecount -= 1
+      continue
+    }
+    timeval = (1-relage)*(1-relage)
+    ppos = pulser_0_arg_pos[px]
+    pwidth = (0.1 + age * 0.3)
+    minpos = max(0, pixelCount*(ppos-pwidth/2))
+    maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
+    for (var ix=minpos; ix<maxpos; ix++) {
+      relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth
+      spaceval = sin(relpos*PI)
+      pulser_0_vector[ix] += (timeval * spaceval)
+    }
+  }
+  for (var ix=0; ix<pixelCount; ix++) {
+    var mul_29_val_common = pulser_0_vector[ix]  // for max_28
+    var mul_33_val_common = pulser_14_vector[ix]  // for max_28
+    max_28_vector_r[ix] = (max((mul_29_val_common * mix(1.0, 1.0, pulser_0_vector[ix])), (mul_33_val_common * mix(1.0, 1.0, pulser_14_vector[ix]))))
+    max_28_vector_g[ix] = (max((mul_29_val_common * mix(0.0, 1.0, pulser_0_vector[ix])), (mul_33_val_common * mix(0.26666666666666666, 1.0, pulser_14_vector[ix]))))
+    max_28_vector_b[ix] = (max((mul_29_val_common * mix(0.26666666666666666, 1.0, pulser_0_vector[ix])), (mul_33_val_common * mix(0.0, 1.0, pulser_14_vector[ix]))))
+  }
+}
+
+export function render(index) {
+  var valr = max_28_vector_r[index]
+  var valg = max_28_vector_g[index]
+  var valb = max_28_vector_b[index]
+  rgb(valr*valr, valg*valg, valb*valb)
+}
+
