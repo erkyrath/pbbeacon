@@ -22,6 +22,8 @@ def wave_sample(shape, var):
             return '(1-%s)*(1-%s)' % (var, var,)
         case WaveShape.TRIANGLE:
             return 'triangle(%s)' % (var,)
+        case WaveShape.TRAPEZOID:
+            return 'min(1, 2*triangle(%s))' % (var,)
         case WaveShape.SINE:
             return 'sin(%s*PI)' % (var,)
         case _:
