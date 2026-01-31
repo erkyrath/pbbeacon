@@ -1,0 +1,19 @@
+gradient
+  stop: 0.0, $000
+  stop: 0.2, $000
+  stop: 0.3, $044
+  stop: 0.5, $0F8
+  stop: 0.7, $046
+  stop: 1.0, $046
+  mul
+    1.5
+    clamp: min=0.0, max=0.6666
+      pulser
+        maxcount=10
+        interval=0.4
+        timeshape=trapezoid
+        spaceshape=sine
+        pos=randflat: 0, 1
+        width=0.2
+        duration=4
+        
