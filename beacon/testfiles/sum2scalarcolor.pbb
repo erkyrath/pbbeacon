@@ -1,0 +1,32 @@
+/// sum:
+///   $369
+///   randflat: 0, 1
+///   randflat: 2, 3
+
+var clock = 0   // seconds
+var sum_0_vector_r = array(pixelCount)
+var sum_0_vector_g = array(pixelCount)
+var sum_0_vector_b = array(pixelCount)
+for (var ix=0; ix<pixelCount; ix++) {
+  var randflat_2_val_min = 0.0  // for sum_0
+  var randflat_2_val_diff = (1.0-randflat_2_val_min)  // for sum_0
+  var sum_0_val_common = (random(randflat_2_val_diff)+randflat_2_val_min)  // for sum_0
+  var randflat_5_val_min = 2.0  // for sum_0
+  var randflat_5_val_diff = (3.0-randflat_5_val_min)  // for sum_0
+  var sum_0_val_common2 = (random(randflat_5_val_diff)+randflat_5_val_min)  // for sum_0
+  sum_0_vector_r[ix] = ((0.2 + sum_0_val_common + sum_0_val_common2))
+  sum_0_vector_g[ix] = ((0.4 + sum_0_val_common + sum_0_val_common2))
+  sum_0_vector_b[ix] = ((0.6 + sum_0_val_common + sum_0_val_common2))
+}
+
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
+
+export function render(index) {
+  var valr = sum_0_vector_r[index]
+  var valg = sum_0_vector_g[index]
+  var valb = sum_0_vector_b[index]
+  rgb(valr*valr, valg*valg, valb*valb)
+}
+
