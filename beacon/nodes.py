@@ -1,5 +1,5 @@
 from .defs import Implicit, Dim, Color, WaveShape, AxisDep
-from .compile import Node, ArgFormat, wave_sample, compile
+from .compile import Node, ArgFormat, wave_sample, compile, find_unquoted_children
 from .program import Stanza
 
 class NodeConstant(Node):
@@ -635,22 +635,6 @@ class NodeDecay(Node):
 ### NodePulse?
 ### with spaceshape, pos, width
 
-def find_unquoted_children(nod, res=None):
-    if res is None:
-        res = []
-    if isinstance(nod, NodeConstant):
-        pass
-    elif not isinstance(nod, NodeQuote):
-        res.append(nod)
-    else:
-        qnod = nod.args.arg
-        for argf in qnod.argformat:
-            argls = qnod.getargls(argf.name, argf.multiple)
-            for arg in argls:
-                if isinstance(arg, Node):
-                    find_unquoted_children(arg, res)
-    return res
-
 class NodePulser(Node):
     classname = 'pulser'
     
@@ -671,22 +655,10 @@ class NodePulser(Node):
         self.quote_width = None
         self.quote_duration = None
 
-        # We treat constant args as quoted because it makes simpler code.
-        
-        if isinstance(self.args.pos, NodeQuote):
-            self.quote_pos = self.args.pos.args.arg
-        elif self.args.pos.isconstant():
-            self.quote_pos = self.args.pos
-
-        if isinstance(self.args.width, NodeQuote):
-            self.quote_width = self.args.width.args.arg
-        elif self.args.width.isconstant():
-            self.quote_width = self.args.width
-            
-        if isinstance(self.args.duration, NodeQuote):
-            self.quote_duration = self.args.duration.args.arg
-        elif self.args.duration.isconstant():
-            self.quote_duration = self.args.duration
+        self.unquotedargs = {}
+        for key in ['pos', 'width', 'duration']:
+            ls = find_unquoted_children(getattr(self.args, key))
+            self.unquotedargs[key] = ls
     
     def finddim(self):
         return Dim.ONE
@@ -698,12 +670,9 @@ class NodePulser(Node):
         outfl.write(f'var {id}_birth = array({maxcount})\n')
         outfl.write(f'var {id}_livecount = 0\n')
         outfl.write(f'var {id}_nextstart = 0\n')
-        if not self.quote_pos:
-            outfl.write(f'var {id}_arg_pos = array({maxcount})\n')
-        if not self.quote_width:
-            outfl.write(f'var {id}_arg_width = array({maxcount})\n')
-        if not self.quote_duration:
-            outfl.write(f'var {id}_arg_duration = array({maxcount})\n')
+        for key in ['pos', 'width', 'duration']:
+            for nod in self.unquotedargs[key]:
+                outfl.write(f'var {id}_{key}_{nod.id} = array({maxcount})\n')
     
     def generateexpr(self, ctx, component=None):
         assert self.buffered
@@ -717,21 +686,21 @@ class NodePulser(Node):
         ctx.after('  if (px < %d) {' % (maxcount,))
         ctx.after('    %s_live[px] = 1' % (self.id,))
         ctx.after('    livecount += 1')
-        if not self.quote_pos:
+        for nod in self.unquotedargs['pos']:
             qctx = Stanza(self)
-            iposdata = self.args.pos.generatedata(ctx=qctx)
+            unqdata = nod.generatedata(ctx=qctx)
             qctx.transfer(ctx, indent=2)
-            ctx.after('    %s_arg_pos[px] = %s' % (self.id, iposdata))
-        if not self.quote_width:
+            ctx.after('    %s_pos_%s[px] = %s' % (self.id, nod.id, unqdata))
+        for nod in self.unquotedargs['width']:
             qctx = Stanza(self)
-            iwidthdata = self.args.width.generatedata(ctx=qctx)
+            unqdata = nod.generatedata(ctx=qctx)
             qctx.transfer(ctx, indent=2)
-            ctx.after('    %s_arg_width[px] = %s' % (self.id, iwidthdata))
-        if not self.quote_duration:
+            ctx.after('    %s_width_%s[px] = %s' % (self.id, nod.id, unqdata))
+        for nod in self.unquotedargs['duration']:
             qctx = Stanza(self)
-            idurationdata = self.args.duration.generatedata(ctx=qctx)
+            unqdata = nod.generatedata(ctx=qctx)
             qctx.transfer(ctx, indent=2)
-            ctx.after('    %s_arg_duration[px] = %s' % (self.id, idurationdata))
+            ctx.after('    %s_duration_%s[px] = %s' % (self.id, nod.id, unqdata))
         qctx = Stanza(self)
         intervaldata = self.args.interval.generatedata(ctx=qctx)
         qctx.transfer(ctx, indent=2)
