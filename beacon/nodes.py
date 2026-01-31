@@ -243,6 +243,30 @@ class NodeClamp(Node):
         maxdata = self.args.max.generatedata(ctx=ctx, component=component)
         return 'clamp(%s, %s, %s)' % (argdata, mindata, maxdata,)
 
+class NodeLerp(Node):
+    classname = 'lerp'
+    
+    usesimplicit = False
+    argformat = [
+        ArgFormat('arg1', Node),
+        ArgFormat('arg2', Node),
+        ArgFormat('weight', Node),
+    ]
+
+    def finddim(self):
+        assert self.args.weight.dim is Dim.ONE
+        assert self.args.arg1.dim is self.args.arg2.dim
+        return self.args.arg1.dim
+    
+    def generateexpr(self, ctx, component=None):
+        weightdata = self.args.weight.generatedata(ctx=ctx)
+        if self.dim is Dim.ONE:
+            arg1data = self.args.arg1.generatedata(ctx=ctx)
+            arg2data = self.args.arg2.generatedata(ctx=ctx)
+            return f'mix({arg1data}, {arg2data}, {weightdata})'
+        else:
+            raise Exception('bad dim')
+
 class NodeSum(Node):
     classname = 'sum'
     
@@ -816,6 +840,7 @@ nodeclasses = [
     NodeRandFlat,
     NodeRandNorm,
     NodeClamp,
+    NodeLerp,
     NodeSum,
     NodeMean,
     NodeMul,
