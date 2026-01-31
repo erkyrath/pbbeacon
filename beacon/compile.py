@@ -205,6 +205,23 @@ class Node:
     def generateexpr(self, ctx, component=None):
         raise NotImplementedError('generateexpr: %s' % (self.classname,))
     
+    def generatelistas3(self, args, ctx, component=None):
+        ls = []
+        for arg in args:
+            if arg.dim is Dim.ONE:
+                if arg.isconstant():
+                    argval = arg.generatedata(ctx=ctx)
+                else:
+                    argval = ctx.find_val(self, 'common')
+                    if argval is None:
+                        argval = ctx.store_val(self, 'common', arg.generatedata(ctx=ctx))
+                ls.append(argval)
+            elif arg.dim is Dim.THREE:
+                ls.append(arg.generatedata(ctx=ctx, component=component))
+            else:
+                raise Exception('bad dim')
+        return ls
+        
     def dump(self, indent=0, name=None):
         indentstr = '  '*indent
         namestr = name+'=' if name else ''
