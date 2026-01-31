@@ -634,7 +634,23 @@ class NodeDecay(Node):
 
 ### NodePulse?
 ### with spaceshape, pos, width
-    
+
+def find_unquoted_children(nod, res=None):
+    if res is None:
+        res = []
+    if isinstance(nod, NodeConstant):
+        pass
+    elif not isinstance(nod, NodeQuote):
+        res.append(nod)
+    else:
+        qnod = nod.args.arg
+        for argf in qnod.argformat:
+            argls = qnod.getargls(argf.name, argf.multiple)
+            for arg in argls:
+                if isinstance(arg, Node):
+                    find_unquoted_children(arg, res)
+    return res
+
 class NodePulser(Node):
     classname = 'pulser'
     
