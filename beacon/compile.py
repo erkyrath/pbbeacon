@@ -135,6 +135,9 @@ class Node:
 
         for argf in self.argformat:
             if argf.name not in map and argf.isoptional:
+                if argf.typ is WaveShape:
+                    map[argf.name] = argf.default
+                    continue
                 if not (isinstance(argf.default, int) or isinstance(argf.default, float)):
                     raise Exception('%s: arg default is not numeric: %s' % (self.classname, argf.name))
                 map[argf.name] = NodeConstant(Implicit.TIME, asnum=argf.default)
