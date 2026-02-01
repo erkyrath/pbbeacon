@@ -1,0 +1,45 @@
+flies1=pulser:
+  maxcount = 8
+  interval = randflat: 0.8, 1.2
+  pos = quote
+    linear:
+      start = randflat: 0, 1
+      velocity = randflat: 0.02, 0.04
+  timeshape = triangle
+  spaceshape = sine
+  width = 0.2
+  duration = 3
+
+flies2=pulser:
+  maxcount = 8
+  interval = randflat: 0.8, 1.2
+  pos = quote
+    linear:
+      start = randflat: 0, 1
+      velocity = randflat: -0.04, -0.02
+  timeshape = triangle
+  spaceshape = sine
+  width = 0.2
+  duration = 3
+
+flies=sum: flies1, flies2
+
+stars=pulser:
+  maxcount = 8
+  interval = 0.25
+  pos = randflat: 0, 1
+  timeshape = triangle
+  spaceshape = sine
+  width = 0.2
+  duration = 1
+
+min
+  sum
+    1
+    mul:
+      clamp: stars, min=0, max=1
+      -0.85
+  gradient:
+    stop: 0, $808
+    stop: 1, $00F
+    flies
