@@ -729,12 +729,14 @@ class NodePulser(Node):
         qctx.transfer(ctx, indent=1)
         ctx.after(f'  pwidth = {widthdata}')
 
-        if False: #### self.quote_pos and not self.quote_pos.isconstant():
-            if self.quote_pos.isnondecreasing():
+        if isinstance(self.args.pos, NodeQuote):
+            quotepos = self.args.pos.args.arg
+            ### This is probably still wrong
+            if quotepos.isnondecreasing():
                 ctx.after('  if (ppos-pwidth/2 > 1.0) {')
                 ctx.after(f'    {id}_live[px] = 0\n      livecount -= 1\n      continue')
                 ctx.after('  }')
-            if self.quote_pos.isnonincreasing():
+            if quotepos.isnonincreasing():
                 ctx.after('  if (ppos+pwidth/2 < 0.0) {')
                 ctx.after(f'    {id}_live[px] = 0\n      livecount -= 1\n      continue')
                 ctx.after('  }')
