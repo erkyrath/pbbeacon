@@ -1,0 +1,36 @@
+flies1=pulser:
+  maxcount = 8
+  interval = randflat: 0.8, 1.2
+  pos = quote
+    linear:
+      start = randflat: 0, 1
+      velocity = randflat: 0.02, 0.04
+  timeshape = triangle
+  spaceshape = sine
+  width = 0.1
+  duration = 3
+
+flies2=pulser:
+  maxcount = 8
+  interval = randflat: 0.8, 1.2
+  pos = quote
+    linear:
+      start = randflat: 0, 1
+      velocity = randflat: -0.04, -0.02
+  timeshape = triangle
+  spaceshape = sine
+  width = 0.1
+  duration = 3
+
+flies=sum: flies1, flies2
+
+max
+  mul:
+    $0F0
+    flies
+  mul:
+    $02C
+    decay:
+      halflife=4
+      flies
+
