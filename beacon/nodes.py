@@ -712,14 +712,10 @@ class NodePulser(Node):
         if self.args.timeshape is WaveShape.FLAT:
             ctx.after('  timeval = 1')
         else:
-            ###
-            if not self.quote_duration:
-                ctx.after('  relage = age / %s_arg_duration[px]' % (self.id,))
-            else:
-                qctx = Stanza(self, timebase='age')
-                durationdata = self.quote_duration.generatedata(ctx=qctx)
-                qctx.transfer(ctx, indent=1)
-                ctx.after('  relage = age / %s' % (durationdata,))
+            qctx = Stanza(self, quoteparent=self, quotekey='duration')
+            durationdata = self.args.duration.generatedata(ctx=qctx)
+            qctx.transfer(ctx, indent=1)
+            ctx.after(f'  relage = age / {durationdata}')
             ctx.after('  if (relage > 1.0) {\n      %s_live[px] = 0\n      livecount -= 1\n      continue\n    }' % (self.id,))
             ctx.after('  timeval = %s' % (wave_sample(self.args.timeshape, 'relage'),))
 
