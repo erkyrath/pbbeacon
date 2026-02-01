@@ -25,18 +25,18 @@ function evalGradient(val, posls, colls, count)
   }
   return colls[count-1]
 }
-var gradient_9_grad_pos = [0.0, 1.0]
-var gradient_9_grad_r = [0.0, 0.0]
-var gradient_9_grad_g = [0.2, 0.8]
-var gradient_9_grad_b = [0.2, 0.2]
+var gradient_10_grad_pos = [0.0, 1.0]
+var gradient_10_grad_r = [0.0, 0.0]
+var gradient_10_grad_g = [0.2, 0.8]
+var gradient_10_grad_b = [0.2, 0.2]
 var gradient_1_grad_pos = [0.0, 1.0]
 var gradient_1_grad_r = [0.2, 0.8]
 var gradient_1_grad_g = [0.0, 0.0]
 var gradient_1_grad_b = [0.0, 0.0]
 
-var gradient_9_vector_r = array(pixelCount)
-var gradient_9_vector_g = array(pixelCount)
-var gradient_9_vector_b = array(pixelCount)
+var gradient_10_vector_r = array(pixelCount)
+var gradient_10_vector_g = array(pixelCount)
+var gradient_10_vector_b = array(pixelCount)
 var gradient_1_scalar_r
 var gradient_1_scalar_g
 var gradient_1_scalar_b
@@ -45,15 +45,15 @@ var sum_0_vector_g = array(pixelCount)
 var sum_0_vector_b = array(pixelCount)
 
 for (var ix=0; ix<pixelCount; ix++) {
-  var wave_13_val_min = 0  // for gradient_9
-  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for gradient_9
-  var wave_13_val_min = 0  // for gradient_9
-  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for gradient_9
-  var wave_13_val_min = 0  // for gradient_9
-  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for gradient_9
-  gradient_9_vector_r[ix] = (evalGradient((wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))), gradient_9_grad_pos, gradient_9_grad_r, 2))
-  gradient_9_vector_g[ix] = (evalGradient((wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))), gradient_9_grad_pos, gradient_9_grad_g, 2))
-  gradient_9_vector_b[ix] = (evalGradient((wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))), gradient_9_grad_pos, gradient_9_grad_b, 2))
+  var wave_14_val_min = 0  // for gradient_10
+  var wave_14_val_hdiff = ((1-wave_14_val_min)*0.5)  // for gradient_10
+  var wave_14_val_min = 0  // for gradient_10
+  var wave_14_val_hdiff = ((1-wave_14_val_min)*0.5)  // for gradient_10
+  var wave_14_val_min = 0  // for gradient_10
+  var wave_14_val_hdiff = ((1-wave_14_val_min)*0.5)  // for gradient_10
+  gradient_10_vector_r[ix] = (evalGradient((wave_14_val_min+wave_14_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))), gradient_10_grad_pos, gradient_10_grad_r, 2))
+  gradient_10_vector_g[ix] = (evalGradient((wave_14_val_min+wave_14_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))), gradient_10_grad_pos, gradient_10_grad_g, 2))
+  gradient_10_vector_b[ix] = (evalGradient((wave_14_val_min+wave_14_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))), gradient_10_grad_pos, gradient_10_grad_b, 2))
 }
 
 export function beforeRender(delta) {
@@ -68,9 +68,9 @@ export function beforeRender(delta) {
   gradient_1_scalar_g = (evalGradient((wave_5_val_min+wave_5_val_hdiff*(1-cos(PI2*clock/1))), gradient_1_grad_pos, gradient_1_grad_g, 2))
   gradient_1_scalar_b = (evalGradient((wave_5_val_min+wave_5_val_hdiff*(1-cos(PI2*clock/1))), gradient_1_grad_pos, gradient_1_grad_b, 2))
   for (var ix=0; ix<pixelCount; ix++) {
-    sum_0_vector_r[ix] = ((gradient_1_scalar_r + gradient_9_vector_r[ix]))
-    sum_0_vector_g[ix] = ((gradient_1_scalar_g + gradient_9_vector_g[ix]))
-    sum_0_vector_b[ix] = ((gradient_1_scalar_b + gradient_9_vector_b[ix]))
+    sum_0_vector_r[ix] = ((gradient_1_scalar_r + gradient_10_vector_r[ix]))
+    sum_0_vector_g[ix] = ((gradient_1_scalar_g + gradient_10_vector_g[ix]))
+    sum_0_vector_b[ix] = ((gradient_1_scalar_b + gradient_10_vector_b[ix]))
   }
 }
 

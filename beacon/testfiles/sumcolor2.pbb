@@ -16,11 +16,11 @@ export function beforeRender(delta) {
   clock += (delta / 1000)
   var wave_3_val_min = 0  // for sum_0
   var wave_3_val_diff = (1-wave_3_val_min)  // for sum_0
-  var wave_13_val_min = 0  // for sum_0
-  var wave_13_val_hdiff = ((1-wave_13_val_min)*0.5)  // for sum_0
+  var wave_14_val_min = 0  // for sum_0
+  var wave_14_val_hdiff = ((1-wave_14_val_min)*0.5)  // for sum_0
   sum_0_scalar_r = (((wave_3_val_min+wave_3_val_diff*(triangle(clock/1))) + 0.1))
   sum_0_scalar_g = ((0.5 + 0.2))
-  sum_0_scalar_b = ((0.5 + (wave_13_val_min+wave_13_val_hdiff*(1-cos(PI2*clock/1)))))
+  sum_0_scalar_b = ((0.5 + (wave_14_val_min+wave_14_val_hdiff*(1-cos(PI2*clock/1)))))
 }
 export function render(index) {
   var valr = sum_0_scalar_r

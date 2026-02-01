@@ -3,7 +3,7 @@
 ///   time: wave: sqrdecay
 
 var clock = 0   // seconds
-var time_6_scalar
+var time_7_scalar
 var space_1_vector = array(pixelCount)
 var sum_0_vector = array(pixelCount)
 for (var ix=0; ix<pixelCount; ix++) {
@@ -13,11 +13,11 @@ for (var ix=0; ix<pixelCount; ix++) {
 }
 export function beforeRender(delta) {
   clock += (delta / 1000)
-  var wave_7_val_min = 0  // for time_6
-  var wave_7_val_diff = (1-wave_7_val_min)  // for time_6
-  time_6_scalar = ((wave_7_val_min+wave_7_val_diff*(pow(1-mod(clock/1, 1), 2))))
+  var wave_8_val_min = 0  // for time_7
+  var wave_8_val_diff = (1-wave_8_val_min)  // for time_7
+  time_7_scalar = ((wave_8_val_min+wave_8_val_diff*(pow(1-mod(clock/1, 1), 2))))
   for (var ix=0; ix<pixelCount; ix++) {
-    sum_0_vector[ix] = ((space_1_vector[ix] + time_6_scalar))
+    sum_0_vector[ix] = ((space_1_vector[ix] + time_7_scalar))
   }
 }
 export function render(index) {
