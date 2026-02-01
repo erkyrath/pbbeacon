@@ -39,14 +39,14 @@ var pulser_14_live = array(6)
 var pulser_14_birth = array(6)
 var pulser_14_livecount = 0
 var pulser_14_nextstart = 0
-var pulser_14_arg_pos = array(6)
-var pulser_14_arg_duration = array(6)
+var pulser_14_pos_randflat_18 = array(6)
+var pulser_14_duration_randflat_25 = array(6)
 var pulser_0_live = array(6)
 var pulser_0_birth = array(6)
 var pulser_0_livecount = 0
 var pulser_0_nextstart = 0
-var pulser_0_arg_pos = array(6)
-var pulser_0_arg_duration = array(6)
+var pulser_0_pos_randflat_4 = array(6)
+var pulser_0_duration_randflat_11 = array(6)
 // stanza buffers:
 var pulser_14_vector = array(pixelCount)
 var pulser_0_vector = array(pixelCount)
@@ -70,10 +70,10 @@ export function beforeRender(delta) {
       livecount += 1
       randflat_18_val_min = 0.0
       randflat_18_val_diff = (1.0-randflat_18_val_min)
-      pulser_14_arg_pos[px] = (random(randflat_18_val_diff)+randflat_18_val_min)
+      pulser_14_pos_randflat_18[px] = (random(randflat_18_val_diff)+randflat_18_val_min)
       randflat_25_val_min = 4.0
       randflat_25_val_diff = (6.0-randflat_25_val_min)
-      pulser_14_arg_duration[px] = (random(randflat_25_val_diff)+randflat_25_val_min)
+      pulser_14_duration_randflat_25[px] = (random(randflat_25_val_diff)+randflat_25_val_min)
       pulser_14_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.2/0.522)+1.5)
       pulser_14_birth[px] = clock
     }
@@ -81,14 +81,14 @@ export function beforeRender(delta) {
   for (var px=0; px<6; px++) {
     if (!pulser_14_live[px]) { break }
     age = clock - pulser_14_birth[px]
-    relage = age / pulser_14_arg_duration[px]
+    relage = age / pulser_14_duration_randflat_25[px]
     if (relage > 1.0) {
       pulser_14_live[px] = 0
       livecount -= 1
       continue
     }
     timeval = (1-relage)*(1-relage)
-    ppos = pulser_14_arg_pos[px]
+    ppos = pulser_14_pos_randflat_18[px]
     pwidth = (0.1 + age * 0.3)
     minpos = max(0, pixelCount*(ppos-pwidth/2))
     maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
@@ -110,10 +110,10 @@ export function beforeRender(delta) {
       livecount += 1
       randflat_4_val_min = 0.0
       randflat_4_val_diff = (1.0-randflat_4_val_min)
-      pulser_0_arg_pos[px] = (random(randflat_4_val_diff)+randflat_4_val_min)
+      pulser_0_pos_randflat_4[px] = (random(randflat_4_val_diff)+randflat_4_val_min)
       randflat_11_val_min = 4.0
       randflat_11_val_diff = (6.0-randflat_11_val_min)
-      pulser_0_arg_duration[px] = (random(randflat_11_val_diff)+randflat_11_val_min)
+      pulser_0_duration_randflat_11[px] = (random(randflat_11_val_diff)+randflat_11_val_min)
       pulser_0_nextstart = clock + (((random(1)+random(1)+random(1)-1.5)*0.2/0.522)+1.5)
       pulser_0_birth[px] = clock
     }
@@ -121,14 +121,14 @@ export function beforeRender(delta) {
   for (var px=0; px<6; px++) {
     if (!pulser_0_live[px]) { break }
     age = clock - pulser_0_birth[px]
-    relage = age / pulser_0_arg_duration[px]
+    relage = age / pulser_0_duration_randflat_11[px]
     if (relage > 1.0) {
       pulser_0_live[px] = 0
       livecount -= 1
       continue
     }
     timeval = (1-relage)*(1-relage)
-    ppos = pulser_0_arg_pos[px]
+    ppos = pulser_0_pos_randflat_4[px]
     pwidth = (0.1 + age * 0.3)
     minpos = max(0, pixelCount*(ppos-pwidth/2))
     maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))

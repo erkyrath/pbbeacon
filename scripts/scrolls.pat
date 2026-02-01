@@ -26,7 +26,7 @@ var pulser_12_live = array(10)
 var pulser_12_birth = array(10)
 var pulser_12_livecount = 0
 var pulser_12_nextstart = 0
-var pulser_12_arg_pos = array(10)
+var pulser_12_pos_randflat_14 = array(10)
 
 function evalGradient(val, posls, colls, count)
 {
@@ -69,7 +69,7 @@ export function beforeRender(delta) {
       livecount += 1
       randflat_14_val_min = 0.0
       randflat_14_val_diff = (1.0-randflat_14_val_min)
-      pulser_12_arg_pos[px] = (random(randflat_14_val_diff)+randflat_14_val_min)
+      pulser_12_pos_randflat_14[px] = (random(randflat_14_val_diff)+randflat_14_val_min)
       pulser_12_nextstart = clock + 0.4
       pulser_12_birth[px] = clock
     }
@@ -84,7 +84,7 @@ export function beforeRender(delta) {
       continue
     }
     timeval = min(1, 2*triangle(relage))
-    ppos = pulser_12_arg_pos[px]
+    ppos = pulser_12_pos_randflat_14[px]
     pwidth = 0.2
     minpos = max(0, pixelCount*(ppos-pwidth/2))
     maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
