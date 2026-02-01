@@ -180,6 +180,9 @@ class NodeChanging(Node):
 class NodeRandFlat(Node):
     classname = 'randflat'
 
+    # We set usesimplicit because the value will vary across time or space;
+    # we don't want the compiler to precompute a single "random" value.
+    
     usesimplicit = True
     argformat = [
         ArgFormat('min', Implicit.TIME),
@@ -206,6 +209,9 @@ class NodeRandFlat(Node):
 class NodeRandNorm(Node):
     classname = 'randnorm'
 
+    # We set usesimplicit because the value will vary across time or space;
+    # we don't want the compiler to precompute a single "random" value.
+    
     usesimplicit = True
     argformat = [
         ArgFormat('mean', Implicit.TIME, default=0.5),

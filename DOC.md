@@ -32,7 +32,7 @@ sum
   3
 ```
 
-For brevity, you can collapse the arguments onto a single line after a colon. You can even use the shorthand (colon) format and the explicit (indented) format for the same operator! This is where the syntax get confusing. Sorry about that.
+For brevity, you can collapse the arguments onto a single line after a colon. You can even use the shorthand (colon) format and the explicit (indented) format for the same operator! This is where the syntax gets confusing. Sorry about that.
 
 ```
 clamp: min=0.3, max=0.7
