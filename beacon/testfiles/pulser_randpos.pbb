@@ -11,7 +11,7 @@ var pulser_0_live = array(4)
 var pulser_0_birth = array(4)
 var pulser_0_livecount = 0
 var pulser_0_nextstart = 0
-var pulser_0_arg_pos = array(4)
+var pulser_0_pos_randflat_3 = array(4)
 var pulser_0_vector = array(pixelCount)
 export function beforeRender(delta) {
   clock += (delta / 1000)
@@ -27,7 +27,7 @@ export function beforeRender(delta) {
       livecount += 1
       randflat_3_val_min = 0.2
       randflat_3_val_diff = (0.8-randflat_3_val_min)
-      pulser_0_arg_pos[px] = (random(randflat_3_val_diff)+randflat_3_val_min)
+      pulser_0_pos_randflat_3[px] = (random(randflat_3_val_diff)+randflat_3_val_min)
       pulser_0_nextstart = clock + 1
       pulser_0_birth[px] = clock
     }
@@ -42,7 +42,7 @@ export function beforeRender(delta) {
       continue
     }
     timeval = (1-relage)
-    ppos = pulser_0_arg_pos[px]
+    ppos = pulser_0_pos_randflat_3[px]
     pwidth = 0.3
     minpos = max(0, pixelCount*(ppos-pwidth/2))
     maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
