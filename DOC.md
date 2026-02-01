@@ -117,7 +117,7 @@ Simple color constant. This is equivalent to just writing the _color_ on its own
 
 - `arg`
 
-Constrains its argument to operate over time. It's most commonly applied to `wave`. Other operators which operate over an axis are `linear`, `changing`, `randflat`, and `randnorm`.
+Constrains its argument to operate over time. It's most commonly applied to `wave`. Other operators which operate over an axis are `linear`, `randflat`, and `randnorm`.
 
 The default axis for top-level operators is `space`. When an operator like `wave` is used as a parameter, the default varies. This tries to behave sensibly but the result can be counterintuitive. Use the `time` operator (or `space`, below) to change the default.
 
@@ -152,7 +152,7 @@ Generates a value that changes over time. (This cannot operate over `space`.) Th
 - `max`
 - (operates on the `time` or `space` axis)
 
-Generates a random value between `min` and `max`. The value has nothing to do with `x` or `t`; the axis just determines whether its varies over `space` or `time`.
+Generates a random value between `min` and `max`. The value has nothing to do with `x` or `t`; the axis just determines whether it varies over `space` or `time`.
 
 **randnorm**
 
@@ -168,7 +168,7 @@ Generates a random value that clusters around `mean`. With the default values, t
 
 - `arg`
 - `min`=0
-- `max`=0
+- `max`=1
 
 Generates the `arg`, unless that is less than `min` or greater than `max`.
 
@@ -211,6 +211,23 @@ Finds the highest value of any of its arguments. If this is applied to colors, t
 - `arg`, `arg`, `arg`...
 
 Finds the lowest value of any of its arguments.
+
+**wave**
+
+- `shape`
+- `min`=0
+- `max`=1
+- `period`=1
+- `shift`=0
+- (operates on the `time` or `space` axis)
+
+Generates a continuous wave. The `shape` of the wave must be one of these constants: `flat`, `square`, `halfsquare`, `triangle`, `sine`, `trapezoid`, `sawtooth`, `sqrtooth`, `sawdecay`, `sqrdecay`.
+
+`flat` is a constant value pegged at `max`. For tedious reasons, `square` is *also* a constant value pegged at `max`. Use `halfsquare` if you want a wave that bangs up and down from `min` to `max` at even intervals.
+
+If operating in `space`, the wave repeats forever in both directions. Its center is at 0.5, or 0.5+`shift` if `shift` is nonzero.
+
+If operating in `time`, the wave starts at time 0 (or `shift`) and repeats forever.
 
 **quote**
 
