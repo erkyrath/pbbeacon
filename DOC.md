@@ -52,3 +52,42 @@ sum
 
 Lines starting with `#` are comments. (That's why I had to use `$` for colors.)
 
+## Base cases
+
+The point of a script is to generate a color value. This means that this is a valid script:
+
+```
+# Solid red strip
+$F00
+```
+
+Numbers are "upcast" to greyscale values, which means that a plain number is *also* a valid script:
+
+```
+# Solid 50% grey strip
+0.5
+```
+
+But we really want want patterns that vary in time and space, right? This is wave in space:
+
+```
+wave
+  shape=sine
+```
+
+`wave` produces a number from 0 to 1. So this pattern is black at the ends and white in the middle.
+
+Note that the idea of *pixel count* is completely abstracted away. `pbbeacon` runs on a virtually continuous LED strip whose coordinates run from 0 to 1. Similarly, it abstracts away the update frame rate; time is always measured in seconds.
+
+What about a sine way that varies in time? 
+
+```
+time
+  wave
+    shape=sine
+```
+
+This produces a flat greyscale color that shifts from black to white to black every second.
+
+The `wave` operator and a couple of others can generate variation in either space or time. The defaults attempt to be sensible, but you can always adjust them by putting the entire operator under a `space` or `time` block.
+
