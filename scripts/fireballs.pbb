@@ -1,0 +1,27 @@
+gradient
+  stop: 0.00, $000
+  stop: 0.16, $500
+  stop: 0.33, $900
+  stop: 0.50, $D20
+  stop: 0.66, $EA0
+  stop: 0.84, $EE0
+  stop: 1.00, $EEF
+  decay: halflife=0.15
+    clamp
+      sum
+        pulser
+            maxcount=4
+            interval=randnorm: 1.0, 0.2
+            timeshape=flat
+            spaceshape=trapezoid
+            width=0.05
+            pos=quote: linear: -0.2, 0.5
+        pulser
+            maxcount=4
+            interval=randnorm: 0.77, 0.2
+            timeshape=flat
+            spaceshape=trapezoid
+            width=0.05
+            pos=quote: linear: -0.2, 0.4
+        
+
