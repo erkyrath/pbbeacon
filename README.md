@@ -42,10 +42,23 @@ The atomic unit of a `pbbeacon` script is the wave. Waves can be any shape (`sin
 
 The syntax is a bit *too* simple. I jammed together some common idioms that don't quite match. As a result, it's easy to mix up colons and equals signs, which leads to confusing syntax errors.
 
-The `quote` syntax for deferring wave parameters is clever. Clever is bad. You can do lots of cool things with it but you have to think about it every time. At least I do.
+The `quote` syntax for deferring wave parameters is clever. Clever is bad. You can do lots of cool things with it but you have to think about it every time.
 
 `pbbeacon` needs to track global time, but Pixelblaze math is signed 15.16 fixed-point. Therefore `pbbeacon` patterns will crash after 32768 seconds (nine hours).
 
 `pbbeacon` does a fair bit of code optimization, but there's still a lot of math every tick. Some of my sample patterns run at 25 fps on a 240-LED strip. That's already slower than I want. (Remember that the language was originally designed for a Pi, which is much more powerful than the Pixelblaze controller.)
 
+## Future directions
+
+I made `pbbeacon` to run patterns on an LED strip in my office. I got the patterns that I want. So I might not do any more work on it. Or I might! Who knows.
+
+Here's some obvious spots for improvement:
+
+- Add a `noise` operator. I had this in the original [beacon][] language, and Pixelblaze has a native `noise()` function. I just need to figure out how to connect them.
+
+- Reset the time variable after nine hours. (This would cause a visible flicker -- waves jumping around discontinuously -- but it's better than crashing.)
+
+- Integrate zranger1's [pixelblaze-client][pbinterface] interface (which *is* open-source) for true live-coding.
+
+[pixelblaze-client]: https://zranger1.github.io/pixelblaze-client/pixelblaze/
 
