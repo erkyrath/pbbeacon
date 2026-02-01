@@ -99,11 +99,55 @@ Real LED strips are not linear at all. A raw 0.5 value is much closer to 1.0 tha
 
 ## Operators
 
-**constant** `value=`_number_
+Each operator is listed with its named arguments. If you provide arguments without names, they are applied sequentially.
+
+**constant** 
+
+- `value=`_number_
 
 Simple numeric constant. This is equivalent to just writing the _number_ on its own.
 
-**color** `value=`_color_
+**color** 
+
+- `value=`_color_
 
 Simple color constant. This is equivalent to just writing the _color_ on its own.
 
+**time**
+
+- `arg`
+
+Constrains its argument to operate over time. It's most commonly applied to `wave`. Other operators which operate over an axis are `linear`, `changing`, `randflat`, and `randnorm`.
+
+The default axis for top-level operators is `space`. When an operator like `wave` is used as a parameter, the default varies. This tries to behave sensibly, but the result can be counterintuitive. Use the `time` operator (or `space`, below) to change the default.
+
+You can also use `time` or `space` on certain compound operations like `sum: wave, wave, ...`. The axial constraint will descend to inner operators.
+
+**space**
+
+- `arg`
+
+Constrains its argument to operate over space. See above.
+
+**linear**
+
+- `start`
+- `velocity`
+- (operates on the `time` or `space` axis)
+
+Generates a linearly changing value: `s+vx` or `s+vt`, depending on whether it applies to `space` or `time`.
+
+**changing**
+
+- `start`
+- `velocity`
+
+Generates a value that changes over time. (This cannot operate over `space`.) This is a lot like `linear`, but if the `velocity` is non-constant, the value will be the cumulative total rather than a simple `s+vt`. Mathematically, this approximates the integral of `velocity`.
+
+*Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses; you will get garbage results, probably flying off-screen. I know, this makes `changing` mostly useless.
+
+**quote**
+
+- `arg`
+
+This does nothing on its own; it only has meaning within an argument of `pulser`. See below.
