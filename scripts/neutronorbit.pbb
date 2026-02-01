@@ -1,0 +1,38 @@
+max
+
+  mul: $F60
+    decay: halflife=0.1
+      pulser
+        maxcount=1
+        spaceshape=sine
+        timeshape=flat
+        pos=quote: wave: sine, period=6, min=0.1, max=0.9
+        width=0.1
+
+  mul: $F08
+    decay: halflife=0.1
+      pulser
+        maxcount=1
+        spaceshape=sine
+        timeshape=flat
+        pos=quote: wave: sine, period=6, shift=2, min=0.1, max=0.9
+        width=0.1
+
+  mul: $F44
+    decay: halflife=0.1
+      pulser
+        maxcount=1
+        spaceshape=sine
+        timeshape=flat
+        pos=quote: wave: sine, period=6, shift=4, min=0.1, max=0.9
+        width=0.1
+
+  mul
+      time: wave: sine, min=0.7, max=0.9, period=0.63
+      pulser
+        maxcount=1
+        timeshape=flat
+        spaceshape=triangle
+        pos=quote: wave: sine, period=6, min=0.49, max=0.51
+        width=quote: wave: sine, min=0.1, max=0.12, period=0.5
+      
