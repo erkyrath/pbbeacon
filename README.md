@@ -58,7 +58,7 @@ Here's some obvious spots for improvement:
 
 - Reset the time variable after nine hours. (This would cause a visible flicker -- waves jumping around discontinuously -- but it's better than crashing.)
 
-- Integrate zranger1's [pixelblaze-client][pbinterface] interface (which *is* open-source) for true live-coding.
+- Integrate zranger1's [pixelblaze-client][] interface (which *is* open-source) for true live-coding.
 
 [pixelblaze-client]: https://zranger1.github.io/pixelblaze-client/pixelblaze/
 
