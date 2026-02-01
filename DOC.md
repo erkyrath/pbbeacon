@@ -119,7 +119,7 @@ Simple color constant. This is equivalent to just writing the _color_ on its own
 
 Constrains its argument to operate over time. It's most commonly applied to `wave`. Other operators which operate over an axis are `linear`, `changing`, `randflat`, and `randnorm`.
 
-The default axis for top-level operators is `space`. When an operator like `wave` is used as a parameter, the default varies. This tries to behave sensibly, but the result can be counterintuitive. Use the `time` operator (or `space`, below) to change the default.
+The default axis for top-level operators is `space`. When an operator like `wave` is used as a parameter, the default varies. This tries to behave sensibly but the result can be counterintuitive. Use the `time` operator (or `space`, below) to change the default.
 
 You can also use `time` or `space` on certain compound operations like `sum: wave, wave, ...`. The axial constraint will descend to inner operators.
 
@@ -145,6 +145,72 @@ Generates a linearly changing value: `s+vx` or `s+vt`, depending on whether it a
 Generates a value that changes over time. (This cannot operate over `space`.) This is a lot like `linear`, but if the `velocity` is non-constant, the value will be the cumulative total rather than a simple `s+vt`. Mathematically, this approximates the integral of `velocity`.
 
 *Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses; you will get garbage results, probably flying off-screen. I know, this makes `changing` mostly useless.
+
+**randflat**
+
+- `min`
+- `max`
+- (operates on the `time` or `space` axis)
+
+Generates a random value between `min` and `max`. The value has nothing to do with `x` or `t`; the axis just determines whether its varies over `space` or `time`.
+
+**randnorm**
+
+- `mean`=0.5
+- `stdev`=0.25
+- (operates on the `time` or `space` axis)
+
+Generates a random value that clusters around `mean`. With the default values, the result will be between 0.25 and 0.75 about 68% of the time. It will be between 0.0 and 1.0 about 95% of the time.
+
+(This is an approximation, not a true normal distribution. In fact the value will never be more than 2.88 `stdev` from `mean`.)
+
+**clamp**
+
+- `arg`
+- `min`=0
+- `max`=0
+
+Generates the `arg`, unless that is less than `min` or greater than `max`.
+
+**lerp**
+
+- `arg1`
+- `arg2`
+- `weight`
+
+Generates the value `arg1` if `weight` is 0, `arg2` if `weight` is 1, or a value between those if `weight` is between 0 and 1. If `weight` is less than 0 or greater than 1, the value is extended linearly.
+
+**sum**
+
+- `arg`, `arg`, `arg`...
+
+Adds its arguments. There may be any number of arguments.
+
+If you add colors, they are added componentwise (`r1+r2`, `g1+g2`, `b1+b2`).
+
+**mean**
+
+- `arg`, `arg`, `arg`...
+
+Averages its arguments.
+
+**mul**
+
+- `arg`, `arg`, `arg`...
+
+Multiplies its arguments.
+
+**max**
+
+- `arg`, `arg`, `arg`...
+
+Finds the highest value of any of its arguments. If this is applied to colors, the maximum is computed componentwise (separately for red, green, and blue).
+
+**min**
+
+- `arg`, `arg`, `arg`...
+
+Finds the lowest value of any of its arguments.
 
 **quote**
 
