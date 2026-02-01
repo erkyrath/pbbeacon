@@ -441,12 +441,12 @@ class NodeWave(Node):
                 theta = f'(({param}-0.5)/{perioddata}+0.5)'
             else:
                 ### could constant-fold if shiftdata is constant
-                theta = f'(({param}-0.5)/{perioddata}+0.5 - {shiftdata})'
+                theta = f'(({param}-(0.5+{shiftdata}))/{perioddata}+0.5)'
         else:
             if not hasshift:
                 theta = f'{param}/{perioddata}'
             else:
-                theta = f'({param}/{perioddata} - {shiftdata})'
+                theta = f'({param} - {shiftdata})/{perioddata}'
             
         match self.args.shape:
             case WaveShape.FLAT:
