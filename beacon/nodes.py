@@ -651,9 +651,6 @@ class NodePulser(Node):
 
     def parseargs(self, args, defmap):
         Node.parseargs(self, args, defmap)
-        self.quote_pos = None
-        self.quote_width = None
-        self.quote_duration = None
 
         self.unquotedargs = {}
         for key in ['pos', 'width', 'duration']:
@@ -715,6 +712,7 @@ class NodePulser(Node):
         if self.args.timeshape is WaveShape.FLAT:
             ctx.after('  timeval = 1')
         else:
+            ###
             if not self.quote_duration:
                 ctx.after('  relage = age / %s_arg_duration[px]' % (self.id,))
             else:
@@ -724,24 +722,18 @@ class NodePulser(Node):
                 ctx.after('  relage = age / %s' % (durationdata,))
             ctx.after('  if (relage > 1.0) {\n      %s_live[px] = 0\n      livecount -= 1\n      continue\n    }' % (self.id,))
             ctx.after('  timeval = %s' % (wave_sample(self.args.timeshape, 'relage'),))
-        
-        if not self.quote_pos:
-            ctx.after('  ppos = %s_arg_pos[px]' % (self.id,))
-        else:
-            qctx = Stanza(self, timebase='age')
-            posdata = self.quote_pos.generatedata(ctx=qctx)
-            qctx.transfer(ctx, indent=1)
-            ctx.after('  ppos = %s' % (posdata,))
-            
-        if not self.quote_width:
-            ctx.after('  pwidth = %s_arg_width[px]' % (self.id,))
-        else:
-            qctx = Stanza(self, timebase='age')
-            widthdata = self.quote_width.generatedata(ctx=qctx)
-            qctx.transfer(ctx, indent=1)
-            ctx.after('  pwidth = %s' % (widthdata,))
 
-        if self.quote_pos and not self.quote_pos.isconstant():
+        qctx = Stanza(self, quoteparent=self, quotekey='pos')
+        posdata = self.args.pos.generatedata(ctx=qctx)
+        qctx.transfer(ctx, indent=1)
+        ctx.after(f'  ppos = {posdata}')
+            
+        qctx = Stanza(self, quoteparent=self, quotekey='pos')
+        widthdata = self.args.width.generatedata(ctx=qctx)
+        qctx.transfer(ctx, indent=1)
+        ctx.after(f'  pwidth = {widthdata}')
+
+        if False: #### self.quote_pos and not self.quote_pos.isconstant():
             if self.quote_pos.isnondecreasing():
                 ctx.after('  if (ppos-pwidth/2 > 1.0) {')
                 ctx.after(f'    {id}_live[px] = 0\n      livecount -= 1\n      continue')

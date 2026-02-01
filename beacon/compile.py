@@ -192,6 +192,15 @@ class Node:
 
     def generatedata(self, ctx, component=None):
         id = self.id
+        if ctx.quoteparent:
+            assert component is None
+            if self.isconstant():
+                return self.generateexpr(ctx, component=None)
+            if not isinstance(self, NodeQuote):
+                return f'{ctx.quoteparent.id}_{ctx.quotekey}_{id}[px]'
+            nod = self.args.arg
+            assert not nod.buffered
+            return nod.generateexpr(ctx, component=None)
         if self.buffered:
             if self.dim is Dim.ONE:
                 if not (self.depend & AxisDep.SPACE):

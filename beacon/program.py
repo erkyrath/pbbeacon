@@ -4,7 +4,7 @@ from .defs import Implicit, AxisDep, Dim
 from .compile import Node
 
 class Stanza:
-    def __init__(self, nod, timebase=None):
+    def __init__(self, nod, timebase=None, quoteparent=None, quotekey=None):
         self.nod = nod
         self.depend = nod.depend
         self.storedvals = []
@@ -12,6 +12,8 @@ class Stanza:
         self.bottomline = None
         self.afterlines = []
         self.timebase = timebase
+        self.quoteparent = quoteparent
+        self.quotekey = quotekey
     
     def store_val(self, nod, key, expr):
         varname = f'{nod.id}_val_{key}'
