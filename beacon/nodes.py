@@ -417,7 +417,7 @@ class NodeWave(Node):
         ArgFormat('min', Implicit.TIME, default=0),
         ArgFormat('max', Implicit.TIME, default=1),
         ArgFormat('period', Implicit.TIME, default=1),
-        ArgFormat('center', Implicit.TIME, default=0.5),
+        ArgFormat('shift', Implicit.TIME, default=0),
     ]
 
     def finddim(self):
@@ -434,11 +434,19 @@ class NodeWave(Node):
         mindata = self.args.min.generatedata(ctx=ctx)
         maxdata = self.args.max.generatedata(ctx=ctx)
         perioddata = self.args.period.generatedata(ctx=ctx)
-        centerdata = self.args.center.generatedata(ctx=ctx)
+        shiftdata = self.args.shift.generatedata(ctx=ctx)
+        hasshift = (shiftdata not in ('0', '0.0'))   # hacky
         if self.implicit is Implicit.SPACE:
-            theta = f'(({param}-0.5)/{perioddata}+0.5)'
+            if not hasshift:
+                theta = f'(({param}-0.5)/{perioddata}+0.5)'
+            else:
+                ### could constant-fold if shiftdata is constant
+                theta = f'(({param}-0.5)/{perioddata}+0.5 - {shiftdata})'
         else:
-            theta = f'{param}/{perioddata}'
+            if not hasshift:
+                theta = f'{param}/{perioddata}'
+            else:
+                theta = f'({param}/{perioddata} - {shiftdata})'
             
         match self.args.shape:
             case WaveShape.FLAT:
