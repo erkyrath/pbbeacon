@@ -35,12 +35,12 @@ var pulser_22_live = array(10)
 var pulser_22_birth = array(10)
 var pulser_22_livecount = 0
 var pulser_22_nextstart = 0
-var pulser_22_arg_pos = array(10)
+var pulser_22_pos_randflat_24 = array(10)
 var pulser_8_live = array(10)
 var pulser_8_birth = array(10)
 var pulser_8_livecount = 0
 var pulser_8_nextstart = 0
-var pulser_8_arg_pos = array(10)
+var pulser_8_pos_randflat_10 = array(10)
 // stanza buffers:
 var pulser_22_vector = array(pixelCount)
 var pulser_8_vector = array(pixelCount)
@@ -64,7 +64,7 @@ export function beforeRender(delta) {
       livecount += 1
       randflat_24_val_min = 0.0
       randflat_24_val_diff = (1.0-randflat_24_val_min)
-      pulser_22_arg_pos[px] = (random(randflat_24_val_diff)+randflat_24_val_min)
+      pulser_22_pos_randflat_24[px] = (random(randflat_24_val_diff)+randflat_24_val_min)
       pulser_22_nextstart = clock + 0.4
       pulser_22_birth[px] = clock
     }
@@ -79,7 +79,7 @@ export function beforeRender(delta) {
       continue
     }
     timeval = triangle(relage)
-    ppos = pulser_22_arg_pos[px]
+    ppos = pulser_22_pos_randflat_24[px]
     pwidth = 0.2
     minpos = max(0, pixelCount*(ppos-pwidth/2))
     maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
@@ -101,7 +101,7 @@ export function beforeRender(delta) {
       livecount += 1
       randflat_10_val_min = 0.0
       randflat_10_val_diff = (1.0-randflat_10_val_min)
-      pulser_8_arg_pos[px] = (random(randflat_10_val_diff)+randflat_10_val_min)
+      pulser_8_pos_randflat_10[px] = (random(randflat_10_val_diff)+randflat_10_val_min)
       pulser_8_nextstart = clock + 0.5
       pulser_8_birth[px] = clock
     }
@@ -116,7 +116,7 @@ export function beforeRender(delta) {
       continue
     }
     timeval = triangle(relage)
-    ppos = pulser_8_arg_pos[px]
+    ppos = pulser_8_pos_randflat_10[px]
     pwidth = 0.2
     minpos = max(0, pixelCount*(ppos-pwidth/2))
     maxpos = min(pixelCount, pixelCount*(ppos+pwidth/2))
