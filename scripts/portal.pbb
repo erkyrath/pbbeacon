@@ -1,0 +1,20 @@
+gradient:
+  stop: 0.00, $000
+  stop: 0.08, $F00
+  stop: 0.10, $400
+  stop: 0.18, $F20
+  stop: 0.20, $400
+  stop: 0.28, $F40
+  stop: 0.30, $400
+  stop: 0.38, $F60
+  stop: 0.40, $000
+  stop: 1.00, $408
+  pulser:
+    maxcount = 4
+    interval = 2
+    pos = randnorm: 0.5, 0.075
+    timeshape = sawdecay
+    spaceshape = sine
+    width = quote: linear: 0.1, 0.3
+    duration = 4.0
+
