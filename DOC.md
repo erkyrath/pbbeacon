@@ -103,13 +103,13 @@ Each operator is listed with its named arguments. If you provide arguments witho
 
 **constant** 
 
-- `value=`_number_
+- `value`=_number_
 
 Simple numeric constant. This is equivalent to just writing the _number_ on its own.
 
 **color** 
 
-- `value=`_color_
+- `value`=_color_
 
 Simple color constant. This is equivalent to just writing the _color_ on its own.
 
@@ -129,7 +129,7 @@ You might say "why not use use a color constant?" Remember, each of `r`, `g`, an
 
 Turns a color value into a numeric brightness from 0 to 1.
 
-(Actually, you can make an "improper" color value whose components are outside the 0-1 range. In those cases, `brightness` can be any value.)
+(Actually, you can make an "improper" color value whose components are outside the 0-1 range. In those cases, `brightness` can be any number.)
 
 **time**
 
@@ -232,7 +232,7 @@ Finds the lowest value of any of its arguments.
 
 **decay**
 
-- `halflife=`_number_
+- `halflife`=_number_
 - `arg`
 
 Generates a value based on `arg`, except that whenever `arg` drops, the generated value decays *slowly* towards zero rather than dropping immediately. The `halflife` is how many seconds it takes to get halfway to zero.
@@ -258,7 +258,9 @@ gradient
   arg
 ```
 
-There can be any number of stops, and they don't have to be evenly distributed. The values have to be constants. Colors in between stops are linearly interpolated. You will usually provide stops from 0 to 1, but this is not a requirement.
+There can be any number of stops, and they don't have to be evenly distributed. The values have to be constants. Colors in between stops are linearly interpolated.
+
+You will usually provide stops from 0 to 1, but this is not a requirement. Values outside the stop range stick to the first or last color value.
 
 **wave**
 
@@ -283,6 +285,13 @@ If operating in `time`, the wave starts at time 0 (or `shift`) and repeats forev
 
 This does nothing on its own; it only has meaning within an argument of `pulser`. See below.
 
-
 **pulser**
+
+- `maxcount`=_integer_
+- `spaceshape`=`triangle`
+- `timeshape`=`sqrdecay`
+- `interval`=1
+- `pos`=0.5
+- `duration`=1
+- `width`=1
 
