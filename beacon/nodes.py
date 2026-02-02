@@ -766,6 +766,7 @@ class NodePulser(Node):
         if self.args.spaceshape is WaveShape.FLAT:
             ctx.after('    spaceval = 1')
         else:
+            ### temp var for (ppos-pwidth/2)?
             ctx.after('    relpos = ((ix/pixelCount)-(ppos-pwidth/2)) / pwidth')
             ctx.after('    spaceval = %s' % (wave_sample(self.args.spaceshape, 'relpos'),))
         ctx.after('    %s_vector[ix] += (timeval * spaceval)' % (self.id,))

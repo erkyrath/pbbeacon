@@ -68,7 +68,7 @@ Numbers are "upcast" to greyscale values, which means that a plain number is *al
 0.5
 ```
 
-But we really want want patterns that vary in time and space, right? This is wave in space:
+But we really want want patterns that vary in time and space, right? This is a wave in space:
 
 ```
 wave
@@ -162,7 +162,7 @@ Generates a linearly changing value: `s+vx` or `s+vt`, depending on whether it a
 
 Generates a value that changes over time. (This cannot operate over `space`.) This is a lot like `linear`, but if the `velocity` is non-constant, the value will be the cumulative total rather than a simple `s+vt`. Mathematically, this approximates the integral of `velocity`.
 
-*Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses. You will get garbage results, probably flying off-strip. I know, this makes `changing` mostly useless.
+*Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses. You will get garbage results, probably flying off-strip. Yes, I know, this makes `changing` mostly useless.
 
 **randflat**
 
