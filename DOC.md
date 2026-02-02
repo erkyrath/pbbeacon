@@ -42,8 +42,8 @@ clamp: min=0.3, max=0.7
 You can define a value or function at the top level, and then use its name as a variable:
 
 ```
-foo = 3
-bar = wave: sine
+foo=3
+bar=wave: sine
 
 sum
   foo
@@ -162,7 +162,7 @@ Generates a linearly changing value: `s+vx` or `s+vt`, depending on whether it a
 
 Generates a value that changes over time. (This cannot operate over `space`.) This is a lot like `linear`, but if the `velocity` is non-constant, the value will be the cumulative total rather than a simple `s+vt`. Mathematically, this approximates the integral of `velocity`.
 
-*Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses; you will get garbage results, probably flying off-strip. I know, this makes `changing` mostly useless.
+*Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses. You will get garbage results, probably flying off-strip. I know, this makes `changing` mostly useless.
 
 **randflat**
 
@@ -350,7 +350,7 @@ pulser:
       velocity=1
 ```
 
-Rather than each pulse getting a `pos` value *computed by* `linear: 0, 1`, each pulse gets `pos` value which is the *function* `linear: 0, 1`.
+Rather than each pulse getting a `pos` value *computed by* `linear: 0, 1`, each pulse gets a `pos` value which is the *function* `linear: 0, 1`.
 
 ...Yeah, that's still pretty confusing. Another way to think of it is that regular operators are *eager*; `quote`d operators are *lazy*. Or: regular operators belong to the *pulser*; `quote`d operators belong to the *pulse*.
 
