@@ -162,7 +162,7 @@ Generates a linearly changing value: `s+vx` or `s+vt`, depending on whether it a
 
 Generates a value that changes over time. (This cannot operate over `space`.) This is a lot like `linear`, but if the `velocity` is non-constant, the value will be the cumulative total rather than a simple `s+vt`. Mathematically, this approximates the integral of `velocity`.
 
-*Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses; you will get garbage results, probably flying off-screen. I know, this makes `changing` mostly useless.
+*Bug alert:* Do not use `changing` as a `pulser` argument. It does not properly distinguish between different pulses; you will get garbage results, probably flying off-strip. I know, this makes `changing` mostly useless.
 
 **randflat**
 
@@ -311,7 +311,7 @@ The `timeshape` specifies the pulse's shape in _time_, from the moment of its cr
 
 (However, if a pulse moves monotonically, it expires when it moves out of sight.)
 
-So a `pulser` with the default values above will generate one pulse per second. This will have a triangular profile from x=0 to x=1, with its highest peak at x=0.5. The pulse will start strong but decay to zero over its one-second lifespan. Since the `duration` equals the `interval`, there will be just one pulse at a time.
+So a `pulser` with the default values above will generate one pulse per second. This will have a triangular profile from x=0 to x=1 -- the whole strip -- with its highest peak in the center. The pulse will start strong but decay to zero over its one-second lifespan. Since the `duration` equals the `interval`, there will be just one pulse at a time.
 
 Now consider this example:
 
@@ -331,9 +331,9 @@ This generates pulses with a lifespan of 0.5 seconds. The `timeshape` is `sine`,
 
 The `spaceshape` is still `triangle` (the default value) but the `width` is now only 0.1. And the `pos` is given as a linearly increasing function. The first pulse will appear (with its center at) x=0. The second one, 0.2 seconds later, will be at x=0.2. The third at x=0.4, and so forth.
 
-...Wait. That doesn't seem right. The sixth pulse will be at x=1.0. All pulses after that will be invisible, off-screen to the right! And since pulses have a lifespan, the pattern will be completely dark after time t=1.5.
+...Wait. That doesn't seem right. The sixth pulse will be at x=1.0. All pulses after that will be invisible, off-strip to the right! And since pulses have a lifespan, the pattern will be completely dark after time t=1.5.
 
-This is legal code, but it's not what we meant. We want *each pulse* to have a linearly increasing position, starting at zero and zooming off the screen. 
+This is legal code, but it's not what we meant. We want *each pulse* to have a linearly increasing position, starting at zero and zooming across the strip. 
 
 To specify this, we use the mysterious `quote` operator:
 
