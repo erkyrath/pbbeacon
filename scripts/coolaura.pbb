@@ -1,0 +1,15 @@
+# A blue-green hue-shift with low frequency.
+
+gradient:
+  stop: 0, $08F
+  stop: 1, $0C4
+  mul
+    time: wave: shape=sine, period=8
+    pulser:
+        maxcount = 10
+        interval = randnorm: 1.5, 0.2
+        pos = randflat: 0, 1
+        timeshape = sine
+        spaceshape = sine
+        width = quote: linear: 0.1, 0.3
+        duration = 4.0
