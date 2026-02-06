@@ -1,3 +1,5 @@
+# A blue-purple hue-shift with pulses of darkness.
+
 flies1=pulser:
   maxcount = 8
   interval = randflat: 0.8, 1.2

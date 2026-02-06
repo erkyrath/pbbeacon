@@ -1,3 +1,5 @@
+# Bursts of starlights with red and orange coronas.
+
 drop1=pulser:
   maxcount = 6
   interval = randnorm: 1.5, 0.2

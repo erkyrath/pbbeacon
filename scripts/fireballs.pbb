@@ -1,3 +1,5 @@
+# A stream of fireballs moving in the same direction.
+
 gradient
   stop: 0.00, $000
   stop: 0.16, $500

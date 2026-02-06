@@ -1,3 +1,6 @@
+# Green fireflies wander back and forth, merging and diverging.
+# (This is a variant of "scrolls".)
+
 gradient
   stop: 0.0, $000
   stop: 0.2, $000

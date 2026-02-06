@@ -1,3 +1,5 @@
+# A dark space warmed by waves of fire that flicker slightly.
+
 pulse1=pulser:
   maxcount = 4
   interval = randflat: 0.8, 1.2

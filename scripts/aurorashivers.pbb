@@ -1,3 +1,5 @@
+# Curtains of blue and purple light from space.
+
 pulse1=pulser:
   maxcount = 4
   interval = randflat: 0.8, 1.2

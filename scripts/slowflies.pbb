@@ -1,3 +1,5 @@
+# Diffuse greenish fireflies trailing a blue glow.
+
 flies1=pulser:
   maxcount = 8
   interval = randflat: 0.8, 1.2

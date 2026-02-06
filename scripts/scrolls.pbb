@@ -1,3 +1,6 @@
+# Blue regions with green edges, expanding and contracting.
+# (This is a variant of "wanderedges".)
+
 gradient
   stop: 0.0, $000
   stop: 0.2, $000
