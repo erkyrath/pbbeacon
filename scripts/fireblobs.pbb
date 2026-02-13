@@ -2,7 +2,7 @@
 
 sum
   mul
-    $F80
+    $F60
     mul
       2
       clamp: min=0.0, max=0.5
@@ -15,7 +15,7 @@ sum
           width=0.2
           duration=3
   mul
-    $822
+    $820
     mul
       2
       clamp: min=0.0, max=0.5
