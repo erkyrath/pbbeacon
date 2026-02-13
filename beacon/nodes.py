@@ -647,6 +647,29 @@ class NodeDecay(Node):
                 last = f'{id}_vector_{component}[ix]'
         return f'max({last}*pow(2, -delta/{1000*halflife}), {argdata})'
 
+class NodeNoise(Node):
+    classname = 'noise'
+
+    usesimplicit = True
+    argformat = [
+        ArgFormat('shift', Implicit.TIME, default=0),
+        ArgFormat('morph', Implicit.TIME, default=0),
+        ArgFormat('grain', float, default=16),
+        ArgFormat('octaves', int, default=1),
+    ]
+    
+    def finddim(self):
+        return Dim.ONE
+
+    def generateexpr(self, ctx, component=None):
+        grain = self.args.grain
+        octaves = self.args.octaves
+        assert octaves >= 1
+        param = self.generateimplicit(ctx)
+        shiftdata = self.args.shift.generatedata(ctx=ctx)
+        morphdata = self.args.morph.generatedata(ctx=ctx)
+        return f'perlinTurbulence(({param}-{shiftdata})*{grain}, {morphdata}, 0, 2, 0.5, {octaves})'
+    
 ### NodePulse?
 ### with spaceshape, pos, width
 
@@ -799,6 +822,7 @@ nodeclasses = [
     NodeGradient,
     NodeStop,
     NodeDecay,
+    NodeNoise,
     NodePulser,
 ]
 
