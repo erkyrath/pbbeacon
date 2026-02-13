@@ -661,6 +661,11 @@ class NodeNoise(Node):
     def finddim(self):
         return Dim.ONE
 
+    def printstaticvars(self, outfl, first=False):
+        if first:
+            grain = self.args.grain
+            outfl.write(f'setPerlinWrap({grain}, {grain}, {grain})\n')
+            
     def generateexpr(self, ctx, component=None):
         grain = self.args.grain
         octaves = self.args.octaves
