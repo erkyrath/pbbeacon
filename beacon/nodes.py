@@ -767,7 +767,7 @@ class NodePulser(Node):
         qctx.transfer(ctx, indent=1)
         ctx.after(f'  ppos = {posdata}')
             
-        qctx = Stanza(self, timebase='age', quoteparent=self, quotekey='pos')
+        qctx = Stanza(self, timebase='age', quoteparent=self, quotekey='width')
         widthdata = self.args.width.generatedata(ctx=qctx)
         qctx.transfer(ctx, indent=1)
         ctx.after(f'  pwidth = {widthdata}')
