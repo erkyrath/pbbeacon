@@ -5,7 +5,7 @@
 /// 
 /// sum
 ///   mul
-///     $F80
+///     $F60
 ///     mul
 ///       2
 ///       clamp: min=0.0, max=0.5
@@ -18,7 +18,7 @@
 ///           width=0.2
 ///           duration=3
 ///   mul
-///     $822
+///     $820
 ///     mul
 ///       2
 ///       clamp: min=0.0, max=0.5
@@ -133,8 +133,8 @@ export function beforeRender(delta) {
     var mul_1_val_common = (2.0 * clamp(pulser_8_vector[ix], 0.0, 0.5))  // for sum_0
     var mul_15_val_common = (2.0 * clamp(pulser_22_vector[ix], 0.0, 0.5))  // for sum_0
     sum_0_vector_r[ix] = (((1.0 * mul_1_val_common) + (0.5333333333333333 * mul_15_val_common)))
-    sum_0_vector_g[ix] = (((0.5333333333333333 * mul_1_val_common) + (0.13333333333333333 * mul_15_val_common)))
-    sum_0_vector_b[ix] = (((0.0 * mul_1_val_common) + (0.13333333333333333 * mul_15_val_common)))
+    sum_0_vector_g[ix] = (((0.4 * mul_1_val_common) + (0.13333333333333333 * mul_15_val_common)))
+    sum_0_vector_b[ix] = (((0.0 * mul_1_val_common) + (0.0 * mul_15_val_common)))
   }
 }
 

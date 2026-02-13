@@ -32,9 +32,9 @@
 ///   duration = 2
 /// 
 /// sum
-///   mul: $FC0
+///   mul: $FA0
 ///     pulse1
-///   mul: $FC0
+///   mul: $FB0
 ///     pulse2
 ///   mul: $F00
 ///     decay: halflife=1.5
@@ -150,7 +150,7 @@ export function beforeRender(delta) {
     var mul_41_val_common = pulser_19_vector[ix]  // for sum_38
     var mul_43_val_common = decay_45_vector[ix]  // for sum_38
     sum_38_vector_r[ix] = (((1.0 * mul_39_val_common) + (1.0 * mul_41_val_common) + (1.0 * mul_43_val_common)))
-    sum_38_vector_g[ix] = (((0.8 * mul_39_val_common) + (0.8 * mul_41_val_common) + (0.0 * mul_43_val_common)))
+    sum_38_vector_g[ix] = (((0.6666666666666666 * mul_39_val_common) + (0.7333333333333333 * mul_41_val_common) + (0.0 * mul_43_val_common)))
     sum_38_vector_b[ix] = (((0.0 * mul_39_val_common) + (0.0 * mul_41_val_common) + (0.0 * mul_43_val_common)))
   }
 }
