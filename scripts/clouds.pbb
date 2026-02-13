@@ -1,0 +1,35 @@
+gradient
+  stop: 0, $008
+  stop: 1, $FFF
+  sum
+    mul
+      sum
+        0.25
+        mul
+          0.25
+          noise: grain=16, octaves=2
+            shift=linear: 0, 0.21
+      pulser
+        maxcount=10
+        interval=randnorm: 4, 0.3
+        timeshape=flat
+        spaceshape=trapezoid
+        pos=quote: linear: -0.3, 0.1
+        width=randnorm: 0.3, 0.05
+    mul
+      sum
+        0.25
+        mul
+          0.25
+          noise: grain=16, octaves=2
+            shift=linear: 0, 0.11
+      pulser
+        maxcount=10
+        interval=randnorm: 16, 2
+        timeshape=flat
+        spaceshape=trapezoid
+        pos=quote: linear: -0.6, 0.05
+        width=randnorm: 0.5, 0.1
+        
+  
+
