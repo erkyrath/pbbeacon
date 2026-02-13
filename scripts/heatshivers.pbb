@@ -29,9 +29,9 @@ pulse2=pulser:
   duration = 2
 
 sum
-  mul: $FC0
+  mul: $FA0
     pulse1
-  mul: $FC0
+  mul: $FB0
     pulse2
   mul: $F00
     decay: halflife=1.5
