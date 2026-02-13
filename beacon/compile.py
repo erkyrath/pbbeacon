@@ -138,12 +138,18 @@ class Node:
                 if argf.typ is WaveShape:
                     map[argf.name] = argf.default
                     continue
+                if argf.typ is int:
+                    map[argf.name] = int(argf.default)
+                    continue
+                if argf.typ is float:
+                    map[argf.name] = argf.default
+                    continue
                 if argf.typ is Implicit.TIME:
                     if not (isinstance(argf.default, int) or isinstance(argf.default, float)):
                         raise Exception('%s: arg default is not numeric: %s' % (self.classname, argf.name))
                     map[argf.name] = NodeConstant(Implicit.TIME, asnum=argf.default)
                     continue
-                raise Exception('%s: cannot default arg type %s' % (self.classname, typ,))
+                raise Exception('%s: cannot default arg type %s' % (self.classname, argf.typ,))
 
         self.args = self.argclass(**map)
 
