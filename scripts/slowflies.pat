@@ -177,9 +177,9 @@ export function beforeRender(delta) {
 }
 
 export function render(index) {
-  var valr = max_29_vector_r[index]
-  var valg = max_29_vector_g[index]
-  var valb = max_29_vector_b[index]
+  var valr = clamp(max_29_vector_r[index], 0, 1)
+  var valg = clamp(max_29_vector_g[index], 0, 1)
+  var valb = clamp(max_29_vector_b[index], 0, 1)
   rgb(valr*valr, valg*valg, valb*valb)
 }
 

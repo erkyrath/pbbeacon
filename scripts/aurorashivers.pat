@@ -157,9 +157,9 @@ export function beforeRender(delta) {
 }
 
 export function render(index) {
-  var valr = sum_38_vector_r[index]
-  var valg = sum_38_vector_g[index]
-  var valb = sum_38_vector_b[index]
+  var valr = clamp(sum_38_vector_r[index], 0, 1)
+  var valg = clamp(sum_38_vector_g[index], 0, 1)
+  var valb = clamp(sum_38_vector_b[index], 0, 1)
   rgb(valr*valr, valg*valg, valb*valb)
 }
 
