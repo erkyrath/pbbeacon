@@ -14,7 +14,7 @@ export function render(index) {
 }
 ```
 
-Whereas I prefer a declarative style:
+Whereas I prefer a [declarative style][doc]:
 
 ```
 wave: sine
