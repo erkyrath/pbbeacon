@@ -1,0 +1,42 @@
+/// ngradient
+///   nstop: 0, 0
+///   nstop: 0.3, 0.7
+///   nstop: 0.6, 0.3
+///   nstop: 1, 1
+///   space: wave: sine
+
+var clock = 0   // seconds
+function evalGradient(val, posls, colls, count)
+{
+  if (val <= posls[0]) {
+    return colls[0]
+  }
+  if (val >= posls[count-1]) {
+    return colls[count-1]
+  }
+  for (var ix=0; ix<count-1; ix++) {
+    if (val < posls[ix+1]) {
+      return mix(colls[ix], colls[ix+1], (val-posls[ix])/(posls[ix+1]-posls[ix]))
+    }
+  }
+  return colls[count-1]
+}
+var ngradient_0_grad_pos = [0.0, 0.3, 0.6, 1.0]
+var ngradient_0_grad_v = [0.0, 0.7, 0.3, 1.0]
+var ngradient_0_vector = array(pixelCount)
+
+for (var ix=0; ix<pixelCount; ix++) {
+  var wave_6_val_min = 0  // for ngradient_0
+  var wave_6_val_hdiff = ((1-wave_6_val_min)*0.5)  // for ngradient_0
+  ngradient_0_vector[ix] = (evalGradient((wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*(((ix/pixelCount)-0.5)/1+0.5)))), ngradient_0_grad_pos, ngradient_0_grad_v, 4))
+}
+
+export function beforeRender(delta) {
+  clock += (delta / 1000)
+}
+
+export function render(index) {
+  var val = ngradient_0_vector[index]
+  rgb(val*val, val*val, val*val)
+}
+
