@@ -126,6 +126,10 @@ class Program:
         if isinstance(nod, NodeDecay):
             nod.depend |= AxisDep.TIME
             nod.buffered = True
+        if isinstance(nod, NodeDiff):
+            nod.depend |= AxisDep.SPACE
+            nod.buffered = True
+            nod.args.arg.buffered = True
 
         subdeps = AxisDep.NONE
         
@@ -238,6 +242,6 @@ class Program:
 
 
 # Late imports
-from .nodes import NodeConstant, NodePulser, NodeDecay
+from .nodes import NodeConstant, NodePulser, NodeDecay, NodeDiff
 
 

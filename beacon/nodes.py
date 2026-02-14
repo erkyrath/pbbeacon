@@ -754,6 +754,23 @@ class NodeDecay(Node):
                 last = f'{id}_vector_{component}[ix]'
         return f'max({last}*pow(2, -delta/{1000*halflife}), {argdata})'
 
+class NodeDiff(Node):
+    classname = 'diff'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('arg', Node),
+    ]
+    
+    def finddim(self):
+        return self.args.arg.dim
+
+    def generateexpr(self, ctx, component=None):
+        assert self.buffered
+        assert self.args.arg.buffered
+        argdata = self.args.arg.generatedata(ctx=ctx, component=component)
+        return argdata
+        
 class NodeNoise(Node):
     classname = 'noise'
 
@@ -939,6 +956,7 @@ nodeclasses = [
     NodeStop,
     NodeNStop,
     NodeDecay,
+    NodeDiff,
     NodeNoise,
     NodePulser,
 ]
