@@ -28,9 +28,21 @@ In fact I implemented controller software in that style a few years ago. That wa
 
 Pixelblaze was an opportunity to revive the plan! Sadly, while the Pixelblaze interface (and language) are intended for tinkerers, they are not open-source. So I implemented a translator which compiles my format into Pixelblaze code.
 
-The `pbbeacon` language is minimally documented [here](./DOC.md).
+## How to use it
 
-For examples, see the [scripts](./scripts) directory. Each pattern is available as a `.pbb` file (the original script) and `.pat` (translated, ready to copy and paste into the Pixelblaze UI).
+Write a `.pbb` script. The [`pbbeacon` language][doc] is documented [here][doc]. 
+
+Then type:
+
+```
+python3 -m beacon yourscript.pbb > yourscript.pat
+```
+
+This will write out a `.pat` file in the Pixelblaze language. Paste this directly into the Pixelblaze editor UI.
+
+For examples, see the [scripts](./scripts) directory. Each pattern is available in both `.pbb` format (the original script) and `.pat` format (translated, Pixelblaze-ready).
+
+[doc]: ./DOC.md
 
 ## Why is this cool?
 
