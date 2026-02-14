@@ -742,7 +742,6 @@ class NodeDecay(Node):
         halflife = self.args.halflife
         argdata = self.args.arg.generatedata(ctx=ctx, component=component)
         id = self.id
-        last = '???'
         if self.dim is Dim.ONE:
             if not (self.depend & AxisDep.SPACE):
                 last = f'{id}_scalar'
