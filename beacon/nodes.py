@@ -31,6 +31,9 @@ class NodeConstant(Node):
     
     def isnonincreasing(self):
         return True
+
+    def isclamped(self):
+        return (self.args.value >= 0 and self.args.value <= 1)
     
     def generateexpr(self, ctx, component=None):
         return str(self.args.value)
@@ -52,6 +55,11 @@ class NodeColor(Node):
     
     def isconstant(self):
         return True
+    
+    def isclamped(self):
+        return (self.args.value.red >= 0 and self.args.value.red <= 1
+                and self.args.value.green >= 0 and self.args.value.green <= 1
+                and self.args.value.blue >= 0 and self.args.value.blue <= 1)
     
     def generateexpr(self, ctx, component):
         if component == 'r':
@@ -86,6 +94,9 @@ class NodeTime(Node):
 
     def finddim(self):
         return self.args.arg.dim
+
+    def isclamped(self):
+        return self.args.arg.isclamped()
     
     def generateexpr(self, ctx, component=None):
         argdata = self.args.arg.generatedata(ctx=ctx, component=component)
@@ -101,6 +112,9 @@ class NodeSpace(Node):
 
     def finddim(self):
         return self.args.arg.dim
+    
+    def isclamped(self):
+        return self.args.arg.isclamped()
     
     def generateexpr(self, ctx, component=None):
         argdata = self.args.arg.generatedata(ctx=ctx, component=component)
@@ -242,6 +256,9 @@ class NodeClamp(Node):
         assert self.args.arg.dim is self.args.min.dim
         assert self.args.arg.dim is self.args.max.dim
         return self.args.arg.dim
+    
+    def isclamped(self):
+        return self.args.min.isclamped() and self.args.max.isclamped()
     
     def generateexpr(self, ctx, component=None):
         argdata = self.args.arg.generatedata(ctx=ctx, component=component)
@@ -434,6 +451,9 @@ class NodeWave(Node):
     
     def isznegative(self):
         return self.args.min.isznegative() and self.args.max.isznegative()
+
+    def isclamped(self):
+        return self.args.min.isclamped() and self.args.max.isclamped()
     
     def generateexpr(self, ctx, component=None):
         param = self.generateimplicit(ctx)
