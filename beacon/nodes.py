@@ -280,6 +280,9 @@ class NodeLerp(Node):
         assert self.args.weight.dim is Dim.ONE
         assert self.args.arg1.dim is self.args.arg2.dim
         return self.args.arg1.dim
+
+    def isclamped(self):
+        return all([ self.args.weight.isclamped(), self.args.arg1.isclamped(), self.args.arg2.isclamped() ])
     
     def generateexpr(self, ctx, component=None):
         weightdata = self.args.weight.generatedata(ctx=ctx)
