@@ -653,6 +653,55 @@ class NodeGradient(Node):
         argdata = self.args.arg.generatedata(ctx=ctx)
         return f'evalGradient({argdata}, {id}_grad_pos, {id}_grad_{component}, {count})'
     
+class NodeNGradient(Node):
+    classname = 'ngradient'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('nstops', Node, multiple=True),
+        ArgFormat('arg', Node),
+    ]
+
+    def parseargs(self, args, defmap):
+        nstops = []
+        mainval = None
+        for arg in args:
+            if arg.tok.val == 'nstop':
+                stop = compile(arg, implicit=self.implicit, defmap=defmap)
+                nstops.append( (stop.args.pos, stop.args.value) )
+                continue
+            if mainval is not None:
+                raise Exception('%s: duplicate arg' % (self.classname,))
+            mainval = compile(arg, implicit=self.implicit, defmap=defmap)
+        if not nstops:
+            raise Exception('%s: missing nstops' % (self.classname,))
+        nstops.sort()
+        self.args = self.argclass(nstops=nstops, arg=mainval)
+    
+    def finddim(self):
+        assert self.args.arg.dim is Dim.ONE
+        return Dim.ONE
+
+    def printstaticvars(self, outfl, first=False):
+        if first:
+            outfl.write(eval_gradient_func)
+        id = self.id
+        posls = []
+        cols = []
+        for pos, val in self.args.nstops:
+            posls.append(pos)
+            cols.append(val)
+        ls = ', '.join([ str(val) for val in posls ])
+        outfl.write(f'var {id}_grad_pos = [{ls}]\n')
+        ls = ', '.join([ str(val) for val in cols ])
+        outfl.write(f'var {id}_grad_v = [{ls}]\n')
+        
+    def generateexpr(self, ctx, component=None):
+        id = self.id
+        count = len(self.args.nstops)
+        argdata = self.args.arg.generatedata(ctx=ctx)
+        return f'evalGradient({argdata}, {id}_grad_pos, {id}_grad_v, {count})'
+    
 class NodeStop(Node):
     classname = 'stop'
     
@@ -663,6 +712,17 @@ class NodeStop(Node):
 
     def finddim(self):
         raise Exception('stop can only be used in a gradient')
+
+class NodeNStop(Node):
+    classname = 'nstop'
+    
+    argformat = [
+        ArgFormat('pos', float),
+        ArgFormat('value', float),
+    ]
+
+    def finddim(self):
+        raise Exception('nstop can only be used in an ngradient')
 
 
 class NodeDecay(Node):
@@ -876,7 +936,9 @@ nodeclasses = [
     NodeGreen,
     NodeBlue,
     NodeGradient,
+    NodeNGradient,
     NodeStop,
+    NodeNStop,
     NodeDecay,
     NodeNoise,
     NodePulser,
