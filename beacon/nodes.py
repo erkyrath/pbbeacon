@@ -769,6 +769,7 @@ class NodeDiff(Node):
         assert self.buffered
         assert self.args.arg.buffered
         assert (self.depend & AxisDep.SPACE)
+        ### if arg is scalar, return 0
         arg = self.args.arg
         assert self.dim is arg.dim
         suffix = '_'+component if self.dim is Dim.THREE else ''
