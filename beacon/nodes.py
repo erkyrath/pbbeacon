@@ -530,6 +530,54 @@ class NodeBrightness(Node):
         argdatab = self.args.value.generatedata(ctx=ctx, component='b')
         return f'(0.299 * {argdatar} + 0.587 * {argdatag} + 0.114 * {argdatab})'
 
+class NodeRed(Node):
+    classname = 'red'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('value', Node),
+    ]
+
+    def finddim(self):
+        assert self.args.value.dim is Dim.THREE
+        return Dim.ONE
+
+    def generateexpr(self, ctx, component=None):
+        argdatar = self.args.value.generatedata(ctx=ctx, component='r')
+        return argdatar
+
+class NodeGreen(Node):
+    classname = 'green'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('value', Node),
+    ]
+
+    def finddim(self):
+        assert self.args.value.dim is Dim.THREE
+        return Dim.ONE
+
+    def generateexpr(self, ctx, component=None):
+        argdatag = self.args.value.generatedata(ctx=ctx, component='g')
+        return argdatag
+
+class NodeBlue(Node):
+    classname = 'blue'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('value', Node),
+    ]
+
+    def finddim(self):
+        assert self.args.value.dim is Dim.THREE
+        return Dim.ONE
+
+    def generateexpr(self, ctx, component=None):
+        argdatab = self.args.value.generatedata(ctx=ctx, component='b')
+        return argdatab
+
 eval_gradient_func = '''
 function evalGradient(val, posls, colls, count)
 {
@@ -824,6 +872,9 @@ nodeclasses = [
     NodeWave,
     NodeRGB,
     NodeBrightness,
+    NodeRed,
+    NodeGreen,
+    NodeBlue,
     NodeGradient,
     NodeStop,
     NodeDecay,
