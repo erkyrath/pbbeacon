@@ -56,8 +56,6 @@ I made `pbbeacon` to run patterns on an LED strip in my office. I got the patter
 
 Here's some obvious spots for improvement:
 
-- Add a `noise` operator. I had this in the original [beacon][] language, and Pixelblaze has a native `noise()` function. I just need to figure out how to connect them.
-
 - Reset the time variable after nine hours. (This would cause a visible flicker -- waves jumping around discontinuously -- but it's better than crashing.)
 
 - Integrate zranger1's [pixelblaze-client][] interface (which *is* open-source) for true live-coding.

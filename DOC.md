@@ -281,6 +281,19 @@ If operating in `space`, the wave repeats forever in both directions. Its center
 
 If operating in `time`, the wave starts at time 0 (or `shift`) and repeats forever.
 
+**noise**
+
+- `shift`=0
+- `morph`=0
+- `grain`=16
+- `octaves`=1
+
+Generates Perlin noise. This is a random value that wobbles smoothly along the length of the strip. The `shift` will move it; the `morph` will cause it to change in place. Or you can do both. The noise will wrap smoothly in any case.
+
+The `grain` value defines how many wobbles there are. Use integers (2 to 256). The `octaves` (1 to maybe 4 or 5) will put smaller fractal wibbles on the wobbles.
+
+*Bug alert:* If you have more than one `noise` operator in your pattern, they must all have the same `grain` value. If you try to make them different, only the first `grain` value will be used. This is a limitation of the underlying Pixelblaze `perlinTurbulence()` implementation.
+
 **quote**
 
 - `arg`
