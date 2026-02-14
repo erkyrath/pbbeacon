@@ -645,6 +645,16 @@ class NodeGradient(Node):
         assert self.args.arg.dim is Dim.ONE
         return Dim.THREE
 
+    def isclamped(self):
+        for pos, col in self.args.stops:
+            if col.red < 0 or col.red > 1:
+                return False
+            if col.green < 0 or col.green > 1:
+                return False
+            if col.blue < 0 or col.blue > 1:
+                return False
+        return True
+
     def printstaticvars(self, outfl, first=False):
         if first:
             outfl.write(eval_gradient_func)
@@ -701,6 +711,12 @@ class NodeNGradient(Node):
     def finddim(self):
         assert self.args.arg.dim is Dim.ONE
         return Dim.ONE
+
+    def isclamped(self):
+        for pos, val in self.args.nstops:
+            if val < 0 or val > 1:
+                return False
+        return True
 
     def printstaticvars(self, outfl, first=False):
         if first:
