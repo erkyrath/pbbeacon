@@ -611,7 +611,7 @@ class NodeGradient(Node):
         for arg in args:
             if arg.tok.val == 'stop':
                 stop = compile(arg, implicit=self.implicit, defmap=defmap)
-                stops.append( (stop.args.value, stop.args.color) )
+                stops.append( (stop.args.pos, stop.args.color) )
                 continue
             if mainval is not None:
                 raise Exception('%s: duplicate arg' % (self.classname,))
@@ -657,7 +657,7 @@ class NodeStop(Node):
     classname = 'stop'
     
     argformat = [
-        ArgFormat('value', float),
+        ArgFormat('pos', float),
         ArgFormat('color', Color),
     ]
 
