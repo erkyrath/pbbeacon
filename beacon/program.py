@@ -11,6 +11,7 @@ class Stanza:
         self.storedvalkeys = {}
         self.bottomline = None
         self.afterlines = []
+        self.insteadlines = []
         self.timebase = timebase
         self.quoteparent = quoteparent
         self.quotekey = quotekey
@@ -28,6 +29,9 @@ class Stanza:
 
     def after(self, ln):
         self.afterlines.append(ln)
+
+    def instead(self, ln):
+        self.insteadlines.append(ln)
 
     def transfer(self, other, indent=0):
         indentstr = indent * '  '
@@ -49,7 +53,10 @@ class Stanza:
     def printlines(self, outfl, indent=0):
         indentstr = indent * '  '
         id = self.nod.id
-        if self.nod.dim is Dim.ONE:
+        if self.insteadlines:
+            for ln in self.insteadlines:
+                outfl.write(f'{indentstr}{ln}\n')
+        elif self.nod.dim is Dim.ONE:
             if not (self.depend & AxisDep.SPACE):
                 for varname, expr in self.storedvals:
                     outfl.write(f'{indentstr}var {varname} = {expr}  // for {id}\n')

@@ -768,8 +768,15 @@ class NodeDiff(Node):
     def generateexpr(self, ctx, component=None):
         assert self.buffered
         assert self.args.arg.buffered
-        argdata = self.args.arg.generatedata(ctx=ctx, component=component)
-        return argdata
+        assert (self.depend & AxisDep.SPACE)
+        arg = self.args.arg
+        assert self.dim is arg.dim
+        suffix = '_'+component if self.dim is Dim.THREE else ''
+        ctx.instead('var diffratio = pixelCount/2')
+        ctx.instead('for (var ix=1; ix<pixelCount-1; ix++) {')
+        ctx.instead(f'  {self.id}_vector{suffix}[ix] = diffratio*({arg.id}_vector{suffix}[ix+1] - {arg.id}_vector{suffix}[ix-1])')
+        ctx.instead('}')
+        return None
         
 class NodeNoise(Node):
     classname = 'noise'
