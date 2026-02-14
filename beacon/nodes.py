@@ -370,6 +370,9 @@ class NodeMul(Node):
     def finddim(self):
         return max([ arg.dim for arg in self.args.arg ])
         
+    def isclamped(self):
+        return all([ arg.isclamped() for arg in self.args.arg ])
+        
     def generateexpr(self, ctx, component=None):
         argdata = []
         if self.dim is Dim.ONE:
