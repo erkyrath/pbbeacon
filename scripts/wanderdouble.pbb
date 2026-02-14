@@ -1,0 +1,21 @@
+gradient
+  stop: 0.0, $010
+  stop: 0.05, $010
+  stop: 0.2, $AF0
+  stop: 0.4, $020
+  stop: 0.6, $020
+  stop: 0.8, $0FA
+  stop: 0.95, $010
+  stop: 1.0, $010
+  mul
+    1.5
+    clamp: min=0.0, max=0.6666
+        pulser
+          maxcount=10
+          interval=0.4
+          timeshape=sine
+          spaceshape=triangle
+          pos=randflat: 0, 1
+          width=0.2
+          duration=4
+        
