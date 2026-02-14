@@ -180,6 +180,9 @@ class Node:
     
     def isnonincreasing(self):
         return False
+
+    def isclamped(self):
+        return False
     
     def printstaticvars(self, outfl, first=False):
         pass

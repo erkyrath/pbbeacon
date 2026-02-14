@@ -224,22 +224,40 @@ class Program:
         outfl.write('\n')
 
         id = self.start.id
+        clamped = self.start.isclamped()
+        
         outfl.write('export function render(index) {\n')
         if self.start.dim is Dim.ONE:
             if not (self.start.depend & AxisDep.SPACE):
-                outfl.write(f'  var val = {id}_scalar\n')
+                if clamped:
+                    outfl.write(f'  var val = {id}_scalar\n')
+                else:
+                    outfl.write(f'  var val = clamp({id}_scalar, 0, 1)\n')
             else:
-                outfl.write(f'  var val = {id}_vector[index]\n')
+                if clamped:
+                    outfl.write(f'  var val = {id}_vector[index]\n')
+                else:
+                    outfl.write(f'  var val = clamp({id}_vector[index], 0, 1)\n')
             outfl.write('  rgb(val*val, val*val, val*val)\n')
         elif self.start.dim is Dim.THREE:
             if not (self.start.depend & AxisDep.SPACE):
-                outfl.write(f'  var valr = {id}_scalar_r\n')
-                outfl.write(f'  var valg = {id}_scalar_g\n')
-                outfl.write(f'  var valb = {id}_scalar_b\n')
+                if clamped:
+                    outfl.write(f'  var valr = {id}_scalar_r\n')
+                    outfl.write(f'  var valg = {id}_scalar_g\n')
+                    outfl.write(f'  var valb = {id}_scalar_b\n')
+                else:
+                    outfl.write(f'  var valr = clamp({id}_scalar_r, 0, 1)\n')
+                    outfl.write(f'  var valg = clamp({id}_scalar_g, 0, 1)\n')
+                    outfl.write(f'  var valb = clamp({id}_scalar_b, 0, 1)\n')
             else:
-                outfl.write(f'  var valr = {id}_vector_r[index]\n')
-                outfl.write(f'  var valg = {id}_vector_g[index]\n')
-                outfl.write(f'  var valb = {id}_vector_b[index]\n')
+                if clamped:
+                    outfl.write(f'  var valr = {id}_vector_r[index]\n')
+                    outfl.write(f'  var valg = {id}_vector_g[index]\n')
+                    outfl.write(f'  var valb = {id}_vector_b[index]\n')
+                else:
+                    outfl.write(f'  var valr = clamp({id}_vector_r[index], 0, 1)\n')
+                    outfl.write(f'  var valg = clamp({id}_vector_g[index], 0, 1)\n')
+                    outfl.write(f'  var valb = clamp({id}_vector_b[index], 0, 1)\n')
             outfl.write('  rgb(valr*valr, valg*valg, valb*valb)\n')
         else:
             raise Exception('bad dim')
