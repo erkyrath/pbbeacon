@@ -44,6 +44,10 @@ For examples, see the [scripts](./scripts) directory. Each pattern is available 
 
 [doc]: ./DOC.md
 
+I've also included a [`pbcli.py`][pbcli] script. This is a crude hack which lets you change list and change patterns from the command line. (For the elegant version, use zranger1's [pixelblaze-client][] library.) 
+
+[pbcli]: ./pbcli.py
+
 ## Why is this cool?
 
 The `pbbeacon` language has extremely simple syntax. It's block-based (like Python) rather than using braces or parentheses. So it's very well-suited for live-coding.
@@ -70,7 +74,7 @@ Here's some obvious spots for improvement:
 
 - Reset the time variable after nine hours. (This would cause a visible flicker -- waves jumping around discontinuously -- but it's better than crashing.)
 
-- Integrate zranger1's [pixelblaze-client][] interface (which *is* open-source) for true live-coding.
+- Integrate the [pixelblaze-client][] library (which *is* open-source) for true live-coding.
 
 [pixelblaze-client]: https://zranger1.github.io/pixelblaze-client/pixelblaze/
 
