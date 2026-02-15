@@ -21,6 +21,6 @@ export function beforeRender(delta) {
   }
 }
 export function render(index) {
-  var val = sum_0_vector[index]
+  var val = clamp(sum_0_vector[index], 0, 1)
   rgb(val*val, val*val, val*val)
 }

@@ -52,6 +52,6 @@ export function beforeRender(delta) {
   }
 }
 export function render(index) {
-  var val = pulser_0_vector[index]
+  var val = clamp(pulser_0_vector[index], 0, 1)
   rgb(val*val, val*val, val*val)
 }

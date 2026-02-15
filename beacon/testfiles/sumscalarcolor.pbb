@@ -18,8 +18,8 @@ export function beforeRender(delta) {
   sum_0_scalar_b = ((0.5 + (wave_6_val_min+wave_6_val_hdiff*(1-cos(PI2*clock/1)))))
 }
 export function render(index) {
-  var valr = sum_0_scalar_r
-  var valg = sum_0_scalar_g
-  var valb = sum_0_scalar_b
+  var valr = clamp(sum_0_scalar_r, 0, 1)
+  var valg = clamp(sum_0_scalar_g, 0, 1)
+  var valb = clamp(sum_0_scalar_b, 0, 1)
   rgb(valr*valr, valg*valg, valb*valb)
 }
