@@ -264,6 +264,13 @@ There can be any number of stops, and they don't have to be evenly distributed. 
 
 You will usually provide stops from 0 to 1, but this is not a requirement. Values outside the stop range stick to the first or last color value.
 
+**ngradient**
+
+- `nstop`, `nstop`, `nstop`...
+- `arg`
+
+Like `gradient`, except that the stops and the result are numbers instead of colors. The stops look like `nstop: 0.00, 0.5`.
+
 **wave**
 
 - `shape`=_waveshape_
