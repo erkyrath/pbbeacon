@@ -131,6 +131,12 @@ Turns a color value into a numeric brightness from 0 to 1.
 
 (Actually, you can make an "improper" color value whose components are outside the 0-1 range. In those cases, `brightness` can be any number.)
 
+**red**, **green**, **blue**
+
+- `value`
+
+Given a color value, extract one color component as a number.
+
 **time**
 
 - `arg`
