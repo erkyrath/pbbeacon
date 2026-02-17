@@ -446,6 +446,33 @@ class NodeMin(Node):
             res = f'min({res}, {dat})'
         return res
     
+class NodeMod(Node):
+    classname = 'mod'
+    
+    usesimplicit = False
+    argformat = [
+        ArgFormat('arg1', Node),
+        ArgFormat('arg2', Node),
+    ]
+
+    def finddim(self):
+        return max([ self.args.arg1.dim, self.args.arg2.dim ])
+        
+    def isclamped(self):
+        return self.args.arg2.isclamped()
+        
+    def generateexpr(self, ctx, component=None):
+        argdata = []
+        if self.dim is Dim.ONE:
+            for arg in [self.args.arg1, self.args.arg2]:
+                argdata.append(arg.generatedata(ctx=ctx))
+        elif self.dim is Dim.THREE:
+            argdata = self.generatelistas3([self.args.arg1, self.args.arg2], ctx, component=component)
+        else:
+            raise Exception('bad dim')
+        assert len(argdata) == 2
+        return f'mod({argdata[0]}, {argdata[1]})'
+    
 class NodeWave(Node):
     classname = 'wave'
 
@@ -1004,6 +1031,7 @@ nodeclasses = [
     NodeMul,
     NodeMax,
     NodeMin,
+    NodeMod,
     NodeWave,
     NodeRGB,
     NodeBrightness,
