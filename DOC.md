@@ -314,6 +314,12 @@ The `grain` value defines how many wobbles there are. Use integers (2 to 256). I
 
 *Bug alert:* If you have more than one `noise` operator in your pattern, they must all have the same `grain` value. If you try to make them different, only the first `grain` value will be used. This is a limitation of the underlying Pixelblaze `perlinTurbulence()` implementation.
 
+**diff**
+
+- `arg`
+
+Approximates the differential of its argument over space.
+
 **quote**
 
 - `arg`
