@@ -238,6 +238,13 @@ Finds the highest value of any of its arguments. If this is applied to colors, t
 
 Finds the lowest value of any of its arguments.
 
+**mod**
+
+- `arg1`
+- `arg2`
+
+Computes (real-number) modulo. The result will be between 0 and `arg2`, with the same sign as `arg2`.
+
 **decay**
 
 - `halflife`=_number_
