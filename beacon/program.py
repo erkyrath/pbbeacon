@@ -54,6 +54,9 @@ class Stanza:
         indentstr = indent * '  '
         id = self.nod.id
         if self.insteadlines:
+            ### do these need to be in the instead loop sometimes?
+            for varname, expr in self.storedvals:
+                outfl.write(f'{indentstr}var {varname} = {expr}  // for {id}\n')
             for ln in self.insteadlines:
                 outfl.write(f'{indentstr}{ln}\n')
         elif self.nod.dim is Dim.ONE:
