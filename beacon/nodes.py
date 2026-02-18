@@ -863,11 +863,11 @@ class NodeShift(Node):
     usesimplicit = False
     argformat = [
         ArgFormat('arg', Node),
-        ArgFormat('shift', Implicit.TIME),
+        ArgFormat('by', Implicit.TIME),
     ]
     
     def finddim(self):
-        assert self.args.shift.dim is Dim.ONE
+        assert self.args.by.dim is Dim.ONE
         return self.args.arg.dim
 
     def generateexpr(self, ctx, component=None):
@@ -877,7 +877,7 @@ class NodeShift(Node):
         ### if arg is scalar, return it
         arg = self.args.arg
         assert self.dim is arg.dim
-        argdata = self.args.shift.generatedata(ctx=ctx, component=component)
+        argdata = self.args.by.generatedata(ctx=ctx, component=component)
         suffix = '_'+component if self.dim is Dim.THREE else ''
         ctx.instead('for (var ix=1; ix<pixelCount-1; ix++) {')
         ### argdata might have store_vals to dump
