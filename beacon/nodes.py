@@ -847,9 +847,10 @@ class NodeDiff(Node):
         assert self.buffered
         assert self.args.arg.buffered
         assert (self.depend & AxisDep.SPACE)
-        ### if arg is scalar, return 0
         arg = self.args.arg
         assert self.dim is arg.dim
+        if not (arg.depend & AxisDep.SPACE):
+            return '0'
         suffix = '_'+component if self.dim is Dim.THREE else ''
         ctx.instead('var diffratio = pixelCount/2')
         ctx.instead('for (var ix=1; ix<pixelCount-1; ix++) {')
