@@ -857,6 +857,41 @@ class NodeDiff(Node):
         ctx.instead('}')
         return None
         
+class NodeShift(Node):
+    classname = 'shift'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('arg', Node),
+        ArgFormat('shift', Implicit.TIME),
+    ]
+    
+    def finddim(self):
+        assert self.args.shift.dim is Dim.ONE
+        return self.args.arg.dim
+
+    def generateexpr(self, ctx, component=None):
+        assert self.buffered
+        assert self.args.arg.buffered
+        assert (self.depend & AxisDep.SPACE)
+        ### if arg is scalar, return it
+        arg = self.args.arg
+        assert self.dim is arg.dim
+        argdata = self.args.shift.generatedata(ctx=ctx, component=component)
+        suffix = '_'+component if self.dim is Dim.THREE else ''
+        ctx.instead('for (var ix=1; ix<pixelCount-1; ix++) {')
+        ### argdata might have store_vals to dump
+        ctx.instead(f'  var shiftpos = ix - {argdata} * pixelCount')
+        ctx.instead('  if (shiftpos <= 0) {')
+        ctx.instead(f'    {self.id}_vector{suffix}[ix] = {arg.id}_vector{suffix}[0]')
+        ctx.instead('  } else if (shiftpos >= pixelCount-1) {')
+        ctx.instead(f'    {self.id}_vector{suffix}[ix] = {arg.id}_vector{suffix}[pixelCount-1]')
+        ctx.instead('  } else {')
+        ctx.instead(f'    {self.id}_vector{suffix}[ix] = mix({arg.id}_vector{suffix}[floor(shiftpos)], {arg.id}_vector{suffix}[floor(shiftpos)+1], frac(shiftpos))')
+        ctx.instead('  }')
+        ctx.instead('}')
+        return None
+        
 class NodeNoise(Node):
     classname = 'noise'
 
@@ -1044,6 +1079,7 @@ nodeclasses = [
     NodeNStop,
     NodeDecay,
     NodeDiff,
+    NodeShift,
     NodeNoise,
     NodePulser,
 ]

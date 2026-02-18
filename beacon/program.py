@@ -133,7 +133,7 @@ class Program:
         if isinstance(nod, NodeDecay):
             nod.depend |= AxisDep.TIME
             nod.buffered = True
-        if isinstance(nod, NodeDiff):
+        if isinstance(nod, NodeDiff) or isinstance(nod, NodeShift):
             nod.depend |= AxisDep.SPACE
             nod.buffered = True
             nod.args.arg.buffered = True
@@ -267,6 +267,6 @@ class Program:
 
 
 # Late imports
-from .nodes import NodeConstant, NodePulser, NodeDecay, NodeDiff
+from .nodes import NodeConstant, NodePulser, NodeDecay, NodeDiff, NodeShift
 
 
