@@ -871,6 +871,9 @@ class NodeShift(Node):
         assert self.args.by.dim is Dim.ONE
         return self.args.arg.dim
 
+    def isclamped(self):
+        return self.args.arg.isclamped()
+
     def generateexpr(self, ctx, component=None):
         assert self.buffered
         assert self.args.arg.buffered
