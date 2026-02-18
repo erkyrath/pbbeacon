@@ -879,8 +879,7 @@ class NodeShift(Node):
         assert self.dim is arg.dim
         argdata = self.args.by.generatedata(ctx=ctx, component=component)
         suffix = '_'+component if self.dim is Dim.THREE else ''
-        ctx.instead('for (var ix=1; ix<pixelCount-1; ix++) {')
-        ### argdata might have store_vals to dump
+        ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
         ctx.instead(f'  var shiftpos = ix - {argdata} * pixelCount')
         ctx.instead('  if (shiftpos <= 0) {')
         ctx.instead(f'    {self.id}_vector{suffix}[ix] = {arg.id}_vector{suffix}[0]')
