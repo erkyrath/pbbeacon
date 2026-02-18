@@ -874,13 +874,15 @@ class NodeShift(Node):
         assert self.buffered
         assert self.args.arg.buffered
         assert (self.depend & AxisDep.SPACE)
-        ### if arg is scalar, return it
         arg = self.args.arg
         assert self.dim is arg.dim
-        argdata = self.args.by.generatedata(ctx=ctx, component=component)
+        if not (arg.depend & AxisDep.SPACE):
+            argdata = self.args.arg.generatedata(ctx=ctx, component=component)
+            return argdata
+        bydata = self.args.by.generatedata(ctx=ctx, component=component)
         suffix = '_'+component if self.dim is Dim.THREE else ''
         ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
-        ctx.instead(f'  var shiftpos = ix - {argdata} * pixelCount')
+        ctx.instead(f'  var shiftpos = ix - {bydata} * pixelCount')
         ctx.instead('  if (shiftpos <= 0) {')
         ctx.instead(f'    {self.id}_vector{suffix}[ix] = {arg.id}_vector{suffix}[0]')
         ctx.instead('  } else if (shiftpos >= pixelCount-1) {')
