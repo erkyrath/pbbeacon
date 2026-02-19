@@ -140,6 +140,10 @@ class Program:
             nod.depend |= AxisDep.SPACE
             nod.buffered = True
             nod.args.arg.buffered = True
+        if isinstance(nod, NodeShiftDecay):
+            nod.depend = AxisDep.SPACETIME
+            nod.buffered = True
+            nod.args.arg.buffered = True
 
         subdeps = AxisDep.NONE
         
@@ -270,6 +274,6 @@ class Program:
 
 
 # Late imports
-from .nodes import NodeConstant, NodePulser, NodeDecay, NodeDiff, NodeShift
+from .nodes import NodeConstant, NodePulser, NodeDecay, NodeDiff, NodeShift, NodeShiftDecay
 
 

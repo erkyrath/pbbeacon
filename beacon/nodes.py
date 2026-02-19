@@ -897,6 +897,51 @@ class NodeShift(Node):
         ctx.instead('}')
         return None
         
+class NodeShiftDecay(Node):
+    classname = 'shiftdecay'
+
+    usesimplicit = False
+    argformat = [
+        ArgFormat('arg', Node),
+        ArgFormat('by', Implicit.TIME),
+        ArgFormat('halflife', float),
+    ]
+    
+    def finddim(self):
+        assert self.args.by.dim is Dim.ONE
+        return self.args.arg.dim
+
+    def isclamped(self):
+        return self.args.arg.isclamped()
+
+    def generateexpr(self, ctx, component=None):
+        assert self.buffered
+        halflife = self.args.halflife
+        assert self.args.arg.buffered
+        assert (self.depend & AxisDep.SPACE)
+        arg = self.args.arg
+        assert self.dim is arg.dim
+        if not (arg.depend & AxisDep.SPACE):
+            argdata = self.args.arg.generatedata(ctx=ctx, component=component)
+            return argdata
+        bydata = self.args.by.generatedata(ctx=ctx, component=component)
+        suffix = '_'+component if self.dim is Dim.THREE else ''
+        ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
+        ctx.instead(f'  {self.id}_previous{suffix}[ix] = pow(2, -delta/{1000*halflife}, {self.id}_vector{suffix}[ix])')
+        ctx.instead('}')
+        ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
+        ctx.instead(f'  var shiftpos = ix - {bydata} * pixelCount')
+        ctx.instead(f'  var argval = {arg.id}_vector{suffix}[ix]')
+        ctx.instead('  if (shiftpos <= 0) {')
+        ctx.instead(f'    {self.id}_vector{suffix}[ix] = max(argval, {self.id}_previous{suffix}[0])')
+        ctx.instead('  } else if (shiftpos >= pixelCount-1) {')
+        ctx.instead(f'    {self.id}_vector{suffix}[ix] = max(argval, {self.id}_previous{suffix}[pixelCount-1])')
+        ctx.instead('  } else {')
+        ctx.instead(f'    {self.id}_vector{suffix}[ix] = max(argval, mix({self.id}_previous{suffix}[floor(shiftpos)], {self.id}_previous{suffix}[floor(shiftpos)+1], frac(shiftpos)))')
+        ctx.instead('  }')
+        ctx.instead('}')
+        return None
+        
 class NodeNoise(Node):
     classname = 'noise'
 
@@ -1085,6 +1130,7 @@ nodeclasses = [
     NodeDecay,
     NodeDiff,
     NodeShift,
+    NodeShiftDecay,
     NodeNoise,
     NodePulser,
 ]
