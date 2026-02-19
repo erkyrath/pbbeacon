@@ -914,6 +914,10 @@ class NodeShiftDecay(Node):
     def isclamped(self):
         return self.args.arg.isclamped()
 
+    def printstaticvars(self, outfl, first=False):
+        id = self.id
+        outfl.write(f'var {id}_previous = array(pixelCount)\n')
+        
     def generateexpr(self, ctx, component=None):
         assert self.buffered
         halflife = self.args.halflife
@@ -925,7 +929,7 @@ class NodeShiftDecay(Node):
         bydata = self.args.by.generatedata(ctx=ctx, component=component)
         suffix = '_'+component if self.dim is Dim.THREE else ''
         ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
-        ctx.instead(f'  {self.id}_previous{suffix}[ix] = pow(2, -delta/{1000*halflife}, {self.id}_vector{suffix}[ix])')
+        ctx.instead(f'  {self.id}_previous{suffix}[ix] = {self.id}_vector{suffix}[ix] * pow(2, -delta/{1000*halflife})')
         ctx.instead('}')
         ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
         ctx.instead(f'  var shiftpos = ix - {bydata} * pixelCount')
