@@ -245,15 +245,6 @@ Finds the lowest value of any of its arguments.
 
 Computes (real-number) modulo. The result will be between 0 and `arg2`, with the same sign as `arg2`.
 
-**decay**
-
-- `halflife`=_number_
-- `arg`
-
-Generates a value based on `arg`, except that whenever `arg` drops, the generated value decays *slowly* towards zero rather than dropping immediately. The `halflife` is how many seconds it takes to get halfway to zero.
-
-(This doesn't support decaying *up*. If `arg` goes negative, its values are ignored.)
-
 **gradient**
 
 - `stop`, `stop`, `stop`...
@@ -314,12 +305,29 @@ The `grain` value defines how many wobbles there are. Use integers (2 to 256). I
 
 *Bug alert:* If you have more than one `noise` operator in your pattern, they must all have the same `grain` value. If you try to make them different, only the first `grain` value will be used. This is a limitation of the underlying Pixelblaze `perlinTurbulence()` implementation.
 
+**decay**
+
+- `halflife`=_number_
+- `arg`
+
+Generates a value based on `arg`, except that whenever `arg` drops, the generated value decays *slowly* towards zero rather than dropping immediately. The `halflife` is how many seconds it takes to get halfway to zero.
+
+(This doesn't support decaying *up*. If `arg` goes negative, its values are ignored.)
+
 **shift**
 
 - `arg`
 - `by`
 
 Shifts its argument right (positive) or left (negative) by a distance in space. Does not wrap.
+
+**shiftdecay**
+
+- `halflife`=_number_
+- `by`
+- `arg`
+
+Combined shift-and-decay. The value fades while shifting to the right or left.
 
 **diff**
 
