@@ -932,7 +932,7 @@ class NodeShiftDecay(Node):
         ctx.instead(f'  {self.id}_previous{suffix}[ix] = {self.id}_vector{suffix}[ix] * pow(2, -delta/{1000*halflife})')
         ctx.instead('}')
         ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
-        ctx.instead(f'  var shiftpos = ix - {bydata} * pixelCount')
+        ctx.instead(f'  var shiftpos = ix - {bydata} * (delta/1000) * pixelCount')
         if not (arg.depend & AxisDep.SPACE):
             ctx.instead(f'  var argval = {arg.id}_scalar{suffix}')
         else:
