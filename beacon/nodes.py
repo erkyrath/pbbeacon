@@ -919,11 +919,9 @@ class NodeShiftDecay(Node):
         halflife = self.args.halflife
         assert self.args.arg.buffered
         assert (self.depend & AxisDep.SPACE)
+        assert (self.depend & AxisDep.TIME)
         arg = self.args.arg
         assert self.dim is arg.dim
-        if not (arg.depend & AxisDep.SPACE):
-            argdata = self.args.arg.generatedata(ctx=ctx, component=component)
-            return argdata
         bydata = self.args.by.generatedata(ctx=ctx, component=component)
         suffix = '_'+component if self.dim is Dim.THREE else ''
         ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
@@ -931,7 +929,10 @@ class NodeShiftDecay(Node):
         ctx.instead('}')
         ctx.instead('for (var ix=0; ix<pixelCount; ix++) {')
         ctx.instead(f'  var shiftpos = ix - {bydata} * pixelCount')
-        ctx.instead(f'  var argval = {arg.id}_vector{suffix}[ix]')
+        if not (arg.depend & AxisDep.SPACE):
+            ctx.instead(f'  var argval = {arg.id}_scalar{suffix}')
+        else:
+            ctx.instead(f'  var argval = {arg.id}_vector{suffix}[ix]')
         ctx.instead('  if (shiftpos <= 0) {')
         ctx.instead(f'    {self.id}_vector{suffix}[ix] = max(argval, {self.id}_previous{suffix}[0])')
         ctx.instead('  } else if (shiftpos >= pixelCount-1) {')
